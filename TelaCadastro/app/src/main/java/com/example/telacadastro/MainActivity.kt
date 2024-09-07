@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -30,20 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.telacadastro.R
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.googlefonts.Font
-
-val provider = GoogleFont.Provider(
-    providerAuthority = "com.google.android.gms.fonts",
-    providerPackage = "com.google.android.gms",
-    certificates = R.array.com_google_android_gms_fonts_certs
-)
-
-val montserrat = GoogleFont(name = "Montserrat")
 val montserratFamily = FontFamily(
-    Font(googleFont = montserrat, fontProvider = provider, weight = FontWeight.Normal),
-    Font(googleFont = montserrat, fontProvider = provider, weight = FontWeight.Bold)
+    Font(R.font.montserrat, FontWeight.Bold),
+    Font(R.font.montserrat, FontWeight.ExtraBold)
 )
 
 class MainActivity : ComponentActivity() {
@@ -81,7 +72,7 @@ fun RegistrationScreen() {
                 contentDescription = "User Icon",
                 modifier = Modifier
                     .size(200.dp)
-                    .align(Alignment.CenterHorizontally) // Alinha a imagem no centro
+                    .align(Alignment.CenterHorizontally)
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -90,7 +81,7 @@ fun RegistrationScreen() {
                 text = "CADASTRO",
                 color = Color.Black,
                 fontSize = 36.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.ExtraBold,
                 fontFamily = montserratFamily,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -158,6 +149,7 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
             style = TextStyle(
                 fontSize = 16.sp,
                 color = Color.Black,
+                fontWeight = FontWeight.ExtraBold,
                 fontFamily = montserratFamily
             ),
             modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
@@ -171,7 +163,7 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
                     shape = RoundedCornerShape(20.dp),
                     ambientColor = Color(0xFFFFA726),
                     spotColor = Color(0xFFFFA726)
-                ) // Sombra inferior e à direita
+                )
                 .clip(RoundedCornerShape(24.dp))
                 .background(Color.White) // Fundo branco
                 .padding(4.dp)
@@ -196,4 +188,3 @@ fun RegistrationScreenPreview() {
     RegistrationScreen()
 }
 
-//jshdh
