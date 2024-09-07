@@ -118,7 +118,8 @@ fun RegistrationScreen() {
                     )
                 ) {
                     Text(text = "ENTRAR", color = Color.Black, fontFamily = montserratFamily,
-                        fontSize = 18.sp)
+                        fontSize = 18.sp, fontWeight = FontWeight.ExtraBold
+                    )
                 }
 
                 Button(
@@ -132,7 +133,7 @@ fun RegistrationScreen() {
                     )
                 ) {
                     Text(text = "CADASTRAR", color = Color.Black, fontFamily = montserratFamily,
-                        fontSize = 18.sp)
+                        fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
                 }
             }
         }
@@ -144,12 +145,13 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
     val inputValue = remember { mutableStateOf(text) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
+        // Texto do rótulo
         Text(
             text = label,
             style = TextStyle(
-                fontSize = 16.sp,
-                color = Color.Black,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.ExtraBold,
+                color = Color.Black,
                 fontFamily = montserratFamily
             ),
             modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
@@ -157,30 +159,44 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
 
         Box(
             modifier = Modifier
+                .fillMaxWidth()
                 .height(46.dp)
-                .shadow(
-                    elevation = 8.dp,
-                    shape = RoundedCornerShape(20.dp),
-                    ambientColor = Color(0xFFFFA726),
-                    spotColor = Color(0xFFFFA726)
-                )
-                .clip(RoundedCornerShape(24.dp))
-                .background(Color.White) // Fundo branco
-                .padding(4.dp)
         ) {
-            BasicTextField(
-                value = inputValue.value,
-                onValueChange = { inputValue.value = it },
-                visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-                textStyle = TextStyle(color = Color.Black, fontSize = 16.sp, fontFamily = montserratFamily),
-                cursorBrush = SolidColor(Color.Black),
+
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
+                    .fillMaxSize()
+                    .offset(x = 6.dp, y = 6.dp)
+                    .clip(RoundedCornerShape(30.dp))
+                    .background(Color(0xFFBD5A0D))
             )
+
+            // Caixa branca acima da sombra
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(30.dp))
+                    .background(Color.White)
+                    .padding(4.dp)
+            ) {
+                // Campo de entrada de texto
+                BasicTextField(
+                    value = inputValue.value,
+                    onValueChange = { inputValue.value = it },
+                    visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+                    textStyle = TextStyle(color = Color.Black, fontSize = 16.sp, fontFamily = montserratFamily),
+                    cursorBrush = SolidColor(Color.Black),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+            }
         }
     }
 }
+
+
+
 
 @Preview(showBackground = true)
 @Composable
