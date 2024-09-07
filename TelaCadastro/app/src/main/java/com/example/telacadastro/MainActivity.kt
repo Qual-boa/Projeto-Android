@@ -31,11 +31,24 @@ import androidx.compose.ui.unit.sp
 import com.example.telacadastro.R
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 val montserratFamily = FontFamily(
     Font(R.font.montserrat, FontWeight.Bold),
     Font(R.font.montserrat, FontWeight.ExtraBold)
 )
+
+val poppinsFamily = FontFamily(
+    Font(R.font.poppins_medium, FontWeight.Medium),
+    Font(R.font.poppins_bold, FontWeight.Bold),
+    Font(R.font.poppins_regular, FontWeight.Normal),
+    Font(R.font.poppins_black, FontWeight.Black),
+    Font(R.font.poppins_extrabold, FontWeight.ExtraBold),
+    Font(R.font.poppins_blackitalic, FontWeight.Black, FontStyle.Italic),
+
+
+)
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +67,7 @@ fun RegistrationScreen() {
             .background(Color(0xFFFFE5B4))
     ) {
         Image(
-            painter = painterResource(id = R.mipmap.background),
+            painter = painterResource(id = R.mipmap.back_tela),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()
@@ -82,7 +95,7 @@ fun RegistrationScreen() {
                 color = Color.Black,
                 fontSize = 36.sp,
                 fontWeight = FontWeight.ExtraBold,
-                fontFamily = montserratFamily,
+                fontFamily = poppinsFamily,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
@@ -114,11 +127,11 @@ fun RegistrationScreen() {
                         .padding(end = 8.dp)
                         .clip(RoundedCornerShape(50.dp)),
                     colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFFEBA4)
+                        containerColor = Color(0xFFFDBB27)
                     )
                 ) {
-                    Text(text = "ENTRAR", color = Color.Black, fontFamily = montserratFamily,
-                        fontSize = 18.sp, fontWeight = FontWeight.ExtraBold
+                    Text(text = "ENTRAR", color = Color.Black, fontFamily = poppinsFamily,
+                        fontSize = 18.sp, fontWeight = FontWeight.Bold
                     )
                 }
 
@@ -132,8 +145,8 @@ fun RegistrationScreen() {
                         containerColor = Color(0xFFBD5A0D)
                     )
                 ) {
-                    Text(text = "CADASTRAR", color = Color.Black, fontFamily = montserratFamily,
-                        fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                    Text(text = "CADASTRAR", color = Color.Black, fontFamily = poppinsFamily,
+                        fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -145,14 +158,13 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
     val inputValue = remember { mutableStateOf(text) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        // Texto do rótulo
         Text(
             text = label,
             style = TextStyle(
                 fontSize = 18.sp,
-                fontWeight = FontWeight.ExtraBold,
+                fontWeight = FontWeight.Normal,
                 color = Color.Black,
-                fontFamily = montserratFamily
+                fontFamily = poppinsFamily
             ),
             modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
         )
@@ -184,7 +196,7 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
                     value = inputValue.value,
                     onValueChange = { inputValue.value = it },
                     visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-                    textStyle = TextStyle(color = Color.Black, fontSize = 16.sp, fontFamily = montserratFamily),
+                    textStyle = TextStyle(color = Color.Black, fontSize = 16.sp, fontFamily = poppinsFamily),
                     cursorBrush = SolidColor(Color.Black),
                     modifier = Modifier
                         .fillMaxWidth()
