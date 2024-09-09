@@ -64,7 +64,7 @@ fun telaLogin() {
             .background(Color(0xFFFFE5B4)) // Cor de fundo
     ) {
         Image(
-            painter = painterResource(id = R.mipmap.back_back),
+            painter = painterResource(id = R.mipmap.bg),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize().size(300.dp)
