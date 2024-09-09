@@ -47,7 +47,7 @@ val poppinsFamily = FontFamily(
     Font(R.font.poppins_blackitalic, FontWeight.Black, FontStyle.Italic),
 
 
-)
+    )
 
 
 class MainActivity : ComponentActivity() {
@@ -64,7 +64,7 @@ fun RegistrationScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFE5B4))
+            .background(Color(0xFFFFE5B4)) // Cor de fundo
     ) {
         Image(
             painter = painterResource(id = R.mipmap.back_tela),
@@ -73,85 +73,131 @@ fun RegistrationScreen() {
             modifier = Modifier.fillMaxSize()
         )
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+        // Centralizar todo o conteúdo
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.mipmap.icon),
-                contentDescription = "User Icon",
+            // Ícone de usuário (flutuar sobre o card, sem mover o conteúdo)
+            Box(
                 modifier = Modifier
-                    .size(200.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "CADASTRO",
-                color = Color.Black,
-                fontSize = 36.sp,
-                fontWeight = FontWeight.ExtraBold,
-                fontFamily = poppinsFamily,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-
-            Spacer(modifier = Modifier.height(50.dp))
-
-            InputFieldWithShadow(label = "Nome:", text = "")
-            Spacer(modifier = Modifier.height(16.dp))
-
-            InputFieldWithShadow(label = "E-mail:", text = "")
-            Spacer(modifier = Modifier.height(16.dp))
-
-            InputFieldWithShadow(label = "Senha:", text = "", isPassword = true)
-            Spacer(modifier = Modifier.height(16.dp))
-
-            InputFieldWithShadow(label = "Confirmar Senha:", text = "", isPassword = true)
-
-            Spacer(modifier = Modifier.height(50.dp))
-
-            // Botões
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                    .align(Alignment.TopCenter) // Centralizado no topo do card
+                    .offset(y = 60.dp) // Ajuste para que o ícone fique mais próximo ao topo do card
+                    .size(120.dp)
             ) {
-                Button(
-                    onClick = {},
+                Image(
+                    painter = painterResource(id = R.mipmap.icon),
+                    contentDescription = "User Icon",
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp)
-                        .clip(RoundedCornerShape(50.dp)),
-                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFDBB27)
-                    )
-                ) {
-                    Text(text = "ENTRAR", color = Color.Black, fontFamily = poppinsFamily,
-                        fontSize = 18.sp, fontWeight = FontWeight.Bold
-                    )
-                }
+                        .align(Alignment.Center)
+                )
+            }
 
-                Button(
-                    onClick = {},
+            // Card único que engloba todos os elementos
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+                Spacer(modifier = Modifier.height(150.dp)) // Aumenta o espaço acima do card
+
+                Box(
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 8.dp)
-                        .clip(RoundedCornerShape(50.dp)),
-                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFBD5A0D)
-                    )
+                        .fillMaxWidth(0.9f) // Aumenta a largura do card para 90% da tela
+                        .clip(RoundedCornerShape(30.dp))
+                        .background(Color(0xFFFFF3E0))
+                        .padding(24.dp)
                 ) {
-                    Text(text = "CADASTRAR", color = Color.Black, fontFamily = poppinsFamily,
-                        fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Top
+                    ) {
+                        // Texto "Cadastro" dentro do card
+                        Text(
+                            text = "Cadastro",
+                            color = Color.Black,
+                            fontSize = 36.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            fontFamily = poppinsFamily,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        // Campos de entrada com sombra
+                        InputFieldWithShadow(label = "Nome:", text = "")
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        InputFieldWithShadow(label = "E-mail:", text = "")
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        InputFieldWithShadow(label = "Senha:", text = "", isPassword = true)
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        InputFieldWithShadow(label = "Confirmar Senha:", text = "", isPassword = true)
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        // Botões estilizados com a mesma largura e altura
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        ) {
+                            Button(
+                                onClick = {},
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(end = 8.dp)
+                                    .fillMaxHeight()
+                                    .clip(RoundedCornerShape(50.dp)),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFFFC107)
+                                )
+                            ) {
+                                Text(
+                                    text = "Entrar",
+                                    color = Color.Black,
+                                    fontFamily = poppinsFamily,
+                                    fontSize = 15.2.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+
+                            Button(
+                                onClick = {},
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(start = 8.dp)
+                                    .fillMaxHeight()
+                                    .clip(RoundedCornerShape(50.dp)),
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFBD5A0D)
+                                )
+                            ) {
+                                Text(
+                                    text = "Cadastrar",
+                                    color = Color.Black,
+                                    fontFamily = poppinsFamily,
+                                    fontSize = 15.2.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 }
+
+
+
+
 
 @Composable
 fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = false) {
@@ -162,7 +208,7 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
             text = label,
             style = TextStyle(
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 fontFamily = poppinsFamily
             ),
@@ -175,20 +221,21 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
                 .height(46.dp)
         ) {
 
+            // Sombra da caixa de texto
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .offset(x = 6.dp, y = 6.dp)
+                    .offset(x = 4.dp, y = 4.dp)
                     .clip(RoundedCornerShape(30.dp))
-                    .background(Color(0xFFBD5A0D))
+                    .background(Color(0xFFBD5A0D)) // Cor da sombra
             )
 
-            // Caixa branca acima da sombra
+            // Caixa de entrada branca
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(RoundedCornerShape(30.dp))
-                    .background(Color.White)
+                    .clip(RoundedCornerShape(30.dp)) // Cantos arredondados
+                    .background(Color.White) // Cor da caixa de entrada
                     .padding(4.dp)
             ) {
                 // Campo de entrada de texto
@@ -207,12 +254,8 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
     }
 }
 
-
-
-
 @Preview(showBackground = true)
 @Composable
 fun RegistrationScreenPreview() {
     RegistrationScreen()
 }
-
