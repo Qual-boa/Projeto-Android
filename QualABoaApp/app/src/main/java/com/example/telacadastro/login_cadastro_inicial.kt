@@ -67,7 +67,7 @@ fun QualABoaScreen(
     ) {
         // Imagem de fundo
         Image(
-            painter = painterResource(id = R.mipmap.bg), // Coloque o ID correto da sua imagem de fundo aqui
+            painter = painterResource(id = R.mipmap.backgroundd), // Coloque o ID correto da sua imagem de fundo aqui
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize().size(300.dp)

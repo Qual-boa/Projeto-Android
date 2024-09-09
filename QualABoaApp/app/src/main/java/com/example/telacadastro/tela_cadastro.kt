@@ -64,7 +64,7 @@ class CadastroActivity : ComponentActivity() {
                 .background(Color(0xFFFFE5B4)) // Cor de fundo
         ) {
             Image(
-                painter = painterResource(id = R.mipmap.bg),
+                painter = painterResource(id = R.mipmap.backgroundd),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize().size(300.dp)
