@@ -9,22 +9,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,47 +50,44 @@ fun ProfileScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFF5E1)) // Cor de fundo
+            .background(Color(0xFFFFF5E1))
     ) {
-        // Círculo laranja por trás da parte branca
         Image(
-            painter = painterResource(id = R.mipmap.circulo), // Manter o círculo laranja
+            painter = painterResource(id = R.mipmap.circulo),
             contentDescription = "Círculo Laranja",
             modifier = Modifier
-                .size(160.dp)
+                .size(180.dp)
                 .align(Alignment.TopCenter)
-                .offset(y = (-30).dp) // Ajuste o círculo um pouco mais para baixo
-                .zIndex(0f) // O círculo laranja está atrás do container branco
+                .offset(y = 20.dp)
+                .zIndex(0f)
         )
 
-        // Ícone preto (User Icon) acima do círculo laranja e da parte branca
         Image(
-            painter = painterResource(id = R.mipmap.icone), // Ícone de usuário preto
+            painter = painterResource(id = R.mipmap.icone),
             contentDescription = "User Icon",
             modifier = Modifier
-                .size(120.dp)
+                .size(140.dp)
                 .align(Alignment.TopCenter)
-                .offset(y = 10.dp) // Centralizar o ícone para ficar sobre o círculo
-                .zIndex(2f) // O ícone de usuário deve estar acima do círculo e da parte branca
+                .offset(y = 70.dp)
+                .zIndex(2f)
         )
 
-        // Container Branco com o círculo laranja por trás
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.85f)
                 .align(Alignment.TopCenter)
-                .offset(y = 80.dp) // Mover o container branco mais para baixo
+                .offset(y = 140.dp)
                 .clip(RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp))
                 .background(Color.White)
-                .zIndex(1f) // O container branco está acima do círculo
+                .zIndex(1f)
                 .padding(16.dp)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(modifier = Modifier.height(60.dp)) // Espaço para o ícone do usuário
+                Spacer(modifier = Modifier.height(60.dp))
 
                 Text(
                     text = "Perfil",
@@ -131,7 +124,6 @@ fun ProfileScreen() {
             }
         }
 
-        // Menu inferior fixo sobre a parte branca
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -148,6 +140,7 @@ fun ProfileScreen() {
 
 
 
+
 @Composable
 fun ProfileTextFieldWithShadow(text: String, isPassword: Boolean = false, onValueChange: (String) -> Unit = {}) {
     val inputValue = remember { mutableStateOf(text) }
@@ -155,7 +148,7 @@ fun ProfileTextFieldWithShadow(text: String, isPassword: Boolean = false, onValu
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp) // Aumentar a altura da caixa de entrada para dar mais espaço
+            .height(60.dp)
     ) {
         Box(
             modifier = Modifier
@@ -191,7 +184,7 @@ fun ProfileTextFieldWithShadow(text: String, isPassword: Boolean = false, onValu
                     cursorBrush = SolidColor(Color.Black),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 12.dp) // Aumentar o padding vertical
+                        .padding(horizontal = 8.dp, vertical = 12.dp)
                         .weight(1f)
                 )
 
