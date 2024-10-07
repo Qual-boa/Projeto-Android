@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/QualABoaApp"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TelaCadastro"
+        tools:targetApi="31">
+        <activity
+            android:name=".configuracoes"
+            android:exported="false"
+            android:label="@string/title_activity_configuracoes"
+            android:theme="@style/Theme.TelaCadastro" />
+        <!-- SplashActivity configurada como tela inicial -->
+        <activity
+            android:name=".ui.theme.SplashActivity"
+            android:exported="true"
+            android:label="@string/title_activity_splash_screen"
+            android:theme="@style/Theme.TelaCadastro">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.theme.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_tela_login"
+            android:theme="@style/Theme.TelaCadastro" />
+        <activity
+            android:name=".ui.theme.CadastroActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login_cadastro_inicial"
+            android:theme="@style/Theme.TelaCadastro" />
+        <activity
+            android:name=".ui.theme.MainActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+    </application>
+
+</manifest>

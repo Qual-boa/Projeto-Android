@@ -1,0 +1,7 @@
+<resources>
+    <string name="QualABoaApp">TelaCadastro</string>
+    <string name="title_activity_login_cadastro_inicial">login_cadastro_inicial</string>
+    <string name="title_activity_tela_login">tela_login</string>
+    <string name="title_activity_splash_screen">splash_screen</string>
+    <string name="title_activity_configuracoes">configuracoes</string>
+</resources>
