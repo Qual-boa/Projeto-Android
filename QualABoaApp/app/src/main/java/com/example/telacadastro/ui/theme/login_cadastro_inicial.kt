@@ -94,27 +94,25 @@ fun QualABoaScreen(
                 // Botão Cadastro
                 ButtonWithIcon(
                     text = "CADASTRO",
-                    iconRes = R.mipmap.botao1, // Substitua pelo ícone correto
+                    iconRes = R.mipmap.botao1,
                     onClick = onCadastroClick
                 )
 
                 // Botão Login
                 ButtonWithIcon(
                     text = "LOGIN",
-                    iconRes = R.mipmap.boato2, // Substitua pelo ícone correto
+                    iconRes = R.mipmap.boato2,
                     onClick = onLoginClick
                 )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Texto "Entrar sem logar" sublinhado
             Text(
                 text = "Entrar sem logar",
                 color = Color.Black,
                 fontFamily = poppinsFamily,
-                fontSize = 16.sp,
-                textDecoration = TextDecoration.Underline
+                fontSize = 16.sp
             )
         }
     }
@@ -126,7 +124,7 @@ fun ButtonWithIcon(text: String, iconRes: Int, onClick: () -> Unit) {
         onClick = onClick,
         shape = RoundedCornerShape(50.dp),
         modifier = Modifier
-            .width(180.dp) // Definindo a largura fixa para que os botões tenham o mesmo tamanho
+            .width(180.dp)
             .height(60.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFFFFF))
     ) {

@@ -41,7 +41,7 @@ class SplashActivity : ComponentActivity() {
 
         // Exibe a SplashScreen por 3 segundos antes de abrir a MainActivity
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, LoginCadastroActivity::class.java))
             finish() // Finaliza a SplashActivity para que ela não volte ao pressionar "back"
         }, 3000)
 
