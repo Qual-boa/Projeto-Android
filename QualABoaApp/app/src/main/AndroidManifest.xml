@@ -16,11 +16,15 @@
         android:theme="@style/Theme.TelaCadastro"
         tools:targetApi="31">
         <activity
-            android:name=".configuracoes"
+            android:name=".ui.theme.tela_favoritos"
+            android:exported="false"
+            android:label="@string/title_activity_tela_favoritos"
+            android:theme="@style/Theme.TelaCadastro" />
+        <activity
+            android:name=".ui.theme.ConfigurationsActivity"
             android:exported="false"
             android:label="@string/title_activity_configuracoes"
-            android:theme="@style/Theme.TelaCadastro" />
-        <!-- SplashActivity configurada como tela inicial -->
+            android:theme="@style/Theme.TelaCadastro" /> <!-- SplashActivity configurada como tela inicial -->
         <activity
             android:name=".ui.theme.SplashActivity"
             android:exported="true"
@@ -38,12 +42,12 @@
             android:label="@string/title_activity_tela_login"
             android:theme="@style/Theme.TelaCadastro" />
         <activity
-            android:name=".ui.theme.CadastroActivity"
+            android:name=".ui.theme.LoginCadastroActivity"
             android:exported="false"
             android:label="@string/title_activity_login_cadastro_inicial"
             android:theme="@style/Theme.TelaCadastro" />
         <activity
-            android:name=".ui.theme.MainActivity"
+            android:name=".ui.theme.CadastroActivity"
             android:exported="true"
             android:label="@string/QualABoaApp"
             android:theme="@style/Theme.TelaCadastro" />

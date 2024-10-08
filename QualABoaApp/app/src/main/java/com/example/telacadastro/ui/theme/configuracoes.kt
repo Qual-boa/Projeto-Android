@@ -34,7 +34,7 @@ val PoppinsFontFamily = FontFamily(
     Font(R.font.poppins_bold, FontWeight.Bold)
 )
 
-class MainActivity : ComponentActivity() {
+class ConfigurationsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -260,6 +260,6 @@ fun BottomMenu() {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun ProfilePreview() {
     ProfileScreen()
 }
