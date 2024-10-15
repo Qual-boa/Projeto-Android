@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.telacadastro.R
+import com.example.telacadastro.ui.components.NotificationCard  // Importando o NotificationCard
 
 class tela_favoritos : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,21 +51,37 @@ fun FavoriteScreen() {
                 .padding(16.dp)
         ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.Start, // Alinha à esquerda
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(modifier = Modifier.height(60.dp))
+                Spacer(modifier = Modifier.height(10.dp)) // Pequena margem superior, ajuste conforme necessário
 
                 Text(
                     text = "Favoritos",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
+                    fontSize = 24.sp,
                     color = Color.Black,
-                    modifier = Modifier.padding(bottom = 20.dp)
+                    modifier = Modifier.padding(bottom = 10.dp)
                 )
 
-                // Adicione o conteúdo da sua tela aqui (lista de favoritos, por exemplo)
-                Text(text = "Aqui estão seus itens favoritos.")
+                // Adicionando o NotificationCard
+                repeat(4) {
+                    NotificationCard(
+                        imageRes = R.mipmap.perfil,  // Substitua pelo recurso de imagem correto
+                        title = "Bar Favorito",
+                        description = "Comida, bebida e muita diversão",
+                        services = listOf("Wi-Fi", "Acessibilidade")
+                    )
+                    Spacer(modifier = Modifier.height(16.dp)) // Espaçamento entre os cards
+                }
+
+                // Centralizar o texto "Aqui estão seus itens favoritos."
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Aqui estão seus itens favoritos.")
+                }
             }
         }
 

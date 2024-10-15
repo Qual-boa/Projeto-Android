@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.telacadastro.R
+import com.example.telacadastro.ui.components.NotificationCard  // Importando o NotificationCard
 
 class tela_notificacao : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,24 +51,41 @@ fun NotificationScreen() {
                 .padding(16.dp)
         ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.Start, // Alinha à esquerda
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(modifier = Modifier.height(60.dp))
+                // Pequena margem superior ajustada
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = "Notificações",  // Mudança para "Notificações"
+                    text = "Notificações",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
+                    fontSize = 24.sp,
                     color = Color.Black,
-                    modifier = Modifier.padding(bottom = 20.dp)
+                    modifier = Modifier.padding(bottom = 10.dp)
                 )
 
-                // Adicione o conteúdo da sua tela aqui (lista de notificações, por exemplo)
-                Text(text = "Aqui estão suas notificações.")  // Mudança do texto para contexto de notificações
+                // Exibe o NotificationCard
+                NotificationCard(
+                    imageRes = R.mipmap.perfil,  // Substitua pelo recurso de imagem correto
+                    title = "Bar do Vini",
+                    description = "Comida, bebida e muita diversão",
+                    services = listOf("Estacionamento", "Acessibilidade", "TV", "Wi-Fi")
+                )
+
+                Spacer(modifier = Modifier.height(16.dp)) // Espaçamento após o card
+
+                // Centralizar o texto "Aqui estão suas notificações."
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Aqui estão suas notificações.")
+                }
             }
         }
 
+        // Menu inferior
         Box(
             modifier = Modifier
                 .fillMaxWidth()
