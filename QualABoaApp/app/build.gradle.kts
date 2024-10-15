@@ -42,6 +42,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -63,11 +68,15 @@ dependencies {
     implementation(libs.play.services.location)
     implementation("androidx.compose.material:material:1.0.0")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    implementation(platform("androidx.compose:compose-bom:2022.10.00"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

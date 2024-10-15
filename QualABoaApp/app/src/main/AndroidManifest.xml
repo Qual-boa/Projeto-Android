@@ -16,6 +16,16 @@
         android:theme="@style/Theme.TelaCadastro"
         tools:targetApi="31">
         <activity
+            android:name=".ui.theme.tela_notficacao"
+            android:exported="false"
+            android:label="@string/title_activity_tela_notficacao"
+            android:theme="@style/Theme.TelaCadastro" />
+        <activity
+            android:name=".ui.theme.ui.theme.tela_notificacao"
+            android:exported="false"
+            android:label="@string/title_activity_tela_notificacao"
+            android:theme="@style/Theme.TelaCadastro" />
+        <activity
             android:name=".ui.theme.tela_favoritos"
             android:exported="false"
             android:label="@string/title_activity_tela_favoritos"

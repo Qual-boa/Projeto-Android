@@ -5,4 +5,6 @@
     <string name="title_activity_splash_screen">splash_screen</string>
     <string name="title_activity_configuracoes">configuracoes</string>
     <string name="title_activity_tela_favoritos">tela_favoritos</string>
+    <string name="title_activity_tela_notificacao">tela_notificacao</string>
+    <string name="title_activity_tela_notficacao">tela_notficacao</string>
 </resources>
