@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TelaCadastro"
+rootProject.name = "QualABoaApp"
 include(":app")
  

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.telacadastro"
+    namespace = "com.example.qualaboaapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.telacadastro"
+        applicationId = "com.example.qualaboaapp"
         minSdk = 27
         targetSdk = 34
         versionCode = 1
