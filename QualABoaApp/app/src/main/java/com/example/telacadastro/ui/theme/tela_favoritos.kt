@@ -67,12 +67,16 @@ fun FavoriteScreen() {
                 // Adicionando o NotificationCard
                 repeat(4) {
                     NotificationCard(
-                        imageRes = R.mipmap.perfil,  // Substitua pelo recurso de imagem correto
-                        title = "Bar Favorito",
+                        imageRes = R.mipmap.perfil,
+                        title = "Bar do Vini",
                         description = "Comida, bebida e muita diversão",
-                        services = listOf("Wi-Fi", "Acessibilidade")
+                        services = listOf("Estacionamento", "Acessibilidade", "TV", "Wi-Fi"),
+                        isFavorite = true,
+                        onFavoriteClick = {
+                            println("Favorito clicado!")
+                        }
                     )
-                    Spacer(modifier = Modifier.height(16.dp)) // Espaçamento entre os cards
+                    Spacer(modifier = Modifier.height(0.dp)) // Espaçamento entre os cards
                 }
 
                 // Centralizar o texto "Aqui estão seus itens favoritos."

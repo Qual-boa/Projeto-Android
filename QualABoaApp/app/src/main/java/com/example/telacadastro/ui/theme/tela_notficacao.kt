@@ -14,20 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.telacadastro.R
-import com.example.telacadastro.ui.components.NotificationCard  // Importando o NotificationCard
+import com.example.telacadastro.ui.components.NotificationCard
 
 class tela_notificacao : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             TelaCadastroTheme {
-                NotificationScreen()  // Chamando a tela de notificação
+                NotificationScreen()
             }
         }
     }
@@ -38,9 +37,8 @@ fun NotificationScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFF5E1)) // Cor de fundo similar
+            .background(Color(0xFFFFF5E1))
     ) {
-        // Remover o offset para que a área branca vá até o fundo da tela
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -51,31 +49,27 @@ fun NotificationScreen() {
                 .padding(16.dp)
         ) {
             Column(
-                horizontalAlignment = Alignment.Start, // Alinha à esquerda
+                horizontalAlignment = Alignment.Start,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                // Pequena margem superior ajustada
                 Spacer(modifier = Modifier.height(10.dp))
-
                 Text(
                     text = "Notificações",
-                    fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
                     color = Color.Black,
                     modifier = Modifier.padding(bottom = 10.dp)
                 )
-
-                // Exibe o NotificationCard
                 NotificationCard(
-                    imageRes = R.mipmap.perfil,  // Substitua pelo recurso de imagem correto
+                    imageRes = R.mipmap.perfil,
                     title = "Bar do Vini",
                     description = "Comida, bebida e muita diversão",
-                    services = listOf("Estacionamento", "Acessibilidade", "TV", "Wi-Fi")
+                    services = listOf("Estacionamento", "Acessibilidade", "TV", "Wi-Fi"),
+                    isFavorite = true,
+                    onFavoriteClick = {
+                        println("Favorito clicado!")
+                    }
                 )
-
-                Spacer(modifier = Modifier.height(16.dp)) // Espaçamento após o card
-
-                // Centralizar o texto "Aqui estão suas notificações."
+                Spacer(modifier = Modifier.height(16.dp))
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
@@ -84,8 +78,6 @@ fun NotificationScreen() {
                 }
             }
         }
-
-        // Menu inferior
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -95,13 +87,13 @@ fun NotificationScreen() {
                 .background(Color(0xFFFFF1D5))
                 .zIndex(2f)
         ) {
-            NotificationBottomMenu()  // Função de menu da notificação
+            NotificationBottomMenu()
         }
     }
 }
 
 @Composable
-fun NotificationBottomMenu() {  // Renomeado para "NotificationBottomMenu"
+fun NotificationBottomMenu() {
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -116,7 +108,6 @@ fun NotificationBottomMenu() {  // Renomeado para "NotificationBottomMenu"
                 modifier = Modifier.size(30.dp)
             )
         }
-
         IconButton(onClick = { }) {
             Icon(
                 painter = painterResource(id = R.mipmap.not),
@@ -124,7 +115,6 @@ fun NotificationBottomMenu() {  // Renomeado para "NotificationBottomMenu"
                 modifier = Modifier.size(30.dp)
             )
         }
-
         Box(
             modifier = Modifier
                 .size(70.dp)
@@ -140,7 +130,6 @@ fun NotificationBottomMenu() {  // Renomeado para "NotificationBottomMenu"
                 )
             }
         }
-
         IconButton(onClick = { }) {
             Icon(
                 painter = painterResource(id = R.mipmap.fav),
@@ -148,7 +137,6 @@ fun NotificationBottomMenu() {  // Renomeado para "NotificationBottomMenu"
                 modifier = Modifier.size(30.dp)
             )
         }
-
         IconButton(onClick = { }) {
             Icon(
                 painter = painterResource(id = R.mipmap.user),
