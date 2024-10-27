@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
+import javax.net.ssl.SSLPeerUnverifiedException
+
 class CadastroViewModel : ViewModel() {
 
     private val cadastroApi: CadastroApi = RetrofitService.getCadastroApi()
@@ -18,20 +20,24 @@ class CadastroViewModel : ViewModel() {
     private val _erroCadastro = MutableLiveData<String?>()
     val erroCadastro: LiveData<String?> = _erroCadastro
 
-    fun cadastrarUsuario(email: String, name: String, password: String) {
-        val usuario = Usuario(email, name, password)  // roleEnum como "USER" e establishmentId como null
+    fun cadastrarUsuario(name: String, email: String, password: String) {
+        val usuario = Usuario(name, email, password)
         viewModelScope.launch {
             try {
                 val response = cadastroApi.cadastrarUsuario(usuario)
                 if (response.isSuccessful) {
                     _cadastroStatus.value = true
-                    _erroCadastro.value = null  // Limpa qualquer erro anterior
+                    _erroCadastro.value = null
                 } else {
                     _cadastroStatus.value = false
                     val errorBody = response.errorBody()?.string()
-                    _erroCadastro.value = errorBody // Define a mensagem de erro para exibir na UI
-                    Log.e("CadastroError", "Erro no cadastro: $errorBody")  // Loga o erro no console
+                    _erroCadastro.value = errorBody
+                    Log.e("CadastroError", "Erro no cadastro: $errorBody")
                 }
+            } catch (e: SSLPeerUnverifiedException) {
+                _cadastroStatus.value = false
+                _erroCadastro.value = "Erro SSL: Verificação de certificado falhou."
+                Log.e("CadastroError", "Erro SSL no cadastro", e)
             } catch (e: HttpException) {
                 _cadastroStatus.value = false
                 _erroCadastro.value = "Erro HTTP: ${e.message()}"

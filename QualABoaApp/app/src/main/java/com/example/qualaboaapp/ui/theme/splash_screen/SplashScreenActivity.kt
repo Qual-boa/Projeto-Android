@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qualaboaapp.R
-import com.example.qualaboaapp.ui.theme.pagina_inicial.LoginCadastroActivity
+import com.example.qualaboaapp.ui.theme.pagina_inicial.LoginCadastroInicialActivity
 
 class SplashActivity : ComponentActivity() {
 
@@ -41,7 +41,7 @@ class SplashActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, LoginCadastroActivity::class.java))
+            startActivity(Intent(this, LoginCadastroInicialActivity::class.java))
             finish()
         }, 3000)
 

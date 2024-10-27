@@ -2,6 +2,7 @@ package com.example.qualaboaapp.ui.theme.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -33,8 +34,10 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Observer
 import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.cadastro.CadastroActivity
+import com.example.qualaboaapp.ui.theme.home.HomeActivity
 import com.example.qualaboaapp.ui.theme.pagina_inicial.poppinsFamily
 import com.example.qualaboaapp.viewmodel.LoginViewModel
 
@@ -42,7 +45,7 @@ class LoginActivity : ComponentActivity() {
 
     private val loginViewModel: LoginViewModel by viewModels()
 
-    // Definindo a família de fontes Poppins
+    // Fonte Poppins configurada
     private val poppinsFamily = FontFamily(
         Font(R.font.poppins_medium, FontWeight.Medium),
         Font(R.font.poppins_bold, FontWeight.Bold),
@@ -68,6 +71,22 @@ class LoginActivity : ComponentActivity() {
                 }
             )
         }
+
+        // Observa o status de login e redireciona para a HomeActivity em caso de sucesso
+        loginViewModel.loginStatus.observe(this, Observer { isLoggedIn ->
+            if (isLoggedIn) {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        })
+
+        // Observa mensagens de erro e exibe com Toast
+        loginViewModel.erroLogin.observe(this, Observer { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 }
 
@@ -93,8 +112,7 @@ fun telaLogin(
             modifier = Modifier.fillMaxSize().size(300.dp)
         )
         Box(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             Box(
                 modifier = Modifier
@@ -131,7 +149,7 @@ fun telaLogin(
                             color = Color.Black,
                             fontSize = 36.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            fontFamily = FontFamily(Font(R.font.poppins_bold)),  // Usando a fonte Poppins
+                            fontFamily = FontFamily(Font(R.font.poppins_bold)),
                             textAlign = TextAlign.Center,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
@@ -209,7 +227,7 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
-                fontFamily = poppinsFamily
+                fontFamily = FontFamily(Font(R.font.poppins_bold))
             ),
             modifier = Modifier.padding(start = 8.dp, bottom = 4.dp)
         )
@@ -234,10 +252,10 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
                     .padding(4.dp)
             ) {
                 BasicTextField(
-                    value = text,  // Usa o valor diretamente do parâmetro `text`
-                    onValueChange = onTextChange,  // Chama o callback `onTextChange`
+                    value = text,
+                    onValueChange = onTextChange,
                     visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-                    textStyle = TextStyle(color = Color.Black, fontSize = 16.sp, fontFamily = poppinsFamily),
+                    textStyle = TextStyle(color = Color.Black, fontSize = 16.sp, fontFamily = FontFamily(Font(R.font.poppins_regular))),
                     cursorBrush = SolidColor(Color.Black),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -247,7 +265,6 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

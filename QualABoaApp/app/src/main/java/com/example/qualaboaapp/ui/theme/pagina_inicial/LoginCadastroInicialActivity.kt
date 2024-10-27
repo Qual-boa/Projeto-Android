@@ -42,7 +42,7 @@ val poppinsFamily = FontFamily(
     Font(R.font.poppins_blackitalic, FontWeight.Black, FontStyle.Italic),
 )
 
-class LoginCadastroActivity : ComponentActivity() {
+class LoginCadastroInicialActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
