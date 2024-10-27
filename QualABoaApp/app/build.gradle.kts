@@ -70,4 +70,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.palette:palette-ktx:1.0.0")
+    implementation ("com.google.accompanist:accompanist-pager:0.25.1")
+
 }
