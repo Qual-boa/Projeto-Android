@@ -1,4 +1,4 @@
-package com.example.telacadastro.ui.components
+package com.example.qualaboaapp.ui.theme.utils
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.telacadastro.R
+import com.example.qualaboaapp.R
+
 
 @Composable
 fun NotificationCard(

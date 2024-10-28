@@ -7,7 +7,6 @@
     <string name="password_label">Senha:</string>
     <string name="register_button">Cadastrar</string>
     <string name="login_button">Login</string>
-    <string name="user_icon_description">User Icon</string>
     <string name="title_activity_tela_login">Tela de Login</string>
     <string name="title_activity_login_cadastro_inicial">Login e Cadastro Inicial</string>
     <string name="title_activity_tela_configuracoes">Configurações</string>
@@ -22,7 +21,6 @@
     <string name="cadastrar_button">Cadastrar</string>
     <string name="perfil_title">Perfil</string>
     <string name="salvar_button">Salvar</string>
-    <string name="edit_icon_description">Edit Icon</string>
     <string name="home_icon_description">Home</string>
     <string name="notifications_icon_description">Notificações</string>
     <string name="search_icon_description">Pesquisa</string>
@@ -34,4 +32,21 @@
     <string name="email_invalido_erro">E-mail inválido</string>
     <string name="senha_curta_erro">Senha deve ter no mínimo 6 caracteres</string>
     <string name="corrigir_erros_antes_de_prosseguir">Corrija os erros antes de prosseguir</string>
+    <string name="perfil_titulo">Perfil</string>
+    <string name="logout_button">Sair</string>
+    <string name="perfil_atualizado_sucesso">Perfil atualizado com sucesso!</string>
+    <string name="deslogado_sucesso">Deslogado com sucesso!</string>
+    <string name="user_icon_description">Ícone do usuário</string>
+    <string name="edit_icon_description">Editar</string>
+    <string name="favoritos_title">Favoritos</string>
+    <string name="notification_card_title">Bar do Vini</string>
+    <string name="notification_card_description">Comida, bebida e muita diversão</string>
+    <string name="service_parking">Estacionamento</string>
+    <string name="service_accessibility">Acessibilidade</string>
+    <string name="service_tv">TV</string>
+    <string name="service_wifi">Wi-Fi</string>
+    <string name="favorites_empty_message">Aqui estão seus itens favoritos.</string>
+    <string name="notifications_title">Notificações</string>
+    <string name="notifications_empty_message">Aqui estão suas notificações.</string>
+
 </resources>

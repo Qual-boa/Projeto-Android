@@ -30,7 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.favoritos.FavoritosActivity
 import com.example.qualaboaapp.ui.theme.home.HomeActivity
+import com.example.qualaboaapp.ui.theme.notificacoes.NotificacaoActivity
+import com.example.qualaboaapp.ui.theme.notificacoes.NotificationScreen
 
 @Composable
 fun SearchAndLocationBar() {
@@ -221,6 +224,9 @@ fun BottomMenu() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .height(80.dp)
+            .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
+            .background(Color(0xFFFFF1D5))
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -238,7 +244,10 @@ fun BottomMenu() {
             )
         }
 
-        IconButton(onClick = { /* ação para notificações, se houver */ }) {
+        IconButton(onClick = {
+            context.startActivity(Intent(context, NotificacaoActivity::class.java))
+        }
+        ) {
             Icon(
                 painter = painterResource(id = R.mipmap.not),
                 contentDescription = "Notificações",
@@ -246,17 +255,28 @@ fun BottomMenu() {
             )
         }
 
-        IconButton(onClick = { /* ação para pesquisa, se houver */ }) {
-            Icon(
-                painter = painterResource(id = R.mipmap.search),
-                contentDescription = "Pesquisa",
-                modifier = Modifier
-                    .size(35.dp)
-                    .background(Color(0xFFA1530A), CircleShape)
-            )
+        // Ícone central destacado
+        Box(
+            modifier = Modifier
+                .size(70.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFA1530A)),
+            contentAlignment = Alignment.Center
+        ) {
+            IconButton(onClick = { /* ação para pesquisa, se houver */ }) {
+                Icon(
+                    painter = painterResource(id = R.mipmap.search),
+                    contentDescription = "Pesquisa",
+                    modifier = Modifier.size(35.dp),
+                    tint = Color.White
+                )
+            }
         }
 
-        IconButton(onClick = { /* ação para favoritos, se houver */ }) {
+        IconButton(onClick = {
+            context.startActivity(Intent(context, FavoritosActivity::class.java))
+        }
+        ) {
             Icon(
                 painter = painterResource(id = R.mipmap.fav),
                 contentDescription = "Favoritos",
@@ -278,7 +298,6 @@ fun BottomMenu() {
         }
     }
 }
-
 
 @Composable
 fun PopularFoodsSection() {

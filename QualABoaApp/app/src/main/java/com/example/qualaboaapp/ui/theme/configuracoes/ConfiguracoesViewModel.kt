@@ -69,4 +69,12 @@ class ConfiguracoesViewModel : ViewModel() {
             }
         }
     }
+
+    fun logout() {
+        // Limpa os dados de sessão do usuário
+        _nomeUsuario.value = ""
+        _emailUsuario.value = ""
+        _senhaUsuario.value = ""
+        _idUsuario = null
+    }
 }

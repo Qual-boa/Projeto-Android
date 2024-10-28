@@ -1,6 +1,7 @@
 package com.example.qualaboaapp.ui.theme
 
 import ConfiguracoesViewModel
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.pagina_inicial.LoginCadastroInicialActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -51,26 +53,18 @@ class ConfiguracoesActivity : ComponentActivity() {
             val context = LocalContext.current
             val coroutineScope = rememberCoroutineScope()
 
-            // Estados locais para os campos de entrada
             var nome by remember { mutableStateOf("") }
             var email by remember { mutableStateOf("") }
             var senha by remember { mutableStateOf("") }
 
-            // Observa as mudanças do ViewModel e atualiza os campos de entrada
             LaunchedEffect(Unit) {
-                configuracoesViewModel.nomeUsuario.collectLatest {
-                    nome = it
-                }
+                configuracoesViewModel.nomeUsuario.collectLatest { nome = it }
             }
             LaunchedEffect(Unit) {
-                configuracoesViewModel.emailUsuario.collectLatest {
-                    email = it
-                }
+                configuracoesViewModel.emailUsuario.collectLatest { email = it }
             }
             LaunchedEffect(Unit) {
-                configuracoesViewModel.senhaUsuario.collectLatest {
-                    senha = it
-                }
+                configuracoesViewModel.senhaUsuario.collectLatest { senha = it }
             }
 
             ProfileScreen(
@@ -83,13 +77,79 @@ class ConfiguracoesActivity : ComponentActivity() {
                 onSaveClick = {
                     coroutineScope.launch {
                         configuracoesViewModel.atualizarPerfil(nome, email, senha)
-                        Toast.makeText(context, "Perfil atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+                        val successMessage = context.getString(R.string.perfil_atualizado_sucesso)
+                        Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show()
                     }
+                },
+                onLogoutClick = {
+                    configuracoesViewModel.logout()
+                    val logoutMessage = context.getString(R.string.deslogado_sucesso)
+                    Toast.makeText(context, logoutMessage, Toast.LENGTH_SHORT).show()
+                    context.startActivity(Intent(context, LoginCadastroInicialActivity::class.java))
+                    finish()
                 }
             )
         }
     }
 }
+@Composable
+fun ProfileTextFieldWithShadow(
+    text: String,
+    isPassword: Boolean = false,
+    onValueChange: (String) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .offset(x = 4.dp, y = 4.dp)
+                .clip(RoundedCornerShape(30.dp))
+                .background(Color(0xFFBD5A0D))
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(30.dp))
+                .background(Color.White)
+                .padding(4.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BasicTextField(
+                    value = text,
+                    onValueChange = { onValueChange(it) },
+                    visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+                    textStyle = TextStyle(
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        fontFamily = FontFamily(
+                            Font(R.font.poppins_regular, FontWeight.Normal)
+                        )
+                    ),
+                    cursorBrush = SolidColor(Color.Black),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 12.dp)
+                        .weight(1f)
+                )
+
+                Icon(
+                    painter = painterResource(id = R.mipmap.edit),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 fun ProfileScreen(
@@ -99,13 +159,29 @@ fun ProfileScreen(
     onNomeChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onSenhaChange: (String) -> Unit,
-    onSaveClick: () -> Unit
+    onSaveClick: () -> Unit,
+    onLogoutClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFFFF5E1))
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            contentAlignment = Alignment.TopEnd
+        ) {
+            IconButton(onClick = { onLogoutClick() }) {
+                Icon(
+                    painter = painterResource(id = R.mipmap.sair),
+                    contentDescription = stringResource(R.string.logout_button),
+                    tint = Color.Black
+                )
+            }
+        }
+
         Image(
             painter = painterResource(id = R.mipmap.circulo),
             contentDescription = null,
@@ -144,7 +220,7 @@ fun ProfileScreen(
                 Spacer(modifier = Modifier.height(60.dp))
 
                 Text(
-                    text = stringResource(R.string.perfil_title),
+                    text = stringResource(R.string.perfil_titulo),
                     fontFamily = PoppinsFont,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
@@ -192,59 +268,6 @@ fun ProfileScreen(
     }
 }
 
-@Composable
-fun ProfileTextFieldWithShadow(text: String, isPassword: Boolean = false, onValueChange: (String) -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .offset(x = 4.dp, y = 4.dp)
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color(0xFFBD5A0D))
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color.White)
-                .padding(4.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BasicTextField(
-                    value = text,
-                    onValueChange = { onValueChange(it) },
-                    visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-                    textStyle = TextStyle(
-                        color = Color.Black,
-                        fontSize = 16.sp,
-                        fontFamily = PoppinsFont
-                    ),
-                    cursorBrush = SolidColor(Color.Black),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 12.dp)
-                        .weight(1f)
-                )
-
-                Icon(
-                    painter = painterResource(id = R.mipmap.edit),
-                    contentDescription = stringResource(R.string.edit_icon_description),
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        }
-    }
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun ProfilePreview() {
@@ -255,6 +278,7 @@ fun ProfilePreview() {
         onNomeChange = {},
         onEmailChange = {},
         onSenhaChange = {},
-        onSaveClick = {}
+        onSaveClick = {},
+        onLogoutClick = {}
     )
 }
