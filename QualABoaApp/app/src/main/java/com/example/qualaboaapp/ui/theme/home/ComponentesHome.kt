@@ -1,5 +1,6 @@
 package com.example.qualaboaapp.ui.theme
 
+import com.example.qualaboaapp.ui.theme.search.SearchActivity
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,7 +35,6 @@ import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.favoritos.FavoritosActivity
 import com.example.qualaboaapp.ui.theme.home.HomeActivity
 import com.example.qualaboaapp.ui.theme.notificacoes.NotificacaoActivity
-import com.example.qualaboaapp.ui.theme.notificacoes.NotificationScreen
 
 @Composable
 fun SearchAndLocationBar() {
@@ -68,7 +69,7 @@ fun SearchAndLocationBar() {
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Pesquisar", style = TextStyle(color = Color.Gray, fontSize = 14.sp), modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.pesquisar), style = TextStyle(color = Color.Gray, fontSize = 14.sp), modifier = Modifier.weight(1f))
             Icon(
                 painter = painterResource(id = R.mipmap.search),
                 contentDescription = "Search Icon",
@@ -81,7 +82,7 @@ fun SearchAndLocationBar() {
             AlertDialog(
                 onDismissRequest = { showDialog = false },
                 title = {
-                    Text(text = "Selecionar Localização")
+                    Text(text = stringResource(R.string.select_location))
                 },
                 text = {
                     Column {
@@ -112,8 +113,8 @@ fun CategorySection() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Categorias", fontSize = 16.sp, color = Color.Black)
-            Text(text = "Visualizar Todos", color = Color(0xFFA1530A), modifier = Modifier.padding(end = 8.dp))
+            Text(text = stringResource(R.string.categorias), fontSize = 16.sp, color = Color.Black)
+            Text(text = stringResource(R.string.visualize_all), color = Color(0xFFA1530A), modifier = Modifier.padding(end = 8.dp))
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -134,7 +135,10 @@ fun CategorySection() {
 fun CategoryItem(name: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(horizontal = 8.dp)) {
         Box(
-            modifier = Modifier.size(60.dp).clip(CircleShape).background(Color(0xFFFFF1D5)),
+            modifier = Modifier
+                .size(60.dp)
+                .clip(CircleShape)
+                .background(Color(0xFFFFF1D5)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -151,7 +155,7 @@ fun CategoryItem(name: String) {
 @Composable
 fun MostSearchedEstablishments() {
     Column {
-        Text("Estabelecimentos mais procurados", fontSize = 16.sp, modifier = Modifier.padding(8.dp))
+        Text(stringResource(R.string.estabelecimentos_mais_procurados), fontSize = 16.sp, modifier = Modifier.padding(8.dp))
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -169,9 +173,13 @@ fun MostSearchedEstablishments() {
 
 @Composable
 fun EstablishmentCarousel(name: String, images: List<Int>) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(220.dp).padding(8.dp)) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
+        .width(220.dp)
+        .padding(8.dp)) {
         LazyRow(
-            modifier = Modifier.height(150.dp).clip(RoundedCornerShape(16.dp)),
+            modifier = Modifier
+                .height(150.dp)
+                .clip(RoundedCornerShape(16.dp)),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
@@ -179,7 +187,9 @@ fun EstablishmentCarousel(name: String, images: List<Int>) {
                 Image(
                     painter = painterResource(id = imageRes),
                     contentDescription = "Imagem do $name",
-                    modifier = Modifier.width(220.dp).clip(RoundedCornerShape(16.dp))
+                    modifier = Modifier
+                        .width(220.dp)
+                        .clip(RoundedCornerShape(16.dp))
                 )
             }
         }
@@ -191,7 +201,7 @@ fun EstablishmentCarousel(name: String, images: List<Int>) {
 @Composable
 fun RecommendedEstablishments() {
     Column {
-        Text("Baseado nas suas buscas", fontSize = 16.sp, modifier = Modifier.padding(8.dp))
+        Text(stringResource(R.string.baseado_nas_suas_buscas), fontSize = 16.sp, modifier = Modifier.padding(8.dp))
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -206,11 +216,16 @@ fun RecommendedEstablishments() {
 
 @Composable
 fun EstablishmentCard(name: String, imageId: Int) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(140.dp).padding(8.dp)) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
+        .width(140.dp)
+        .padding(8.dp)) {
         Image(
             painter = painterResource(id = imageId),
             contentDescription = "Imagem de $name",
-            modifier = Modifier.height(80.dp).fillMaxWidth().clip(RoundedCornerShape(16.dp))
+            modifier = Modifier
+                .height(80.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = name, fontSize = 14.sp)
@@ -263,7 +278,9 @@ fun BottomMenu() {
                 .background(Color(0xFFA1530A)),
             contentAlignment = Alignment.Center
         ) {
-            IconButton(onClick = { /* ação para pesquisa, se houver */ }) {
+            IconButton(onClick = {
+                context.startActivity(Intent(context, SearchActivity::class.java))
+            }) {
                 Icon(
                     painter = painterResource(id = R.mipmap.search),
                     contentDescription = "Pesquisa",
@@ -303,7 +320,7 @@ fun BottomMenu() {
 fun PopularFoodsSection() {
     Column {
         Text(
-            text = "Comidas Populares",
+            text = stringResource(R.string.comidas_populares),
             fontFamily = PoppinsFontHome,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp

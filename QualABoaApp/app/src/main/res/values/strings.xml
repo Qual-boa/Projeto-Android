@@ -30,7 +30,7 @@
     <string name="cadastro_sucesso">Cadastro realizado com sucesso!</string>
     <string name="nome_vazio_erro">Nome não pode ser vazio</string>
     <string name="email_invalido_erro">E-mail inválido</string>
-    <string name="senha_curta_erro">Senha deve ter no mínimo 6 caracteres</string>
+    <string name="senha_curta_erro">Senha deve ter no mínimo 8 caracteres</string>
     <string name="corrigir_erros_antes_de_prosseguir">Corrija os erros antes de prosseguir</string>
     <string name="perfil_titulo">Perfil</string>
     <string name="logout_button">Sair</string>
@@ -48,5 +48,33 @@
     <string name="favorites_empty_message">Aqui estão seus itens favoritos.</string>
     <string name="notifications_title">Notificações</string>
     <string name="notifications_empty_message">Aqui estão suas notificações.</string>
+    <string name="imagem_de_capa">Imagem de Capa</string>
+    <string name="reviews">Avaliações</string>
+    <string name="location">Localização</string>
+    <string name="mapa">Mapa</string>
+    <string name="share_location">Compartilhar localização</string>
+    <string name="galeria">Galeria</string>
+    <string name="pesquisar">Pesquisar</string>
+    <string name="rock">Rock</string>
+    <string name="vinho">Vinho</string>
+    <string name="sertanejo">Sertanejo</string>
+    <string name="cerveja">Cerveja</string>
+    <string name="brasileira">Brasileira</string>
+    <string name="fast_food">Fast-Food</string>
+    <string name="caseira">Caseira</string>
+    <string name="ao_vivo">Ao-Vivo</string>
+    <string name="vegano">Vegano</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="favorites_loaded_message">Aqui estão seus itens favoritos.</string>
+    <string name="select_location">Selecionar Localização</string>
+    <string name="categorias">Categorias</string>
+    <string name="visualize_all">Visualizar Todos</string>
+    <string name="estabelecimentos_mais_procurados">Estabelecimentos mais procurados</string>
+    <string name="baseado_nas_suas_buscas">Baseado nas suas buscas</string>
+    <string name="comidas_populares">Comidas Populares</string>
+    <string name="current_location">Localização Atual: %1$s</string>
+    <string name="fechar">Fechar</string>
+    <string name="use_current_location">Usar Localização Atual</string>
+    <string name="qual_a_boa_de_hoje">Qual a boa de hoje?</string>
 
 </resources>

@@ -69,6 +69,18 @@
             android:theme="@style/Theme.TelaCadastro" />
 
         <activity
+            android:name=".ui.theme.search.SearchActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <activity
+            android:name=".ui.theme.establishment.EstablishmentActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <activity
             android:name=".ui.theme.notificacoes.NotificacaoActivity"
             android:exported="true"
             android:label="@string/QualABoaApp"
