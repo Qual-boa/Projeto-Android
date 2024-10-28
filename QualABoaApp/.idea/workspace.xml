@@ -17,7 +17,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="190c67a4-a569-420f-8e1d-bbaf11f4cc07" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/UsuarioResponse.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/UsuarioData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/CadastroActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/CadastroActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/CadastroApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/CadastroApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/CadastroViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/CadastroViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/Usuario.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/UsuarioRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/RetrofitService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/RetrofitService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/ComponentesHome.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/ComponentesHome.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/login/LoginActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/login/LoginActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +80,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "development",

@@ -6,5 +6,5 @@ import retrofit2.http.POST
 
 interface CadastroApi {
     @POST("users/register")
-    suspend fun cadastrarUsuario(@Body usuario: Usuario): Response<Map<String, Any>>
+    suspend fun cadastrarUsuario(@Body usuario: UsuarioRequest): Response<UsuarioResponse>
 }

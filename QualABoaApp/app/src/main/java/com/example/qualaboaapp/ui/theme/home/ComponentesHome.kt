@@ -1,5 +1,6 @@
 package com.example.qualaboaapp.ui.theme
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,12 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.home.HomeActivity
 
 @Composable
 fun SearchAndLocationBar() {
@@ -213,18 +216,69 @@ fun EstablishmentCard(name: String, imageId: Int) {
 
 @Composable
 fun BottomMenu() {
+    val context = LocalContext.current
+
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        IconButton(onClick = { }) { Icon(painter = painterResource(id = R.mipmap.home), contentDescription = "Home", modifier = Modifier.size(30.dp)) }
-        IconButton(onClick = { }) { Icon(painter = painterResource(id = R.mipmap.not), contentDescription = "Notificações", modifier = Modifier.size(30.dp)) }
-        IconButton(onClick = { }) { Icon(painter = painterResource(id = R.mipmap.search), contentDescription = "Pesquisa", modifier = Modifier.size(35.dp).background(Color(0xFFA1530A), CircleShape)) }
-        IconButton(onClick = { }) { Icon(painter = painterResource(id = R.mipmap.fav), contentDescription = "Favoritos", modifier = Modifier.size(30.dp)) }
-        IconButton(onClick = { }) { Icon(painter = painterResource(id = R.mipmap.user), contentDescription = "Perfil", modifier = Modifier.size(30.dp)) }
+        IconButton(
+            onClick = {
+                // Navega para HomeActivity
+                context.startActivity(Intent(context, HomeActivity::class.java))
+            }
+        ) {
+            Icon(
+                painter = painterResource(id = R.mipmap.home),
+                contentDescription = "Home",
+                modifier = Modifier.size(30.dp)
+            )
+        }
+
+        IconButton(onClick = { /* ação para notificações, se houver */ }) {
+            Icon(
+                painter = painterResource(id = R.mipmap.not),
+                contentDescription = "Notificações",
+                modifier = Modifier.size(30.dp)
+            )
+        }
+
+        IconButton(onClick = { /* ação para pesquisa, se houver */ }) {
+            Icon(
+                painter = painterResource(id = R.mipmap.search),
+                contentDescription = "Pesquisa",
+                modifier = Modifier
+                    .size(35.dp)
+                    .background(Color(0xFFA1530A), CircleShape)
+            )
+        }
+
+        IconButton(onClick = { /* ação para favoritos, se houver */ }) {
+            Icon(
+                painter = painterResource(id = R.mipmap.fav),
+                contentDescription = "Favoritos",
+                modifier = Modifier.size(30.dp)
+            )
+        }
+
+        IconButton(
+            onClick = {
+                // Navega para ConfiguracoesActivity
+                context.startActivity(Intent(context, ConfiguracoesActivity::class.java))
+            }
+        ) {
+            Icon(
+                painter = painterResource(id = R.mipmap.user),
+                contentDescription = "Perfil",
+                modifier = Modifier.size(30.dp)
+            )
+        }
     }
 }
+
 
 @Composable
 fun PopularFoodsSection() {

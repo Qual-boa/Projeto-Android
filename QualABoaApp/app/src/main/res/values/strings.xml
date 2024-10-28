@@ -28,6 +28,10 @@
     <string name="search_icon_description">Pesquisa</string>
     <string name="favorites_icon_description">Favoritos</string>
     <string name="profile_icon_description">Perfil</string>
-    <string name="cadastro_sucesso">Cadastro realizado com sucesso</string>
     <string name="cadastro_erro">Cadastro não realizado. Tente novamente</string>
+    <string name="cadastro_sucesso">Cadastro realizado com sucesso!</string>
+    <string name="nome_vazio_erro">Nome não pode ser vazio</string>
+    <string name="email_invalido_erro">E-mail inválido</string>
+    <string name="senha_curta_erro">Senha deve ter no mínimo 6 caracteres</string>
+    <string name="corrigir_erros_antes_de_prosseguir">Corrija os erros antes de prosseguir</string>
 </resources>

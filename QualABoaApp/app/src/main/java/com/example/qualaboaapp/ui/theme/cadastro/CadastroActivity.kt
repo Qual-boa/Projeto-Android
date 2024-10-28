@@ -11,7 +11,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -19,23 +18,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.qualaboaapp.R
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Observer
+import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.login.InputFieldWithShadow
 
 class CadastroActivity : ComponentActivity() {
@@ -51,11 +48,6 @@ class CadastroActivity : ComponentActivity() {
         Font(R.font.poppins_blackitalic, FontWeight.Black, FontStyle.Italic),
     )
 
-    private val montserratFamily = FontFamily(
-        Font(R.font.montserrat, FontWeight.Bold),
-        Font(R.font.montserrat, FontWeight.ExtraBold)
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -66,16 +58,14 @@ class CadastroActivity : ComponentActivity() {
             // Observa o status do cadastro para exibir mensagens conforme o resultado
             cadastroViewModel.cadastroStatus.observe(this, Observer { isSuccess ->
                 if (isSuccess) {
-                    // Exibe mensagem de sucesso e redireciona para a tela de login
                     Toast.makeText(
                         this,
                         getString(R.string.cadastro_sucesso),
                         Toast.LENGTH_LONG
                     ).show()
                     startActivity(Intent(this, LoginActivity::class.java))
-                    finish() // Fecha a tela de cadastro
+                    finish()
                 } else {
-                    // Exibe mensagem de erro
                     Toast.makeText(
                         this,
                         getString(R.string.cadastro_erro),
@@ -84,7 +74,6 @@ class CadastroActivity : ComponentActivity() {
                 }
             })
 
-            // Tela de cadastro
             RegistrationScreen(
                 nome = nomeState,
                 email = emailState,
@@ -109,7 +98,18 @@ class CadastroActivity : ComponentActivity() {
         onSenhaChange: (String) -> Unit,
         onCadastrarClick: () -> Unit
     ) {
-        // Mantém o design original da tela de cadastro
+        val context = LocalContext.current // Obtenha o contexto no escopo composable
+
+        // Obtenha as strings de erro antecipadamente
+        val nomeVazioErro = context.getString(R.string.nome_vazio_erro)
+        val emailInvalidoErro = context.getString(R.string.email_invalido_erro)
+        val senhaCurtaErro = context.getString(R.string.senha_curta_erro)
+        val corrigirErrosMensagem = context.getString(R.string.corrigir_erros_antes_de_prosseguir)
+
+        var nomeError by remember { mutableStateOf<String?>(null) }
+        var emailError by remember { mutableStateOf<String?>(null) }
+        var senhaError by remember { mutableStateOf<String?>(null) }
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -121,114 +121,106 @@ class CadastroActivity : ComponentActivity() {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize().size(300.dp)
             )
-            Box(
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(16.dp)
             ) {
+                Spacer(modifier = Modifier.height(150.dp))
+
                 Box(
                     modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .offset(y = 60.dp)
-                        .size(120.dp)
+                        .fillMaxWidth(0.9f)
+                        .clip(RoundedCornerShape(30.dp))
+                        .background(Color(0xFFFFF3E0))
+                        .padding(24.dp)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.mipmap.icon),
-                        contentDescription = "User Icon",
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Top,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp)
-                ) {
-                    Spacer(modifier = Modifier.height(150.dp))
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.9f)
-                            .clip(RoundedCornerShape(30.dp))
-                            .background(Color(0xFFFFF3E0))
-                            .padding(24.dp)
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Top
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Top
+                        Text(
+                            text = stringResource(R.string.cadastro_titulo),
+                            color = Color.Black,
+                            fontSize = 36.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            fontFamily = poppinsFamily,
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        InputFieldWithShadow(
+                            label = stringResource(R.string.nome_label),
+                            text = nome,
+                            onTextChange = {
+                                onNomeChange(it)
+                                nomeError = if (it.isBlank()) nomeVazioErro else null
+                            }
+                        )
+                        if (nomeError != null) {
+                            Text(nomeError!!, color = Color.Red, fontSize = 12.sp)
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        InputFieldWithShadow(
+                            label = stringResource(R.string.email_label),
+                            text = email,
+                            onTextChange = {
+                                onEmailChange(it)
+                                emailError = if (!android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()) {
+                                    emailInvalidoErro
+                                } else null
+                            }
+                        )
+                        if (emailError != null) {
+                            Text(emailError!!, color = Color.Red, fontSize = 12.sp)
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        InputFieldWithShadow(
+                            label = stringResource(R.string.password_label),
+                            text = senha,
+                            isPassword = true,
+                            onTextChange = {
+                                onSenhaChange(it)
+                                senhaError = if (it.length < 8) senhaCurtaErro else null
+                            }
+                        )
+                        if (senhaError != null) {
+                            Text(senhaError!!, color = Color.Red, fontSize = 12.sp)
+                        }
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Button(
+                            onClick = {
+                                if (nomeError == null && emailError == null && senhaError == null) {
+                                    onCadastrarClick()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        corrigirErrosMensagem,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                                .clip(RoundedCornerShape(50.dp)),
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFBD5A0D)
+                            )
                         ) {
                             Text(
-                                text = stringResource(R.string.cadastro_titulo),
+                                text = stringResource(R.string.cadastrar_button),
                                 color = Color.Black,
-                                fontSize = 36.sp,
-                                fontWeight = FontWeight.ExtraBold,
                                 fontFamily = poppinsFamily,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                                fontSize = 15.2.sp,
+                                fontWeight = FontWeight.Bold
                             )
-
-                            Spacer(modifier = Modifier.height(24.dp))
-
-                            InputFieldWithShadow(label = stringResource(R.string.nome_label), text = nome, onTextChange = onNomeChange)
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            InputFieldWithShadow(label = stringResource(R.string.email_label), text = email, onTextChange = onEmailChange)
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            InputFieldWithShadow(label = stringResource(R.string.password_label), text = senha, isPassword = true, onTextChange = onSenhaChange)
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            Spacer(modifier = Modifier.height(24.dp))
-
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(50.dp)
-                            ) {
-                                Button(
-                                    onClick = {
-                                        val intent = Intent(this@CadastroActivity, LoginActivity::class.java)
-                                        startActivity(intent)
-                                    },
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(end = 8.dp)
-                                        .fillMaxHeight()
-                                        .clip(RoundedCornerShape(50.dp)),
-                                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                                        containerColor = Color(0xFFFFC107)
-                                    )
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.entrar_button),
-                                        color = Color.Black,
-                                        fontFamily = poppinsFamily,
-                                        fontSize = 15.2.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
-
-                                Button(
-                                    onClick = { onCadastrarClick() },
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(start = 8.dp)
-                                        .fillMaxHeight()
-                                        .clip(RoundedCornerShape(50.dp)),
-                                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                                        containerColor = Color(0xFFBD5A0D)
-                                    )
-                                ) {
-                                    Text(
-                                        text = stringResource(R.string.cadastrar_button),
-                                        color = Color.Black,
-                                        fontFamily = poppinsFamily,
-                                        fontSize = 15.2.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
-                            }
                         }
                     }
                 }

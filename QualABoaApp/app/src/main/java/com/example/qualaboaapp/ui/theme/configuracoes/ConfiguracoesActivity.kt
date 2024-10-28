@@ -1,12 +1,15 @@
 package com.example.qualaboaapp.ui.theme
 
+import ConfiguracoesViewModel
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
@@ -16,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -29,7 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.qualaboaapp.R
-import com.example.qualaboaapp.ui.theme.configuracoes.ConfiguracoesViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 val PoppinsFont = FontFamily(
     Font(R.font.poppins_regular, FontWeight.Normal),
@@ -43,9 +48,30 @@ class ConfiguracoesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var nome by remember { mutableStateOf("Matheus") }
-            var email by remember { mutableStateOf("matheus@email.com") }
-            var senha by remember { mutableStateOf("*******") }
+            val context = LocalContext.current
+            val coroutineScope = rememberCoroutineScope()
+
+            // Estados locais para os campos de entrada
+            var nome by remember { mutableStateOf("") }
+            var email by remember { mutableStateOf("") }
+            var senha by remember { mutableStateOf("") }
+
+            // Observa as mudanças do ViewModel e atualiza os campos de entrada
+            LaunchedEffect(Unit) {
+                configuracoesViewModel.nomeUsuario.collectLatest {
+                    nome = it
+                }
+            }
+            LaunchedEffect(Unit) {
+                configuracoesViewModel.emailUsuario.collectLatest {
+                    email = it
+                }
+            }
+            LaunchedEffect(Unit) {
+                configuracoesViewModel.senhaUsuario.collectLatest {
+                    senha = it
+                }
+            }
 
             ProfileScreen(
                 nome = nome,
@@ -55,7 +81,10 @@ class ConfiguracoesActivity : ComponentActivity() {
                 onEmailChange = { email = it },
                 onSenhaChange = { senha = it },
                 onSaveClick = {
-                    configuracoesViewModel.atualizarPerfil(nome, email, senha)
+                    coroutineScope.launch {
+                        configuracoesViewModel.atualizarPerfil(nome, email, senha)
+                        Toast.makeText(context, "Perfil atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+                    }
                 }
             )
         }
@@ -214,6 +243,7 @@ fun ProfileTextFieldWithShadow(text: String, isPassword: Boolean = false, onValu
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

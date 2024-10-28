@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-
 import javax.net.ssl.SSLPeerUnverifiedException
 
 class CadastroViewModel : ViewModel() {
@@ -21,7 +20,7 @@ class CadastroViewModel : ViewModel() {
     val erroCadastro: LiveData<String?> = _erroCadastro
 
     fun cadastrarUsuario(name: String, email: String, password: String) {
-        val usuario = Usuario(name, email, password)
+        val usuario = UsuarioRequest(name, email, password)
         viewModelScope.launch {
             try {
                 val response = cadastroApi.cadastrarUsuario(usuario)
@@ -31,7 +30,7 @@ class CadastroViewModel : ViewModel() {
                 } else {
                     _cadastroStatus.value = false
                     val errorBody = response.errorBody()?.string()
-                    _erroCadastro.value = errorBody
+                    _erroCadastro.value = errorBody ?: "Erro desconhecido"
                     Log.e("CadastroError", "Erro no cadastro: $errorBody")
                 }
             } catch (e: SSLPeerUnverifiedException) {
