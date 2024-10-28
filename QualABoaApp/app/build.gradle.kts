@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.telacadastro"
+    namespace = "com.example.qualaboaapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.telacadastro"
+        applicationId = "com.example.qualaboaapp"
         minSdk = 27
         targetSdk = 34
         versionCode = 1
@@ -63,6 +63,17 @@ dependencies {
     implementation(libs.play.services.location)
     implementation("androidx.compose.material:material:1.0.0")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation ("com.google.accompanist:accompanist-pager:0.20.2")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.20.2")
+    implementation ("com.google.android.libraries.places:places:2.5.0")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
+    implementation ("com.google.android.gms:play-services-maps:18.0.2")
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.google.android.libraries.places:places:2.5.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
