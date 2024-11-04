@@ -62,6 +62,30 @@
             android:label="@string/QualABoaApp"
             android:theme="@style/Theme.TelaCadastro" />
 
+        <activity
+            android:name=".ui.theme.favoritos.FavoritosActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <activity
+            android:name=".ui.theme.search.SearchActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <activity
+            android:name=".ui.theme.establishment.EstablishmentActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <activity
+            android:name=".ui.theme.notificacoes.NotificacaoActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCQfgO1dFZMoY3WCPUSnkcVnGSiPGbWa44" />

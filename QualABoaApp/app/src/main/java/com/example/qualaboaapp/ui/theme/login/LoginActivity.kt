@@ -45,7 +45,6 @@ class LoginActivity : ComponentActivity() {
 
     private val loginViewModel: LoginViewModel by viewModels()
 
-    // Fonte Poppins configurada
     private val poppinsFamily = FontFamily(
         Font(R.font.poppins_medium, FontWeight.Medium),
         Font(R.font.poppins_bold, FontWeight.Bold),
@@ -119,13 +118,7 @@ fun telaLogin(
                     .align(Alignment.TopCenter)
                     .offset(y = 120.dp)
                     .size(120.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = R.mipmap.icon),
-                    contentDescription = stringResource(R.string.user_icon_description),
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
+            )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -168,28 +161,6 @@ fun telaLogin(
                                 .fillMaxWidth()
                                 .height(50.dp)
                         ) {
-                            Button(
-                                onClick = {
-                                    val intentCad = Intent(context, CadastroActivity::class.java)
-                                    context.startActivity(intentCad)
-                                },
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = 8.dp)
-                                    .fillMaxHeight()
-                                    .clip(RoundedCornerShape(50.dp)),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFFFC107)
-                                )
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.register_button),
-                                    color = Color.Black,
-                                    fontFamily = poppinsFamily,
-                                    fontSize = 15.2.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
 
                             Button(
                                 onClick = { onLoginClick() },
