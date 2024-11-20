@@ -19,6 +19,13 @@
         android:theme="@style/Theme.TelaCadastro"
         tools:targetApi="31">
 
+        <!-- MainActivity -->
+        <activity
+            android:name=".ui.theme.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TelaCadastro">
+        </activity>
+
         <activity
             android:name=".ui.theme.splash_screen.SplashActivity"
             android:exported="true"
@@ -32,19 +39,19 @@
 
         <activity
             android:name=".ui.theme.ConfiguracoesActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_tela_configuracoes"
             android:theme="@style/Theme.TelaCadastro" />
 
         <activity
             android:name=".ui.theme.login.LoginActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_tela_login"
             android:theme="@style/Theme.TelaCadastro" />
 
         <activity
             android:name=".ui.theme.pagina_inicial.LoginCadastroInicialActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_login_cadastro_inicial"
             android:theme="@style/Theme.TelaCadastro" />
 

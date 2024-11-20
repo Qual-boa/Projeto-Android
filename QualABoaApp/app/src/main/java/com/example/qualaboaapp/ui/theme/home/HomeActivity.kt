@@ -1,6 +1,7 @@
 package com.example.qualaboaapp.ui.theme.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -19,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,8 +33,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.*
+import com.example.qualaboaapp.ui.theme.favoritos.FavoritosActivity
+import com.example.qualaboaapp.ui.theme.notificacoes.NotificacaoActivity
+import com.example.qualaboaapp.ui.theme.search.SearchActivity
 import com.google.android.gms.location.*
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -42,14 +50,15 @@ class HomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                MainScreen()
+                HomeScreen()
             }
         }
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun HomeScreen() {
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)) {
@@ -78,7 +87,6 @@ fun MainScreen() {
                 .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
                 .background(Color(0xFFFFF1D5))
         ) {
-            BottomMenu()
         }
     }
 }
@@ -223,6 +231,6 @@ fun getCurrentAddress(
 @Composable
 fun MainScreenPreview() {
     MaterialTheme {
-        MainScreen()
+        HomeScreen()
     }
 }

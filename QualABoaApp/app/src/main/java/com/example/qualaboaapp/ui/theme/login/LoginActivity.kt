@@ -36,7 +36,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Observer
 import com.example.qualaboaapp.R
-import com.example.qualaboaapp.ui.theme.cadastro.CadastroActivity
 import com.example.qualaboaapp.ui.theme.home.HomeActivity
 import com.example.qualaboaapp.ui.theme.pagina_inicial.poppinsFamily
 import com.example.qualaboaapp.viewmodel.LoginViewModel

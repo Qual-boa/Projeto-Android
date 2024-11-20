@@ -67,7 +67,6 @@ fun SearchScreen() {
                 .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
                 .background(Color(0xFFFFF1D5))
         ) {
-            BottomMenu()
         }
     }
 }

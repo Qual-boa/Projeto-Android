@@ -144,8 +144,6 @@ fun EstablishmentScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Bottom Menu
-        BottomMenu()
     }
 }
 

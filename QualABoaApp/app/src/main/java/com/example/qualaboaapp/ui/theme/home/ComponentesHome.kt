@@ -31,6 +31,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.favoritos.FavoritosActivity
 import com.example.qualaboaapp.ui.theme.home.HomeActivity
@@ -233,9 +234,7 @@ fun EstablishmentCard(name: String, imageId: Int) {
 }
 
 @Composable
-fun BottomMenu() {
-    val context = LocalContext.current
-
+fun BottomMenu(navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -248,8 +247,7 @@ fun BottomMenu() {
     ) {
         IconButton(
             onClick = {
-                // Navega para HomeActivity
-                context.startActivity(Intent(context, HomeActivity::class.java))
+                navController.navigate("home") // Navega para HomeScreen
             }
         ) {
             Icon(
@@ -260,9 +258,8 @@ fun BottomMenu() {
         }
 
         IconButton(onClick = {
-            context.startActivity(Intent(context, NotificacaoActivity::class.java))
-        }
-        ) {
+            navController.navigate("notificacoes") // Navega para NotificacoesScreen
+        }) {
             Icon(
                 painter = painterResource(id = R.mipmap.not),
                 contentDescription = "Notificações",
@@ -279,7 +276,7 @@ fun BottomMenu() {
             contentAlignment = Alignment.Center
         ) {
             IconButton(onClick = {
-                context.startActivity(Intent(context, SearchActivity::class.java))
+                navController.navigate("pesquisa") // Navega para PesquisaScreen
             }) {
                 Icon(
                     painter = painterResource(id = R.mipmap.search),
@@ -291,9 +288,8 @@ fun BottomMenu() {
         }
 
         IconButton(onClick = {
-            context.startActivity(Intent(context, FavoritosActivity::class.java))
-        }
-        ) {
+            navController.navigate("favoritos") // Navega para FavoritosScreen
+        }) {
             Icon(
                 painter = painterResource(id = R.mipmap.fav),
                 contentDescription = "Favoritos",
@@ -303,8 +299,7 @@ fun BottomMenu() {
 
         IconButton(
             onClick = {
-                // Navega para ConfiguracoesActivity
-                context.startActivity(Intent(context, ConfiguracoesActivity::class.java))
+                navController.navigate("perfil") // Navega para PerfilScreen
             }
         ) {
             Icon(
@@ -315,6 +310,7 @@ fun BottomMenu() {
         }
     }
 }
+
 
 @Composable
 fun PopularFoodsSection() {

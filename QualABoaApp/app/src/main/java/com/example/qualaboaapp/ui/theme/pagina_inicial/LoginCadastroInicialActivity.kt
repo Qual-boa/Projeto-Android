@@ -3,6 +3,7 @@ package com.example.qualaboaapp.ui.theme.pagina_inicial
 import com.example.qualaboaapp.ui.theme.login.LoginActivity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -30,8 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.MainActivity
 import com.example.qualaboaapp.ui.theme.cadastro.CadastroActivity
-import com.example.qualaboaapp.ui.theme.home.HomeActivity
 
 val poppinsFamily = FontFamily(
     Font(R.font.poppins_medium, FontWeight.Medium),
@@ -48,15 +49,15 @@ class LoginCadastroInicialActivity : ComponentActivity() {
         setContent {
             QualABoaScreen(
                 onCadastroClick = {
-                    val intent = Intent(this, CadastroActivity::class.java)
+                    val intent = Intent(this@LoginCadastroInicialActivity, CadastroActivity::class.java)
                     startActivity(intent)
                 },
                 onLoginClick = {
-                    val intent = Intent(this, LoginActivity::class.java)
+                    val intent = Intent(this@LoginCadastroInicialActivity, LoginActivity::class.java)
                     startActivity(intent)
                 },
                 onEntrarSemLogarClick = {
-                    val intent = Intent(this, HomeActivity::class.java)
+                    val intent = Intent(this@LoginCadastroInicialActivity, MainActivity::class.java)
                     startActivity(intent)
                 }
             )
@@ -78,7 +79,9 @@ fun QualABoaScreen(
             painter = painterResource(id = R.mipmap.backgroundd),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize().size(300.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .size(300.dp)
         )
 
         Column(
@@ -100,7 +103,10 @@ fun QualABoaScreen(
                 ButtonWithIcon(
                     text = stringResource(R.string.cadastro_button),
                     iconRes = R.mipmap.botao1,
-                    onClick = onCadastroClick
+                    onClick = {
+                        Log.d("ButtonClick", "Cadastro button clicked")
+                        onCadastroClick()
+                    }
                 )
 
                 ButtonWithIcon(

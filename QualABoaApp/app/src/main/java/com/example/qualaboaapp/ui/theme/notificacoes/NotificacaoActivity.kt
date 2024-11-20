@@ -82,8 +82,6 @@ fun NotificationScreen() {
                 }
             }
         }
-
-        // Reutiliza o BottomMenu
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -93,7 +91,6 @@ fun NotificationScreen() {
                 .background(Color(0xFFFFF1D5))
                 .zIndex(2f)
         ) {
-            BottomMenu()  // Chamando o BottomMenu reutilizável
         }
     }
 }
