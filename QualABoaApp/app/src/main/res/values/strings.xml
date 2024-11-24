@@ -1,7 +1,7 @@
 <resources>
     <!-- Text for the login screen -->
-    <string name="app_name">QualABoaApp</string>
-    <string name="QualABoaApp">QualABoaApp</string>
+    <string name="app_name">Qual A Boa?</string>
+    <string name="QualABoaApp">QualABoa?</string>
     <string name="login_heading">LOGIN</string>
     <string name="email_label">E-mail:</string>
     <string name="password_label">Senha:</string>
@@ -68,13 +68,15 @@
     <string name="favorites_loaded_message">Aqui estão seus itens favoritos.</string>
     <string name="select_location">Selecionar Localização</string>
     <string name="categorias">Categorias</string>
-    <string name="visualize_all">Visualizar Todos</string>
-    <string name="estabelecimentos_mais_procurados">Estabelecimentos mais procurados</string>
-    <string name="baseado_nas_suas_buscas">Baseado nas suas buscas</string>
-    <string name="comidas_populares">Comidas Populares</string>
+    <string name="visualize_all">Visualizar Todas</string>
+    <string name="estabelecimentos_mais_bem_avaliados">Top 5 Estabelecimentos</string>
+    <string name="baseado_nas_melhores_categorias">Baseado Nas Melhores Categorias</string>
+    <string name="categorias_populares">Categorias Populares</string>
     <string name="current_location">Localização Atual: %1$s</string>
     <string name="fechar">Fechar</string>
     <string name="use_current_location">Usar Localização Atual</string>
     <string name="qual_a_boa_de_hoje">Qual a boa de hoje?</string>
+    <string name="aceite_termos_para_continuar">Aceite os Termos Para Continuar\n</string>
+    <string name="termos_condicoes">Termos E Condições\n</string>
 
 </resources>

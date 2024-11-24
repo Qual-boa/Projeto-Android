@@ -47,6 +47,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 dependencies {
@@ -74,6 +75,7 @@ dependencies {
     implementation ("com.google.android.gms:play-services-maps:18.0.2")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("com.google.android.libraries.places:places:2.5.0")
+    implementation(libs.androidx.espresso.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -83,5 +85,16 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation ("com.google.accompanist:accompanist-pager:0.25.1")
+    implementation("io.coil-kt:coil-compose:2.0.0")
+    implementation("io.insert-koin:koin-android:4.0.0")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("androidx.datastore:datastore-core:1.0.0")
+    // Koin Core
+    implementation ("io.insert-koin:koin-core:3.4.0")
+// Koin Android
+    implementation ("io.insert-koin:koin-android:3.4.0")
+// Koin for Jetpack Compose
+    implementation ("io.insert-koin:koin-androidx-compose:3.4.0")
+
 
 }
