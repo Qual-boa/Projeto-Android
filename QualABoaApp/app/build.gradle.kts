@@ -83,5 +83,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation ("com.google.accompanist:accompanist-pager:0.25.1")
+    implementation ("com.google.maps.android:maps-compose:2.11.1")
+    implementation ("com.google.android.gms:play-services-maps:18.1.0")
+
 
 }

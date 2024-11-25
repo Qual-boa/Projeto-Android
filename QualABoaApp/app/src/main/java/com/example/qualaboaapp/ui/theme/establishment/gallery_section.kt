@@ -43,4 +43,5 @@ fun GallerySection() {
             contentScale = ContentScale.Crop
         )
     }
+    Spacer(modifier = Modifier.height(80.dp))
 }

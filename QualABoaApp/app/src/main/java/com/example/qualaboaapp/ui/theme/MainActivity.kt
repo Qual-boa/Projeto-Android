@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.qualaboaapp.ui.theme.establishment.EstablishmentScreen
 import com.example.qualaboaapp.ui.theme.favoritos.FavoriteScreen
 import com.example.qualaboaapp.ui.theme.home.HomeScreen
 import com.example.qualaboaapp.ui.theme.notificacoes.NotificationScreen
@@ -37,8 +38,9 @@ fun MainScreen() {
         ) {
             composable("home") { HomeScreen() }
             composable("notificacoes") { NotificationScreen() }
-            composable("pesquisa") { SearchScreen() }
+            composable("pesquisa") { SearchScreen(navController = navController) }
             composable("favoritos") { FavoriteScreen() }
+            composable("estabelecimento") { EstablishmentScreen() }
 //            composable("perfil") { ProfileScreen() }
         }
     }

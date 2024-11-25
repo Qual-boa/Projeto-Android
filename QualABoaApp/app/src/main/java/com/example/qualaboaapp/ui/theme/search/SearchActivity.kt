@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.BottomMenu
 import com.example.qualaboaapp.ui.theme.PoppinsFont
@@ -25,13 +27,13 @@ class SearchActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SearchScreen()
+            SearchScreen(navController = rememberNavController())
         }
     }
 }
 
 @Composable
-fun SearchScreen() {
+fun SearchScreen(navController : NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,7 +58,7 @@ fun SearchScreen() {
             Spacer(modifier = Modifier.height(16.dp))
 
             // LazyVerticalGrid para renderizar as categorias
-            CategoriasGrid()
+            CategoriasGrid(navController)
         }
         Spacer(modifier = Modifier.height(16.dp))
         Box(
@@ -74,5 +76,5 @@ fun SearchScreen() {
 @Preview(showBackground = true)
 @Composable
 fun SearchPreview() {
-    SearchScreen()
+    SearchScreen(navController = rememberNavController())
 }
