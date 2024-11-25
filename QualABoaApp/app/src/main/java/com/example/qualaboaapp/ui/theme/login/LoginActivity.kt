@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.PoppinsFont
 import com.example.qualaboaapp.ui.theme.home.HomeActivity
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -86,31 +87,88 @@ fun LoginScreen(
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
-        InputFieldWithShadow(
-            label = "Email",
-            text = email,
-            onTextChange = onEmailChange
+        // Imagem de fundo
+        Image(
+            painter = painterResource(id = R.mipmap.backgroundd),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        InputFieldWithShadow(
-            label = "Senha",
-            text = password,
-            isPassword = true,
-            onTextChange = onPasswordChange
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = onLoginClick) {
-            Text("Login")
+
+        // Conteúdo principal
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color(0xFFFFF3E0))
+                    .padding(24.dp)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.login_heading), // Adicione no `strings.xml`
+                        fontFamily = PoppinsFont,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        color = Color.Black
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    InputFieldWithShadow(
+                        label = stringResource(id = R.string.email_label),
+                        text = email,
+                        onTextChange = onEmailChange
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    InputFieldWithShadow(
+                        label = stringResource(id = R.string.password_label),
+                        text = password,
+                        isPassword = true,
+                        onTextChange = onPasswordChange
+                    )
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Button(
+                        onClick = onLoginClick,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp)
+                            .clip(RoundedCornerShape(12.dp)),
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFBD5A0D)
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.login_button), // Adicione no `strings.xml`
+                            fontFamily = PoppinsFont,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
         }
     }
 }
+
 
 
 @Composable

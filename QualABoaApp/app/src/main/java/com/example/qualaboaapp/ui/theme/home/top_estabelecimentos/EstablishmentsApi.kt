@@ -11,7 +11,7 @@ interface EstablishmentsApi {
     companion object {
         fun create(): EstablishmentsApi {
             return Retrofit.Builder()
-                .baseUrl("http://44.206.188.183:8080/api/ms-auth/")
+                .baseUrl("https://ec2-107-23-82-242.compute-1.amazonaws.com/api/ms-auth/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(EstablishmentsApi::class.java)

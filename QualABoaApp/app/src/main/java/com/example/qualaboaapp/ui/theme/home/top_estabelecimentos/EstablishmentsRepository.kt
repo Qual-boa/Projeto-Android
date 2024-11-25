@@ -8,7 +8,15 @@ class EstablishmentsRepository(
         return establishmentsApi.getEstablishments()
     }
 
-    suspend fun fetchEstablishmentPhotos(establishmentId: String): List<String> {
-        return photoApi.getEstablishmentPhotos(establishmentId)
+    suspend fun fetchEstablishmentPhotos(establishmentId: String): List<EstablishmentPhoto> {
+        return photoApi.getEstablishmentPhotos(establishmentId).map { photo ->
+            EstablishmentPhoto(
+                id = photo.id,
+                establishmentId = photo.establishmentId,
+                establishmentCategory = photo.establishmentCategory,
+                imgUrl = photo.imgUrl,
+                originalFilename = photo.originalFilename
+            )
+        }
     }
 }

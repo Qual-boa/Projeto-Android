@@ -16,21 +16,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.qualaboaapp.ui.theme.BottomMenu
 import com.example.qualaboaapp.ui.theme.CategoryItem
-import com.example.qualaboaapp.ui.theme.EstablishmentCard
 import com.example.qualaboaapp.ui.theme.Greeting
-import com.example.qualaboaapp.ui.theme.PoppinsFont
-import com.example.qualaboaapp.ui.theme.TopEstablishmentsScreen
+import com.example.qualaboaapp.ui.theme.PopularCategoryItem
+import com.example.qualaboaapp.ui.theme.TopEstablishmentsCarousel
 import com.example.qualaboaapp.ui.theme.home.categorias.CategoriesViewModel
-import com.example.qualaboaapp.ui.theme.home.categorias.categoriesModule
 import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentsViewModel
-import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.establishmentsModule
-import com.example.qualaboaapp.ui.theme.login.loginModule
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.GlobalContext.startKoin
 
 class HomeActivity : ComponentActivity() {
 
@@ -60,7 +56,6 @@ fun HomeScreen(
 ) {
     val categories by categoriesViewModel.categories.collectAsState(initial = emptyList())
     val popularCategories by categoriesViewModel.popularCategories.collectAsState(initial = emptyList())
-    val topEstablishments by establishmentsViewModel.topEstablishments.collectAsState()
 
     Box(
         modifier = Modifier
@@ -70,79 +65,58 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 80.dp), // Space for the BottomMenu
+                .padding(bottom = 80.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
-            // Greeting
+            // Saudação
             item {
                 Greeting()
             }
 
-            // Categories Section
+            // Categorias
             item {
                 Text(
                     text = "Categorias",
-                    fontFamily = PoppinsFont,
-                    color = Color.Black,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
 
             item {
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(100.dp)
-                ) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(categories) { category ->
                         CategoryItem(name = category.name)
                     }
                 }
             }
 
-            // Establishments Section
+            // Carrossel de Estabelecimentos
             item {
-                Text(
-                    text = "Top 5 Melhores Estabelecimentos",
-                    fontFamily = PoppinsFont,
-                    color = Color.Black,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
-                )
+                TopEstablishmentsCarousel(viewModel = establishmentsViewModel)
             }
 
-            // List of Establishments
-            items(topEstablishments) { establishment ->
-                val photos = establishmentsViewModel.establishmentPhotos.collectAsState().value[establishment.id] ?: emptyList()
-                EstablishmentCard(establishment = establishment, photos = photos)
-            }
-
-            // Popular Categories Section (below Establishments)
+            // Categorias Populares
             item {
                 Text(
                     text = "Categorias Populares",
-                    fontFamily = PoppinsFont,
-                    color = Color.Black,
-                    modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
 
             item {
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(100.dp)
-                ) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(popularCategories) { category ->
-                        CategoryItem(name = category.name)
+                        PopularCategoryItem(name = category.name)
                     }
                 }
             }
         }
 
-        // Bottom Menu
+        // Menu Inferior
         BottomMenu(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
