@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -29,9 +30,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.cadastro.CadastroActivity
 import com.example.qualaboaapp.ui.theme.home.HomeActivity
+import com.example.qualaboaapp.ui.theme.utils.UserPreferences
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 val poppinsFamily = FontFamily(
     Font(R.font.poppins_medium, FontWeight.Medium),
@@ -43,26 +48,42 @@ val poppinsFamily = FontFamily(
 )
 
 class LoginCadastroInicialActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            QualABoaScreen(
-                onCadastroClick = {
-                    val intent = Intent(this, CadastroActivity::class.java)
-                    startActivity(intent)
-                },
-                onLoginClick = {
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                },
-                onEntrarSemLogarClick = {
-                    val intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
+
+        // Verificar estado de login
+        lifecycleScope.launch {
+            val userPreferences = UserPreferences(applicationContext)
+            val isLoggedIn = userPreferences.isLoggedIn.first()
+
+            if (isLoggedIn) {
+                // Redirecionar para HomeActivity se logado
+                startActivity(Intent(this@LoginCadastroInicialActivity, HomeActivity::class.java))
+                finish()
+            } else {
+                // Exibe a tela de login/cadastro
+                setContent {
+                    QualABoaScreen(
+                        onCadastroClick = {
+                            val intent = Intent(this@LoginCadastroInicialActivity, CadastroActivity::class.java)
+                            startActivity(intent)
+                        },
+                        onLoginClick = {
+                            val intent = Intent(this@LoginCadastroInicialActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                        },
+                        onEntrarSemLogarClick = {
+                            val intent = Intent(this@LoginCadastroInicialActivity, HomeActivity::class.java)
+                            startActivity(intent)
+                        }
+                    )
                 }
-            )
+            }
         }
     }
 }
+
 
 @Composable
 fun QualABoaScreen(
@@ -104,24 +125,32 @@ fun QualABoaScreen(
                 )
 
                 ButtonWithIcon(
-                    text = stringResource(R.string.login_button),
+                    text = stringResource(R.string.login_heading),
                     iconRes = R.mipmap.boato2,
                     onClick = onLoginClick
                 )
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(
-                text = stringResource(R.string.entrar_sem_logar),
-                color = Color.Black,
-                fontFamily = poppinsFamily,
-                fontSize = 16.sp,
-                modifier = Modifier.clickable { onEntrarSemLogarClick() }
-            )
         }
+
+        // Texto "Entrar sem logar" posicionado no final da tela
+        Text(
+            text = stringResource(R.string.entrar_sem_logar),
+            color = Color.Black,
+            fontFamily = poppinsFamily,
+            fontSize = 16.sp,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 24.dp) // Espaço inferior
+                .clickable { onEntrarSemLogarClick() }
+                .background(
+                    color = Color(0xFFFFFFFF), // Fundo branco
+                    shape = RoundedCornerShape(50.dp)
+                )
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        )
     }
 }
+
 
 @Composable
 fun ButtonWithIcon(text: String, iconRes: Int, onClick: () -> Unit) {

@@ -1,5 +1,6 @@
 package com.example.qualaboaapp.ui.theme.search
 
+import PoppinsFont
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +16,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qualaboaapp.R
-import com.example.qualaboaapp.ui.theme.PoppinsFont
 
 @Composable
 fun PesquisaBar() {

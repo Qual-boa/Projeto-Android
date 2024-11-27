@@ -8,5 +8,5 @@ val establishmentsModule = module {
     single { RetrofitService.provideEstablishmentsApi(androidContext()) } // API de Estabelecimentos
     single { RetrofitService.providePhotoApi(androidContext()) } // API de Fotos
     single { EstablishmentsRepository(get(), get()) } // Repositório
-    viewModel { EstablishmentsViewModel(get()) } // ViewModel
+    viewModel { EstablishmentsViewModel(get(), get())  } // ViewModel
 }

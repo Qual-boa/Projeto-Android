@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.OkHttpClient
 
 object RetrofitService {
-    private const val BASE_URL = "http://44.206.188.183:8080/api/ms-auth/"
+    private const val BASE_URL = "https://ec2-34-235-31-164.compute-1.amazonaws.com/api/ms-auth/"
 
     // Utilize o OkHttpClient inseguro
     private val client: OkHttpClient = NetworkUtils.getUnsafeOkHttpClient()

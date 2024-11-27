@@ -1,15 +1,17 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.qualaboaapp.ui.theme.configuracoes.RetrofitService
 import com.example.qualaboaapp.ui.theme.configuracoes.UsuarioData
+import com.example.qualaboaapp.ui.theme.utils.UserPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class ConfiguracoesViewModel : ViewModel() {
-
-    private val configuracoesApi: ConfiguracoesApi = RetrofitService.getConfigurationsApi()
+class ConfiguracoesViewModel(
+    private val userPreferences: UserPreferences,
+    private val configuracoesApi: ConfiguracoesApi
+) : ViewModel() {
 
     private val _nomeUsuario = MutableStateFlow("")
     val nomeUsuario: StateFlow<String> = _nomeUsuario
@@ -20,7 +22,7 @@ class ConfiguracoesViewModel : ViewModel() {
     private val _senhaUsuario = MutableStateFlow("")
     val senhaUsuario: StateFlow<String> = _senhaUsuario
 
-    private var _idUsuario: String? = null // Armazena o ID do usuário para uso posterior
+    private var _idUsuario: String? = null
 
     init {
         carregarDadosUsuario()
@@ -31,50 +33,54 @@ class ConfiguracoesViewModel : ViewModel() {
             try {
                 val response = configuracoesApi.getDadosUsuario()
                 if (response.isSuccessful) {
-                    response.body()?.let { dados: UsuarioData ->
+                    response.body()?.let { dados ->
                         _idUsuario = dados.id
                         _nomeUsuario.value = dados.name
                         _emailUsuario.value = dados.email
-                        _senhaUsuario.value = dados.password
+                        _senhaUsuario.value = "" // Senha não deve ser exibida por questões de segurança
                     }
-                } else {
-                    // Tratar erro ao carregar dados do usuário
                 }
-            } catch (e: HttpException) {
-                // Tratar erro de requisição
             } catch (e: Exception) {
-                // Tratar outros tipos de erro
+                e.printStackTrace()
             }
         }
     }
 
     fun atualizarPerfil(name: String, email: String, password: String) {
-        val id = _idUsuario ?: return // Verifica se o ID do usuário foi carregado
-
+        val id = _idUsuario ?: return
         viewModelScope.launch {
             try {
-                val perfilRequest = UsuarioData(id = id, name = name, email = email, password = password)
-                val response = configuracoesApi.atualizarPerfil(id, perfilRequest)
+                val request = UsuarioData(id = id, name = name, email = email, password = password)
+                val response = configuracoesApi.atualizarPerfil(id, request)
                 if (response.isSuccessful) {
                     _nomeUsuario.value = name
                     _emailUsuario.value = email
-                    _senhaUsuario.value = password
-                } else {
-                    // Tratar erro ao atualizar perfil
                 }
-            } catch (e: HttpException) {
-                // Tratar erro de requisição
             } catch (e: Exception) {
-                // Tratar outros tipos de erro
+                e.printStackTrace()
             }
         }
     }
 
+    fun atualizarNome(novoNome: String) {
+        _nomeUsuario.value = novoNome
+    }
+
+    fun atualizarEmail(novoEmail: String) {
+        _emailUsuario.value = novoEmail
+    }
+
+    fun atualizarSenha(novaSenha: String) {
+        _senhaUsuario.value = novaSenha
+    }
+
     fun logout() {
-        // Limpa os dados de sessão do usuário
-        _nomeUsuario.value = ""
-        _emailUsuario.value = ""
-        _senhaUsuario.value = ""
-        _idUsuario = null
+        viewModelScope.launch {
+            userPreferences.clearUserInfo()
+            _nomeUsuario.value = ""
+            _emailUsuario.value = ""
+            _senhaUsuario.value = ""
+            _idUsuario = null
+        }
     }
 }
