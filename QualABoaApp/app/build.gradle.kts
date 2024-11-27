@@ -85,6 +85,15 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-pager:0.25.1")
     implementation ("com.google.maps.android:maps-compose:2.11.1")
     implementation ("com.google.android.gms:play-services-maps:18.1.0")
-
+    implementation("io.coil-kt:coil-compose:2.0.0")
+    implementation("io.insert-koin:koin-android:4.0.0")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("androidx.datastore:datastore-core:1.0.0")
+    // Koin Core
+    implementation ("io.insert-koin:koin-core:3.4.0")
+    // Koin Android
+    implementation ("io.insert-koin:koin-android:3.4.0")
+    // Koin for Jetpack Compose
+    implementation ("io.insert-koin:koin-androidx-compose:3.4.0")
 
 }

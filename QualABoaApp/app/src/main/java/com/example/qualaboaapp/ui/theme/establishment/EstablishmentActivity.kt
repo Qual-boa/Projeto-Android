@@ -24,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qualaboaapp.R
-import com.example.qualaboaapp.ui.theme.BottomMenu
 
 class EstablishmentActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

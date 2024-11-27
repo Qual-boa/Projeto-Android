@@ -1,326 +1,329 @@
-package com.example.qualaboaapp.ui.theme
+    package com.example.qualaboaapp.ui.theme.home
 
-import com.example.qualaboaapp.ui.theme.search.SearchActivity
-import android.content.Intent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.example.qualaboaapp.R
-import com.example.qualaboaapp.ui.theme.favoritos.FavoritosActivity
-import com.example.qualaboaapp.ui.theme.home.HomeActivity
-import com.example.qualaboaapp.ui.theme.notificacoes.NotificacaoActivity
+    import android.annotation.SuppressLint
+    import androidx.compose.foundation.Image
+    import androidx.compose.foundation.background
+    import androidx.compose.foundation.layout.*
+    import androidx.compose.ui.Alignment
+    import androidx.compose.foundation.lazy.LazyRow
+    import androidx.compose.foundation.lazy.items
+    import androidx.compose.foundation.shape.CircleShape
+    import androidx.compose.foundation.shape.RoundedCornerShape
+    import androidx.compose.material3.Icon
+    import androidx.compose.material3.IconButton
+    import androidx.compose.material3.Text
+    import androidx.compose.runtime.Composable
+    import androidx.compose.runtime.collectAsState
+    import androidx.compose.runtime.getValue
+    import androidx.compose.ui.Modifier
+    import androidx.compose.ui.draw.clip
+    import androidx.compose.ui.graphics.Color
+    import androidx.compose.ui.layout.ContentScale
+    import androidx.compose.ui.platform.LocalContext
+    import androidx.compose.ui.res.painterResource
+    import androidx.compose.ui.text.font.FontWeight
+    import androidx.compose.ui.text.style.TextOverflow
+    import androidx.compose.ui.unit.dp
+    import androidx.compose.ui.unit.sp
+    import androidx.navigation.NavController
+    import coil.compose.rememberAsyncImagePainter
+    import com.example.qualaboaapp.R
+    import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.Establishment
+    import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
+    import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentsViewModel
+    import com.example.qualaboaapp.ui.theme.utils.UserPreferences
+    import org.koin.androidx.compose.get
 
-@Composable
-fun SearchAndLocationBar() {
-    var showDialog by remember { mutableStateOf(false) } // Controla a visibilidade do modal
+    @Composable
+    fun Greeting() {
+        val userPreferences: UserPreferences = get() // Inject UserPreferences
+        val isLoggedIn by userPreferences.isLoggedIn.collectAsState(initial = false)
+        val userName by userPreferences.userName.collectAsState(initial = null)
 
-    Column {
-        Row(
+        Text(
+            text = if (isLoggedIn && !userName.isNullOrBlank()) "Olá, $userName!" else "Olá!",
+            color = Color(0xFFA1530A),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+
+    fun getCategoryImage(name: String): Int {
+        return when (name) {
+            "Rock" -> R.mipmap.rock
+            "Sertanejo" -> R.mipmap.sertanejo
+            "Indie" -> R.mipmap.indie
+            "Rap" -> R.mipmap.rap
+            "Funk" -> R.mipmap.funk
+            "Metal" -> R.mipmap.padrao
+            "Brasileira" -> R.mipmap.brasileira
+            "Japonesa" -> R.mipmap.japonesa
+            "Mexicana" -> R.mipmap.mexicano
+            "Churrasco" -> R.mipmap.churrasco
+            "Hamburguer" -> R.mipmap.hamburguer
+            "Cerveja" -> R.mipmap.cerveja
+            "Vinho" -> R.mipmap.vinho
+            "Chopp" -> R.mipmap.chopp
+            "Whisky" -> R.mipmap.whisky
+            "Gim" -> R.mipmap.gin
+            "Caipirinha" -> R.mipmap.caipirinha
+            "Boteco" -> R.mipmap.boteco
+            else -> R.mipmap.padrao
+        }
+    }
+
+    fun getCategoryBackgroundColor(name: String): Color {
+        return when (name) {
+            "Rock" -> Color(0xFFFFE4C4) // Pastel orange
+            "Sertanejo" -> Color(0xFFD8BFD8) // Pastel purple
+            "Indie" -> Color(0xFFB0E0E6) // Pastel blue
+            "Rap" -> Color(0xFF98FB98) // Pastel green
+            "Funk" -> Color(0xFFFFDAB9) // Pastel peach
+            "Metal" -> Color(0xFFFAFAD2) // Pastel yellow
+            "Brasileira" -> Color(0xFFE6E6FA) // Pastel lavender
+            "Japonesa" -> Color(0xFFF0E68C) // Pastel khaki
+            "Mexicana" -> Color(0xFFFFB6C1) // Pastel pink
+            "Churrasco" -> Color(0xFFB0C4DE) // Pastel light steel blue
+            "Hamburguer" -> Color(0xFFFFC0CB) // Pastel pink
+            "Cerveja" -> Color(0xFFFFF8DC) // Pastel cream
+            "Vinho" -> Color(0xFFEED5D2) // Pastel rose
+            "Chopp" -> Color(0xFFF5DEB3) // Pastel wheat
+            "Whisky" -> Color(0xFFD2B48C) // Pastel tan
+            "Gim" -> Color(0xFFF4A460) // Pastel sand
+            "Caipirinha" -> Color(0xFFADD8E6) // Pastel light blue
+            "Boteco" -> Color(0xFF87CEFA) // Pastel sky blue
+            else -> Color(0xFFF5F5F5) // Default pastel gray
+        }
+    }
+
+
+    @Composable
+    fun CategoryItem(name: String) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(8.dp)
+        ) {
+            // Colored box with the image
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(getCategoryBackgroundColor(name)),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = getCategoryImage(name)),
+                    contentDescription = name,
+                    modifier = Modifier.size(40.dp)
+                )
+            }
+
+            // Name outside the box
+            Text(
+                text = name,
+                fontSize = 12.sp,
+                color = Color.Black,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
+    }
+
+    @Composable
+    fun TopEstablishmentsCarousel(viewModel: EstablishmentsViewModel) {
+        val topEstablishments by viewModel.topEstablishments.collectAsState()
+        val establishmentPhotos by viewModel.establishmentPhotos.collectAsState()
+
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { showDialog = true }, // Mostra o modal ao clicar
-            verticalAlignment = Alignment.CenterVertically
+                .padding(16.dp)
         ) {
             Text(
-                text = "São Paulo, Vila Madalena",
-                fontSize = 20.sp,
-                color = Color.Black
+                text = "Top 5 Melhores Estabelecimentos",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(
-                painter = painterResource(id = R.mipmap.location_icon),
-                contentDescription = "Localização",
-                modifier = Modifier.size(24.dp)
-            )
-        }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFFF5F5F5), shape = RoundedCornerShape(30.dp))
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(stringResource(R.string.pesquisar), style = TextStyle(color = Color.Gray, fontSize = 14.sp), modifier = Modifier.weight(1f))
-            Icon(
-                painter = painterResource(id = R.mipmap.search),
-                contentDescription = "Search Icon",
-                modifier = Modifier.size(24.dp)
-            )
-        }
-
-        // Modal para seleção de localização
-        if (showDialog) {
-            AlertDialog(
-                onDismissRequest = { showDialog = false },
-                title = {
-                    Text(text = stringResource(R.string.select_location))
-                },
-                text = {
-                    Column {
-                        Text("São Paulo, Vila Madalena")
-                        Text("Rio de Janeiro, Copacabana")
-                        Text("Curitiba, Centro")
-                        // Adicione outras opções de localização, se desejar
-                    }
-                },
-                confirmButton = {
-                    Button(
-                        onClick = { showDialog = false }
-                    ) {
-                        Text("Fechar")
-                    }
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(topEstablishments) { establishment ->
+                    val photos = establishmentPhotos[establishment.id] ?: emptyList()
+                    EstablishmentCarouselItem(establishment = establishment, photos = photos)
                 }
-            )
-        }
-    }
-}
-
-
-@Composable
-fun CategorySection() {
-    Column {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = stringResource(R.string.categorias), fontSize = 16.sp, color = Color.Black)
-            Text(text = stringResource(R.string.visualize_all), color = Color(0xFFA1530A), modifier = Modifier.padding(end = 8.dp))
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
-            items(listOf("Rock", "Vinho", "Vegano", "Boteco", "Caseiro", "Cerveja")) { category ->
-                CategoryItem(category)
             }
         }
     }
-}
 
-@Composable
-fun CategoryItem(name: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(horizontal = 8.dp)) {
-        Box(
+    @Composable
+    fun EstablishmentCarouselItem(establishment: Establishment, photos: List<EstablishmentPhoto>) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .size(60.dp)
-                .clip(CircleShape)
-                .background(Color(0xFFFFF1D5)),
-            contentAlignment = Alignment.Center
+                .width(200.dp)
+                .padding(8.dp)
         ) {
-            Icon(
-                painter = painterResource(id = R.mipmap.home),
-                contentDescription = name,
-                modifier = Modifier.size(30.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(text = name, fontSize = 12.sp)
-    }
-}
-
-@Composable
-fun MostSearchedEstablishments() {
-    Column {
-        Text(stringResource(R.string.estabelecimentos_mais_procurados), fontSize = 16.sp, modifier = Modifier.padding(8.dp))
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
-            item {
-                EstablishmentCarousel(name = "Beer4U", images = listOf(R.mipmap.cervejas_beer, R.mipmap.espaco_beer))
-            }
-            item {
-                EstablishmentCarousel(name = "Bar do Dudu", images = listOf(R.mipmap.cervejas_beer, R.mipmap.espaco_beer))
-            }
-        }
-    }
-}
-
-@Composable
-fun EstablishmentCarousel(name: String, images: List<Int>) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
-        .width(220.dp)
-        .padding(8.dp)) {
-        LazyRow(
-            modifier = Modifier
-                .height(150.dp)
-                .clip(RoundedCornerShape(16.dp)),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
-            items(images) { imageRes ->
+            if (photos.isNotEmpty()) {
                 Image(
-                    painter = painterResource(id = imageRes),
-                    contentDescription = "Imagem do $name",
+                    painter = rememberAsyncImagePainter(photos.first().imgUrl),
+                    contentDescription = "Foto do estabelecimento ${establishment.fantasyName}",
                     modifier = Modifier
-                        .width(220.dp)
-                        .clip(RoundedCornerShape(16.dp))
+                        .fillMaxWidth()
+                        .height(120.dp)
+                        .clip(RoundedCornerShape(10.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(120.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color.LightGray),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Sem imagem", color = Color.Gray)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = establishment.fantasyName,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(horizontal = 4.dp)
+            )
+        }
+    }
+
+
+    @Composable
+    fun PopularCategoryItem(name: String) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(8.dp)
+        ) {
+            // Circular box with the image
+            Box(
+                modifier = Modifier
+                    .size(60.dp) // Size of the circular box
+                    .clip(CircleShape) // Circular shape
+                    .background(getCategoryBackgroundColor(name)), // Background color
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = getCategoryImage(name)),
+                    contentDescription = name,
+                    modifier = Modifier.size(40.dp) // Size of the image
                 )
             }
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = name, fontWeight = FontWeight.Bold)
-    }
-}
 
-@Composable
-fun RecommendedEstablishments() {
-    Column {
-        Text(stringResource(R.string.baseado_nas_suas_buscas), fontSize = 16.sp, modifier = Modifier.padding(8.dp))
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
-            items(3) {
-                EstablishmentCard(name = "Bar do Samuca", imageId = R.mipmap.bardosamuca)
-            }
+            // Name below the circular box
+            Text(
+                text = name,
+                fontSize = 12.sp,
+                color = Color.Black,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = 4.dp)
+            )
         }
     }
-}
 
-@Composable
-fun EstablishmentCard(name: String, imageId: Int) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
-        .width(140.dp)
-        .padding(8.dp)) {
-        Image(
-            painter = painterResource(id = imageId),
-            contentDescription = "Imagem de $name",
-            modifier = Modifier
-                .height(80.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = name, fontSize = 14.sp)
-    }
-}
 
-@Composable
-fun BottomMenu(navController: NavController) {
-    Row(
-        modifier = Modifier
+    @SuppressLint("SuspiciousIndentation")
+    @Composable
+    fun BottomMenu(navController: NavController) {
+        val context = LocalContext.current
+        val modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
-            .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-            .background(Color(0xFFFFF1D5))
-            .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        IconButton(
-            onClick = {
-                navController.navigate("home") // Navega para HomeScreen
-            }
+        Row(
+            modifier = modifier
+                .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
+                .background(Color(0xFFFFF1D5))
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Icon(
-                painter = painterResource(id = R.mipmap.home),
-                contentDescription = "Home",
-                modifier = Modifier.size(30.dp)
-            )
-        }
-
-        IconButton(onClick = {
-            navController.navigate("notificacoes") // Navega para NotificacoesScreen
-        }) {
-            Icon(
-                painter = painterResource(id = R.mipmap.not),
-                contentDescription = "Notificações",
-                modifier = Modifier.size(30.dp)
-            )
-        }
-
-        // Ícone central destacado
-        Box(
-            modifier = Modifier
-                .size(70.dp)
-                .clip(CircleShape)
-                .background(Color(0xFFA1530A)),
-            contentAlignment = Alignment.Center
-        ) {
-            IconButton(onClick = {
-                navController.navigate("pesquisa") // Navega para PesquisaScreen
-            }) {
+            IconButton(
+                onClick = {
+                    navController.navigate("home")
+                }
+            ) {
                 Icon(
-                    painter = painterResource(id = R.mipmap.search),
-                    contentDescription = "Pesquisa",
-                    modifier = Modifier.size(35.dp),
-                    tint = Color.White
+                    painter = painterResource(id = R.mipmap.home),
+                    contentDescription = "Home",
+                    modifier = Modifier.size(30.dp)
+                )
+            }
+
+            IconButton(
+                onClick = {
+                    navController.navigate("notificacoes")
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.mipmap.not),
+                    contentDescription = "Notificações",
+                    modifier = Modifier.size(30.dp)
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .size(70.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFA1530A)),
+                contentAlignment = Alignment.Center
+            ) {
+                IconButton(
+                    onClick = {
+                        navController.navigate("pesquisa")
+                    }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.mipmap.search),
+                        contentDescription = "Pesquisa",
+                        modifier = Modifier.size(35.dp),
+                        tint = Color.White
+                    )
+                }
+            }
+
+            IconButton(
+                onClick = {
+                    navController.navigate("favoritos")
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.mipmap.fav),
+                    contentDescription = "Favoritos",
+                    modifier = Modifier.size(30.dp)
+                )
+            }
+
+            IconButton(
+                onClick = {
+                    navController.navigate("perfil")
+                }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.mipmap.user),
+                    contentDescription = "Perfil",
+                    modifier = Modifier.size(30.dp)
                 )
             }
         }
-
-        IconButton(onClick = {
-            navController.navigate("favoritos") // Navega para FavoritosScreen
-        }) {
-            Icon(
-                painter = painterResource(id = R.mipmap.fav),
-                contentDescription = "Favoritos",
-                modifier = Modifier.size(30.dp)
-            )
-        }
-
-        IconButton(
-            onClick = {
-                navController.navigate("perfil") // Navega para PerfilScreen
-            }
-        ) {
-            Icon(
-                painter = painterResource(id = R.mipmap.user),
-                contentDescription = "Perfil",
-                modifier = Modifier.size(30.dp)
-            )
-        }
     }
-}
 
-
-@Composable
-fun PopularFoodsSection() {
-    Column {
-        Text(
-            text = stringResource(R.string.comidas_populares),
-            fontFamily = PoppinsFontHome,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
-        )
-    }
-}
 

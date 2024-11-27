@@ -34,159 +34,142 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.Observer
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.PoppinsFont
 import com.example.qualaboaapp.ui.theme.home.HomeActivity
-import com.example.qualaboaapp.ui.theme.pagina_inicial.poppinsFamily
-import com.example.qualaboaapp.viewmodel.LoginViewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.GlobalContext.startKoin
 
 class LoginActivity : ComponentActivity() {
 
-    private val loginViewModel: LoginViewModel by viewModels()
-
-    private val poppinsFamily = FontFamily(
-        Font(R.font.poppins_medium, FontWeight.Medium),
-        Font(R.font.poppins_bold, FontWeight.Bold),
-        Font(R.font.poppins_regular, FontWeight.Normal),
-        Font(R.font.poppins_black, FontWeight.Black),
-        Font(R.font.poppins_extrabold, FontWeight.ExtraBold),
-        Font(R.font.poppins_blackitalic, FontWeight.Black, androidx.compose.ui.text.font.FontStyle.Italic)
-    )
+    private val loginViewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            var emailState by remember { mutableStateOf("") }
-            var senhaState by remember { mutableStateOf("") }
 
-            telaLogin(
-                email = emailState,
-                senha = senhaState,
-                onEmailChange = { emailState = it },
-                onSenhaChange = { senhaState = it },
-                onLoginClick = {
-                    loginViewModel.login(emailState, senhaState)
+        setContent {
+            var email by remember { mutableStateOf("") }
+            var password by remember { mutableStateOf("") }
+
+            val loginStatus by loginViewModel.loginStatus.collectAsState(initial = null)
+            val loginError by loginViewModel.loginError.collectAsState(initial = null)
+
+            // Handle login state
+            LaunchedEffect(loginStatus) {
+                loginStatus?.let { isLoggedIn ->
+                    if (isLoggedIn) {
+                        Toast.makeText(this@LoginActivity, "Login bem-sucedido", Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+                        finish()
+                    } else if (loginError != null) {
+                        Toast.makeText(this@LoginActivity, loginError, Toast.LENGTH_LONG).show()
+                    }
                 }
+            }
+
+            LoginScreen(
+                email = email,
+                password = password,
+                onEmailChange = { email = it },
+                onPasswordChange = { password = it },
+                onLoginClick = { loginViewModel.login(email, password) }
             )
         }
-
-        // Observa o status de login e redireciona para a HomeActivity em caso de sucesso
-        loginViewModel.loginStatus.observe(this, Observer { isLoggedIn ->
-            if (isLoggedIn) {
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        })
-
-        // Observa mensagens de erro e exibe com Toast
-        loginViewModel.erroLogin.observe(this, Observer { errorMessage ->
-            errorMessage?.let {
-                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-            }
-        })
     }
 }
 
 @Composable
-fun telaLogin(
+fun LoginScreen(
     email: String,
-    senha: String,
+    password: String,
     onEmailChange: (String) -> Unit,
-    onSenhaChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit
 ) {
-    val context = LocalContext.current
-
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFE5B4))
     ) {
+        // Imagem de fundo
         Image(
             painter = painterResource(id = R.mipmap.backgroundd),
             contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize().size(300.dp)
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
-        Box(
-            modifier = Modifier.fillMaxSize()
+
+        // Conteúdo principal
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
             Box(
                 modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .offset(y = 120.dp)
-                    .size(120.dp)
-            )
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color(0xFFFFF3E0))
+                    .padding(24.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .clip(RoundedCornerShape(30.dp))
-                        .background(Color(0xFFFFF3E0))
-                        .padding(24.dp)
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Top
+                    Text(
+                        text = stringResource(id = R.string.login_heading), // Adicione no `strings.xml`
+                        fontFamily = PoppinsFont,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                        color = Color.Black
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    InputFieldWithShadow(
+                        label = stringResource(id = R.string.email_label),
+                        text = email,
+                        onTextChange = onEmailChange
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    InputFieldWithShadow(
+                        label = stringResource(id = R.string.password_label),
+                        text = password,
+                        isPassword = true,
+                        onTextChange = onPasswordChange
+                    )
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Button(
+                        onClick = onLoginClick,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp)
+                            .clip(RoundedCornerShape(12.dp)),
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFBD5A0D)
+                        )
                     ) {
                         Text(
-                            text = stringResource(R.string.login_heading),
-                            color = Color.Black,
-                            fontSize = 36.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontFamily = FontFamily(Font(R.font.poppins_bold)),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                            text = stringResource(id = R.string.login_button), // Adicione no `strings.xml`
+                            fontFamily = PoppinsFont,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            color = Color.White
                         )
-
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        InputFieldWithShadow(label = stringResource(R.string.email_label), text = email, onTextChange = onEmailChange)
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        InputFieldWithShadow(label = stringResource(R.string.password_label), text = senha, isPassword = true, onTextChange = onSenhaChange)
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(50.dp)
-                        ) {
-
-                            Button(
-                                onClick = { onLoginClick() },
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(start = 8.dp)
-                                    .fillMaxHeight()
-                                    .clip(RoundedCornerShape(50.dp)),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFBD5A0D)
-                                )
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.login_button),
-                                    color = Color.Black,
-                                    fontFamily = poppinsFamily,
-                                    fontSize = 15.2.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
                     }
                 }
             }
         }
     }
 }
+
+
 
 @Composable
 fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = false, onTextChange: (String) -> Unit) {
@@ -236,14 +219,3 @@ fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = fals
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    telaLogin(
-        email = "email@exemplo.com",
-        senha = "123456",
-        onEmailChange = {},
-        onSenhaChange = {},
-        onLoginClick = {}
-    )
-}
