@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.MainActivity
 import com.example.qualaboaapp.ui.theme.PoppinsFont
 import com.example.qualaboaapp.ui.theme.home.HomeActivity
 import org.koin.android.ext.koin.androidContext
@@ -59,10 +60,13 @@ class LoginActivity : ComponentActivity() {
             LaunchedEffect(loginStatus) {
                 loginStatus?.let { isLoggedIn ->
                     if (isLoggedIn) {
+                        // Exibe uma mensagem de sucesso
                         Toast.makeText(this@LoginActivity, "Login bem-sucedido", Toast.LENGTH_LONG).show()
-                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-                        finish()
+                        // Redireciona para a MainActivity
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish() // Finaliza a LoginActivity para que não volte ao pressionar "Voltar"
                     } else if (loginError != null) {
+                        // Exibe mensagem de erro
                         Toast.makeText(this@LoginActivity, loginError, Toast.LENGTH_LONG).show()
                     }
                 }

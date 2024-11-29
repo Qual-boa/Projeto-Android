@@ -7,7 +7,7 @@ data class Establishment(
     val averageOrderValue: Float,
     val categories: List<Category>?,
     val relationships: List<Relationship>?,
-    val information: Information?
+    val information: Information
 )
 
 data class Category(
@@ -37,7 +37,7 @@ data class Information(
     val facebookUrl: String?,
     val instagramUrl: String?,
     val telegramUrl: String?,
-    val description: String?
+    val description: String
 )
 
 data class Time(

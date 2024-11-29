@@ -1,5 +1,6 @@
 package com.example.qualaboaapp.ui.theme
 
+import FavoriteScreen
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +11,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.qualaboaapp.ui.theme.establishment.EstablishmentScreen
-import com.example.qualaboaapp.ui.theme.favoritos.FavoriteScreen
 import com.example.qualaboaapp.ui.theme.home.BottomMenu
 import com.example.qualaboaapp.ui.theme.home.HomeScreen
 import com.example.qualaboaapp.ui.theme.home.categorias.CategoriesViewModel
