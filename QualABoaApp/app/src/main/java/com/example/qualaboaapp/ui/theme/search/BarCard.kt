@@ -1,6 +1,7 @@
 package com.example.qualaboaapp.ui.theme.search
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,16 +32,18 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun BarCard(
     image: Painter,
-    title: String,
+    title: String?,
     description: String,
     additionalInfo: String,
     isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    onClick: () -> Unit // Adicionar o callback de clique no card
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { onClick() }, // Adiciona o evento de clique
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -64,11 +67,13 @@ fun BarCard(
                 modifier = Modifier.weight(1f)
             ) {
                 // Título
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
+                if (title != null) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
 
                 // Descrição
                 Text(
@@ -96,3 +101,4 @@ fun BarCard(
         }
     }
 }
+

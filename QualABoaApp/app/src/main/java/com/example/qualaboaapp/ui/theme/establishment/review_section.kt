@@ -18,34 +18,36 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qualaboaapp.R
 
 @Composable
-fun ReviewSection() {
-    // Lista de avaliações fictícias
-    val avaliacoes = listOf(
-        Review("Vinicius", "Comida, bebida e muita diversão", 5, R.drawable.profile1),
-        Review("Abraão", "Deus abençoe", 5, R.drawable.profile2),
-        Review("Maria", "Ambiente agradável", 4, R.drawable.profile1),
-        Review("João", "Ótimo lugar para relaxar", 5, R.drawable.profile2)
-    )
-
-    // LazyRow para criar a lista horizontal de avaliações
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        items(avaliacoes) { avaliacao ->
-            ReviewCard(
-                nome = avaliacao.nome,
-                comentario = avaliacao.comentario,
-                estrelas = avaliacao.estrelas,
-                avatarId = avaliacao.avatarId
-            )
+fun ReviewSection(reviews: List<Relationship>) {
+    if (reviews.isEmpty()) {
+        Text(
+            text = "Nenhuma avaliação disponível",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            textAlign = TextAlign.Center
+        )
+    } else {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(reviews) { review ->
+                ReviewCard(
+                    nome = review.userId, // Substitua com o nome do usuário, se disponível
+                    comentario = review.message,
+                    estrelas = review.rate.toInt(),
+                    avatarId = R.drawable.profile_image // Substitua por lógica de avatar dinâmico
+                )
+            }
         }
     }
 }

@@ -1,15 +1,16 @@
 package com.example.qualaboaapp.ui.theme.home.top_estabelecimentos
 
 import android.content.Context
+import android.util.Log
 import com.example.qualaboaapp.R
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.net.ssl.HostnameVerifier
 
-
 object RetrofitService {
 
-    private const val BASE_URL = "https://ec2-107-23-82-242.compute-1.amazonaws.com/api/ms-auth/"
+    private const val BASE_URL = "http://44.206.188.183:8080/api/ms-auth/"
     private const val PHOTO_BASE_URL =
         "https://ec2-107-23-82-242.compute-1.amazonaws.com/api/ms-blob/"
 
@@ -22,6 +23,12 @@ object RetrofitService {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(EstablishmentsApi::class.java)
+    }
+
+    val loggingInterceptor = HttpLoggingInterceptor { message ->
+        Log.d("HTTP_RESPONSE", message)
+    }.apply {
+        level = HttpLoggingInterceptor.Level.BODY
     }
 
     // Função para criar EstablishmentPhotoApi
@@ -73,7 +80,7 @@ object RetrofitService {
         // HostnameVerifier personalizado
         val hostnameVerifier = HostnameVerifier { hostname, session ->
             // Aceitar o hostname alternativo
-            hostname == "ec2-107-23-82-242.compute-1.amazonaws.com" ||
+            hostname == "http://44.206.188.183:8080/api/ms-auth/" ||
                     hostname == "qualaboa.com"
         }
 

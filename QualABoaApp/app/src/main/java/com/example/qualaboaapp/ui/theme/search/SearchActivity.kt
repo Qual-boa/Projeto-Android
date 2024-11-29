@@ -1,33 +1,32 @@
 package com.example.qualaboaapp.ui.theme.search
 
+import BarViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.qualaboaapp.R
-import com.example.qualaboaapp.ui.theme.PoppinsFont
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.google.accompanist.flowlayout.FlowRow
+
 
 class SearchActivity : ComponentActivity() {
     private val barViewModel : BarViewModel by viewModel()
@@ -41,69 +40,113 @@ class SearchActivity : ComponentActivity() {
 }
 
 @Composable
-fun SearchScreen(navController: NavController, viewModel: BarViewModel) {
+fun SearchScreen(
+    navController: NavController,
+    viewModel: BarViewModel
+) {
     val bars = viewModel.bars.collectAsState()
     val isLoading = viewModel.isLoading.collectAsState()
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.qual_a_boa_de_hoje),
-                fontFamily = PoppinsFont,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )
+    // Estados locais para armazenar as seleções do usuário
+    val musics = listOf("Rock", "Sertanejo", "Indie", "Rap", "Funk", "Metal")
+    val foods = listOf("Brasileira", "Boteco", "Japonesa", "Mexicana", "Churrasco", "Hamburguer")
+    val drinks = listOf("Cerveja", "Vinho", "Chopp", "Whisky", "Gim", "Caipirinha", "Drinks")
 
-            Spacer(modifier = Modifier.height(16.dp))
+    var selectedMusics by remember { mutableStateOf(emptyList<String>()) }
+    var selectedFoods by remember { mutableStateOf(emptyList<String>()) }
+    var selectedDrinks by remember { mutableStateOf(emptyList<String>()) }
 
-            // Barra de pesquisa
+    Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
+        Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             PesquisaBar { searchText ->
-                viewModel.searchBars(searchText) // Chama a API ao clicar no botão de pesquisa
+                viewModel.updateSelectedMusics(selectedMusics)
+                viewModel.updateSelectedFoods(selectedFoods)
+                viewModel.updateSelectedDrinks(selectedDrinks)
+                viewModel.searchBars(searchText) // Chama API com as seleções
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Seção de categorias
-            Text(
-                text = stringResource(R.string.categorias), // Exibe o título "Categorias"
-                fontFamily = PoppinsFont,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            CategoriasGrid(navController) // Agora a seção de categorias será chamada
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Bares carregados da API
             if (isLoading.value) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
             } else if (bars.value.isNotEmpty()) {
-                BarList(bars.value) { clickedBar ->
-                    // Lógica para favoritos ou outras ações
-                }
+                BarList(
+                    bars = bars.value,
+                    navController = navController,
+                    onFavoriteClick = { bar ->
+                        // Lógica para favoritos
+                    }
+                )
+            } else {
+                CategorySelector(
+                    categories = musics,
+                    title = "Músicas",
+                    selectedItems = selectedMusics,
+                    onSelectionChange = { selectedMusics = it }
+                )
+                CategorySelector(
+                    categories = foods,
+                    title = "Comidas",
+                    selectedItems = selectedFoods,
+                    onSelectionChange = { selectedFoods = it }
+                )
+                CategorySelector(
+                    categories = drinks,
+                    title = "Bebidas",
+                    selectedItems = selectedDrinks,
+                    onSelectionChange = { selectedDrinks = it }
+                )
             }
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .height(80.dp)
-                .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-                .background(Color(0xFFFFF1D5))
-        ) {}
     }
 }
+
+@Composable
+fun CategorySelector(
+    categories: List<String>,
+    title: String,
+    selectedItems: List<String>,
+    onSelectionChange: (List<String>) -> Unit
+) {
+    Column {
+        Text(text = title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        FlowRow(
+            mainAxisSpacing = 8.dp, // Espaçamento horizontal entre os chips
+            crossAxisSpacing = 8.dp // Espaçamento vertical entre as linhas
+        ) {
+            categories.forEach { category ->
+                val isSelected = selectedItems.contains(category)
+                Chip(
+                    text = category,
+                    isSelected = isSelected,
+                    onClick = {
+                        if (isSelected) {
+                            onSelectionChange(selectedItems - category)
+                        } else {
+                            onSelectionChange(selectedItems + category)
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+fun Chip(text: String, isSelected: Boolean, onClick: () -> Unit) {
+    Text(
+        text = text,
+        modifier = Modifier
+            .padding(8.dp)
+            .background(if (isSelected) Color.Blue else Color.Gray)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        color = Color.White
+    )
+}
+
+
 
 @Preview(showBackground = true)
 @Composable

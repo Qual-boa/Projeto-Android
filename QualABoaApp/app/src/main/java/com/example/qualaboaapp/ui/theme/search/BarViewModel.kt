@@ -1,30 +1,75 @@
-package com.example.qualaboaapp.ui.theme.search
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.qualaboaapp.ui.theme.search.BarRepository
+import com.example.qualaboaapp.ui.theme.search.BarResponse
+import com.example.qualaboaapp.ui.theme.search.Category
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class BarViewModel(val repository : BarRepository) : ViewModel() {
+class BarViewModel(private val repository : BarRepository) : ViewModel() {
 
-    private val _bars = MutableStateFlow<List<BarResponse>>(emptyList())
-    val bars: StateFlow<List<BarResponse>> = _bars
+    val bars = MutableStateFlow<List<BarResponse>>(emptyList())
+    val isLoading = MutableStateFlow(false)
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
+    // Estados para categorias selecionadas
+    private val selectedMusics = MutableStateFlow<List<String>>(emptyList())
+    private val selectedFoods = MutableStateFlow<List<String>>(emptyList())
+    private val selectedDrinks = MutableStateFlow<List<String>>(emptyList())
 
-    fun searchBars(name: String) {
+    // Atualizar seleção de categorias
+    fun updateSelectedMusics(musics: List<String>) {
+        selectedMusics.value = musics
+    }
+
+    fun updateSelectedFoods(foods: List<String>) {
+        selectedFoods.value = foods
+    }
+
+    fun updateSelectedDrinks(drinks: List<String>) {
+        selectedDrinks.value = drinks
+    }
+
+    private fun buildCategories(): List<Category> {
+        val musics = listOf("Rock", "Sertanejo", "Indie", "Rap", "Funk", "Metal")
+        val foods = listOf("Brasileira", "Boteco", "Japonesa", "Mexicana", "Churrasco", "Hamburguer")
+        val drinks = listOf("Cerveja", "Vinho", "Chopp", "Whisky", "Gim", "Caipirinha", "Drinks")
+
+        return selectedDrinks.value.map { item ->
+            Category(
+                categoryType = 3,
+                category = drinks.indexOf(item) + 1
+            )
+        } + selectedFoods.value.map { item ->
+            Category(
+                categoryType = 2,
+                category = foods.indexOf(item) + 1
+            )
+        } + selectedMusics.value.map { item ->
+            Category(
+                categoryType = 1,
+                category = musics.indexOf(item) + 1
+            )
+        }
+    }
+
+    fun searchBars(searchTerm: String) {
+        isLoading.value = true
+        val categories = buildCategories()
+
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-                val barList = repository.searchBars(name)
-                _bars.value = barList
+                val response = repository.searchBars(searchTerm, categories)
+                bars.value = response
             } catch (e: Exception) {
                 e.printStackTrace()
+                bars.value = emptyList()
             } finally {
-                _isLoading.value = false
+                isLoading.value = false
             }
         }
+    }
+
+    fun clearBars() {
+        bars.value = emptyList()
     }
 }

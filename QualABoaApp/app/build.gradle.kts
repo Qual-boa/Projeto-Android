@@ -68,12 +68,14 @@ dependencies {
     implementation ("com.google.android.libraries.places:places:2.5.0")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
     implementation ("com.google.android.gms:play-services-maps:18.0.2")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("com.google.android.libraries.places:places:2.5.0")
+    implementation(libs.litert.support.api)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -95,5 +97,7 @@ dependencies {
     implementation ("io.insert-koin:koin-android:3.4.0")
     // Koin for Jetpack Compose
     implementation ("io.insert-koin:koin-androidx-compose:3.4.0")
+    implementation ("com.google.accompanist:accompanist-flowlayout:0.30.1")
+    implementation ("com.google.code.gson:gson:2.10.1")
 
 }
