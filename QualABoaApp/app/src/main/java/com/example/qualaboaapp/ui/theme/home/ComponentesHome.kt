@@ -5,10 +5,10 @@
     import androidx.compose.foundation.background
     import androidx.compose.foundation.layout.*
     import androidx.compose.ui.Alignment
-    import androidx.compose.foundation.lazy.LazyRow
-    import androidx.compose.foundation.lazy.items
     import androidx.compose.foundation.shape.CircleShape
     import androidx.compose.foundation.shape.RoundedCornerShape
+    import androidx.compose.material3.Card
+    import androidx.compose.material3.CardDefaults
     import androidx.compose.material3.Icon
     import androidx.compose.material3.IconButton
     import androidx.compose.material3.Text
@@ -30,7 +30,6 @@
     import com.example.qualaboaapp.R
     import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.Establishment
     import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
-    import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentsViewModel
     import com.example.qualaboaapp.ui.theme.utils.UserPreferences
     import org.koin.androidx.compose.get
 
@@ -39,9 +38,17 @@
         val userPreferences: UserPreferences = get() // Inject UserPreferences
         val isLoggedIn by userPreferences.isLoggedIn.collectAsState(initial = false)
         val userName by userPreferences.userName.collectAsState(initial = null)
+        val context = LocalContext.current
 
+        // Verifique se o nome do usuário foi carregado corretamente
         Text(
-            text = if (isLoggedIn && !userName.isNullOrBlank()) "Olá, $userName!" else "Olá!",
+            text = if (isLoggedIn && !userName.isNullOrBlank()) {
+                context.getString(R.string.greeting_logged_in, userName)
+            } else if (isLoggedIn) {
+                "Olá, Usuário!" // Fallback se o nome não foi carregado
+            } else {
+                context.getString(R.string.greeting_guest)
+            },
             color = Color(0xFFA1530A),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
@@ -132,35 +139,6 @@
     }
 
     @Composable
-    fun TopEstablishmentsCarousel(viewModel: EstablishmentsViewModel) {
-        val topEstablishments by viewModel.topEstablishments.collectAsState()
-        val establishmentPhotos by viewModel.establishmentPhotos.collectAsState()
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text(
-                text = "Top 5 Melhores Estabelecimentos",
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(topEstablishments) { establishment ->
-                    val photos = establishmentPhotos[establishment.id] ?: emptyList()
-                    EstablishmentCarouselItem(establishment = establishment, photos = photos)
-                }
-            }
-        }
-    }
-
-    @Composable
     fun EstablishmentCarouselItem(establishment: Establishment, photos: List<EstablishmentPhoto>) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -187,7 +165,7 @@
                         .background(Color.LightGray),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Sem imagem", color = Color.Gray)
+                    Text(text = "Carregando...", color = Color.Gray)
                 }
             }
 
@@ -238,7 +216,69 @@
             )
         }
     }
+    @Composable
+    fun EstablishmentCard(establishment: Establishment, photos: List<EstablishmentPhoto>) {
+        Card(
+            modifier = Modifier
+                .width(200.dp)
+                .padding(8.dp),
+            shape = RoundedCornerShape(10.dp),
+            elevation = CardDefaults.cardElevation(4.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFF4A460))
+        ) {
+            Column(
+                modifier = Modifier.padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Exibir a primeira foto disponível ou um placeholder
+                if (photos.isNotEmpty()) {
+                    Image(
+                        painter = rememberAsyncImagePainter(photos.first().imgUrl),
+                        contentDescription = "Imagem do estabelecimento ${establishment.fantasyName}",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp)
+                            .clip(RoundedCornerShape(10.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(Color.LightGray),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Carregando...",
+                            fontSize = 12.sp,
+                            color = Color.Gray
+                        )
+                    }
+                }
 
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Nome do estabelecimento
+                Text(
+                    text = establishment.fantasyName ?: "Sem Nome",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+
+                // Nota do estabelecimento
+                Text(
+                    text = "Nota: ${establishment.relationships?.firstOrNull()?.rate ?: "N/A"}",
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
+            }
+        }
+    }
 
     @SuppressLint("SuspiciousIndentation")
     @Composable

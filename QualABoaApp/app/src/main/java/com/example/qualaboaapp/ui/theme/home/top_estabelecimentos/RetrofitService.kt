@@ -12,7 +12,7 @@ object RetrofitService {
 
     private const val BASE_URL = "http://44.206.188.183:8080/api/ms-auth/"
     private const val PHOTO_BASE_URL =
-        "https://ec2-107-23-82-242.compute-1.amazonaws.com/api/ms-blob/"
+        "https://qualaboa.servebeer.com/api/ms-blob/"
 
     // Função para criar EstablishmentsApi
     fun provideEstablishmentsApi(context: Context): EstablishmentsApi {
@@ -54,12 +54,22 @@ object RetrofitService {
             certificateFactory.generateCertificate(it)
         }
 
+        val certNovo = context.resources.openRawResource(R.raw.certificado_26_11).use {
+            certificateFactory.generateCertificate(it)
+        }
+
+        val certSprint = context.resources.openRawResource(R.raw.qualaboa_servebeer).use {
+            certificateFactory.generateCertificate(it)
+        }
+
         // Criar um KeyStore
         val keyStore =
             java.security.KeyStore.getInstance(java.security.KeyStore.getDefaultType()).apply {
                 load(null, null)
                 setCertificateEntry("cert_auth", certAuth)
                 setCertificateEntry("cert_blob", certBlob)
+                setCertificateEntry("cert_novo", certNovo)
+                setCertificateEntry("qualaboa_servebeer.cer", certSprint)
             }
 
         // Configurar o TrustManager
@@ -81,7 +91,7 @@ object RetrofitService {
         val hostnameVerifier = HostnameVerifier { hostname, session ->
             // Aceitar o hostname alternativo
             hostname == "http://44.206.188.183:8080/api/ms-auth/" ||
-                    hostname == "qualaboa.com"
+                    hostname == "qualaboa.com"|| hostname == "https://qualaboa.servebeer.com/"
         }
 
         // Retornar OkHttpClient configurado

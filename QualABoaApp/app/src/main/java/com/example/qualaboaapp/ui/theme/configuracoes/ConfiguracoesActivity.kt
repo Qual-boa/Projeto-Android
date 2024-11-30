@@ -3,10 +3,10 @@ package com.example.qualaboaapp.ui.theme
 import ConfiguracoesViewModel
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,156 +23,66 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.pagina_inicial.LoginCadastroInicialActivity
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
-val PoppinsFont = FontFamily(
-    Font(R.font.poppins_regular, FontWeight.Normal),
-    Font(R.font.poppins_bold, FontWeight.Bold)
-)
+import org.koin.androidx.compose.koinViewModel
 
 class ConfiguracoesActivity : ComponentActivity() {
-
-    private val configuracoesViewModel: ConfiguracoesViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val context = LocalContext.current
-            val coroutineScope = rememberCoroutineScope()
-
-            var nome by remember { mutableStateOf("") }
-            var email by remember { mutableStateOf("") }
-            var senha by remember { mutableStateOf("") }
-
-            LaunchedEffect(Unit) {
-                configuracoesViewModel.nomeUsuario.collectLatest { nome = it }
-            }
-            LaunchedEffect(Unit) {
-                configuracoesViewModel.emailUsuario.collectLatest { email = it }
-            }
-            LaunchedEffect(Unit) {
-                configuracoesViewModel.senhaUsuario.collectLatest { senha = it }
-            }
-
-            ProfileScreen(
-                nome = nome,
-                email = email,
-                senha = senha,
-                onNomeChange = { nome = it },
-                onEmailChange = { email = it },
-                onSenhaChange = { senha = it },
-                onSaveClick = {
-                    coroutineScope.launch {
-                        configuracoesViewModel.atualizarPerfil(nome, email, senha)
-                        val successMessage = context.getString(R.string.perfil_atualizado_sucesso)
-                        Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show()
-                    }
-                },
-                onLogoutClick = {
-                    configuracoesViewModel.logout()
-                    val logoutMessage = context.getString(R.string.deslogado_sucesso)
-                    Toast.makeText(context, logoutMessage, Toast.LENGTH_SHORT).show()
-                    context.startActivity(Intent(context, LoginCadastroInicialActivity::class.java))
-                    finish()
-                }
-            )
-        }
-    }
-}
-@Composable
-fun ProfileTextFieldWithShadow(
-    text: String,
-    isPassword: Boolean = false,
-    onValueChange: (String) -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .offset(x = 4.dp, y = 4.dp)
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color(0xFFBD5A0D))
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(RoundedCornerShape(30.dp))
-                .background(Color.White)
-                .padding(4.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BasicTextField(
-                    value = text,
-                    onValueChange = { onValueChange(it) },
-                    visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-                    textStyle = TextStyle(
-                        color = Color.Black,
-                        fontSize = 16.sp,
-                        fontFamily = FontFamily(
-                            Font(R.font.poppins_regular, FontWeight.Normal)
-                        )
-                    ),
-                    cursorBrush = SolidColor(Color.Black),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 12.dp)
-                        .weight(1f)
-                )
-
-                Icon(
-                    painter = painterResource(id = R.mipmap.edit),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
+            ConfiguracoesScreen()
         }
     }
 }
 
-
 @Composable
-fun ProfileScreen(
-    nome: String,
-    email: String,
-    senha: String,
-    onNomeChange: (String) -> Unit,
-    onEmailChange: (String) -> Unit,
-    onSenhaChange: (String) -> Unit,
-    onSaveClick: () -> Unit,
-    onLogoutClick: () -> Unit
+fun ConfiguracoesScreen(
+    configuracoesViewModel: ConfiguracoesViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    // Observa diretamente os fluxos do ViewModel
+    val nome by configuracoesViewModel.nomeUsuario.collectAsState(initial = "")
+    val email by configuracoesViewModel.emailUsuario.collectAsState(initial = "")
+    val senha by configuracoesViewModel.senhaUsuario.collectAsState(initial = "")
+    val isLoggedOut by configuracoesViewModel.isLoggedOut.collectAsState()
+
+    // Verifica o estado de logout e redireciona
+    LaunchedEffect(isLoggedOut) {
+        if (isLoggedOut) {
+            Log.d("ConfiguracoesScreen", "Redirecionando após logout.")
+            val intent = Intent(context, LoginCadastroInicialActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            context.startActivity(intent)
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFFFF5E1))
     ) {
+        // Botão de logout
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             contentAlignment = Alignment.TopEnd
         ) {
-            IconButton(onClick = { onLogoutClick() }) {
+            IconButton(onClick = {
+                configuracoesViewModel.logout()
+                Toast.makeText(context, "Deslogado com sucesso!", Toast.LENGTH_SHORT).show()
+            }) {
                 Icon(
                     painter = painterResource(id = R.mipmap.sair),
                     contentDescription = stringResource(R.string.logout_button),
@@ -181,6 +91,7 @@ fun ProfileScreen(
             }
         }
 
+        // Imagem superior
         Image(
             painter = painterResource(id = R.mipmap.circulo),
             contentDescription = null,
@@ -201,6 +112,7 @@ fun ProfileScreen(
                 .zIndex(2f)
         )
 
+        // Formulário de configuração
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -220,23 +132,48 @@ fun ProfileScreen(
 
                 Text(
                     text = stringResource(R.string.perfil_titulo),
-                    fontFamily = PoppinsFont,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                     color = Color.Black,
                     modifier = Modifier.padding(bottom = 20.dp)
                 )
 
-                ProfileTextFieldWithShadow(text = nome, onValueChange = onNomeChange)
+                ProfileTextFieldWithLabel(
+                    label = "Nome",
+                    text = nome, // Fluxo direto do ViewModel
+                    placeholder = "Digite seu nome",
+                    onValueChange = { configuracoesViewModel.atualizarNome(it) }
+                )
                 Spacer(modifier = Modifier.height(16.dp))
-                ProfileTextFieldWithShadow(text = email, onValueChange = onEmailChange)
-                Spacer(modifier = Modifier.height(16.dp))
-                ProfileTextFieldWithShadow(text = senha, isPassword = true, onValueChange = onSenhaChange)
 
+                ProfileTextFieldWithLabel(
+                    label = "Email",
+                    text = email, // Fluxo direto do ViewModel
+                    placeholder = "Digite seu email",
+                    onValueChange = { configuracoesViewModel.atualizarEmail(it) }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                ProfileTextFieldWithLabel(
+                    label = "Senha",
+                    text = senha, // Fluxo direto do ViewModel
+                    placeholder = "Digite sua senha",
+                    isPassword = true,
+                    onValueChange = { configuracoesViewModel.atualizarSenha(it) }
+                )
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
-                    onClick = { onSaveClick() },
+                    onClick = {
+                        coroutineScope.launch {
+                            configuracoesViewModel.atualizarPerfil(
+                                name = nome,
+                                email = email,
+                                password = senha
+                            )
+                            Toast.makeText(context, "Perfil atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+                        }
+                    },
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
@@ -246,37 +183,93 @@ fun ProfileScreen(
                     Text(
                         text = stringResource(R.string.salvar_button),
                         color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = PoppinsFont
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
         }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .height(80.dp)
-                .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-                .background(Color(0xFFFFF1D5))
-                .zIndex(2f)
-        ) {
-        }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun ProfilePreview() {
-    ProfileScreen(
-        nome = "Matheus",
-        email = "matheus@email.com",
-        senha = "*******",
-        onNomeChange = {},
-        onEmailChange = {},
-        onSenhaChange = {},
-        onSaveClick = {},
-        onLogoutClick = {}
-    )
+fun ProfileTextFieldWithLabel(
+    label: String,
+    text: String,
+    placeholder: String,
+    isPassword: Boolean = false,
+    onValueChange: (String) -> Unit
+) {
+    Column {
+        Text(
+            text = label,
+            fontSize = 14.sp,
+            color = Color.Gray,
+            modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
+        )
+        ProfileTextFieldWithShadow(
+            text = text,
+            placeholder = placeholder,
+            isPassword = isPassword,
+            onValueChange = onValueChange
+        )
+    }
+}
+
+@Composable
+fun ProfileTextFieldWithShadow(
+    text: String,
+    placeholder: String,
+    isPassword: Boolean = false,
+    onValueChange: (String) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+    ) {
+        // Sombra
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .offset(x = 4.dp, y = 4.dp)
+                .clip(RoundedCornerShape(30.dp))
+                .background(Color(0xFFBD5A0D))
+        )
+
+        // Campo principal
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(30.dp))
+                .background(Color.White)
+                .padding(4.dp)
+        ) {
+            BasicTextField(
+                value = text,
+                onValueChange = onValueChange,
+                textStyle = TextStyle(
+                    color = Color.Black,
+                    fontSize = 16.sp
+                ),
+                visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+                cursorBrush = SolidColor(Color.Black),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 12.dp)
+            )
+
+            // Placeholder exibido se o texto estiver vazio
+            if (text.isEmpty()) {
+                Text(
+                    text = placeholder,
+                    style = TextStyle(
+                        color = Color.Gray,
+                        fontSize = 16.sp
+                    ),
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 12.dp)
+                )
+            }
+        }
+    }
 }

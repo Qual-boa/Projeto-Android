@@ -1,5 +1,6 @@
 package com.example.qualaboaapp.ui.theme.cadastro
 
+import PoppinsFont
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -22,17 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cadastroModule
 import com.example.qualaboaapp.R
-import com.example.qualaboaapp.ui.theme.PoppinsFont
-import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.establishmentsModule
 import com.example.qualaboaapp.ui.theme.login.InputFieldWithShadow
 import com.example.qualaboaapp.ui.theme.login.LoginActivity
-import com.example.qualaboaapp.ui.theme.login.loginModule
-import kotlinx.coroutines.launch
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.context.GlobalContext.startKoin
 
 class CadastroActivity : ComponentActivity() {
 
@@ -225,7 +219,7 @@ fun RegistrationScreen(
                         )
                     ) {
                         Text(
-                            text = stringResource(id = R.string.cadastrar_button),
+                            text = stringResource(id = R.string.register_button),
                             fontFamily = PoppinsFont,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,

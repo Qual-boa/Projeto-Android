@@ -22,7 +22,7 @@ class CadastroViewModel(
     private val _erroCadastro = MutableStateFlow<String?>(null)
     val erroCadastro: StateFlow<String?> = _erroCadastro
 
-    fun cadastrarUsuario(nome: String?, email: String?, senha: String?) {
+    fun cadastrarUsuario(email: String?, nome: String?, senha: String?) {
         if (nome.isNullOrBlank() || email.isNullOrBlank() || senha.isNullOrBlank()) {
             _erroCadastro.value = "Preencha todos os campos"
             return
@@ -30,13 +30,13 @@ class CadastroViewModel(
 
         viewModelScope.launch {
             try {
-                val usuario = UsuarioRequest(nome, email, senha)
+                val usuario = UsuarioRequest(email, nome, senha)
                 val response = cadastroApi.cadastrarUsuario(usuario)
 
                 if (response.isSuccessful) {
                     _cadastroStatus.value = true
                     _erroCadastro.value = null
-                    userPreferences.saveUserInfo(true, nome, email)
+                    userPreferences.saveUserInfo(true, email, nome)
                 } else {
                     _cadastroStatus.value = false
                     _erroCadastro.value = response.errorBody()?.string()

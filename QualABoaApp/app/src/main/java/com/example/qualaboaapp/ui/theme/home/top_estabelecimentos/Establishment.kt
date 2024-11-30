@@ -47,7 +47,6 @@ data class Time(
     val nano: Int
 )
 
-
 data class EstablishmentPhoto(
     val id: Int,
     val establishmentId: String,
