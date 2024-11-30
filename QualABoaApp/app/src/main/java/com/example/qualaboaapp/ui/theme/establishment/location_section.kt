@@ -3,9 +3,9 @@ package com.example.qualaboaapp.ui.theme.establishment
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,7 +46,7 @@ fun LocationSection() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFDBB27)),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFDBB27)),
         shape = RoundedCornerShape(30.dp)
     ) {
         Text(text = stringResource(R.string.share_location), color = Color.White)

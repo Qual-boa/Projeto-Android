@@ -1,60 +1,53 @@
-package com.example.qualaboaapp.viewmodel
+package com.example.qualaboaapp.ui.theme.login
 
 import LoginApi
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.qualaboaapp.ui.theme.login.LoginRequest
-import com.example.qualaboaapp.ui.theme.login.RetrofitService
+import com.example.qualaboaapp.ui.theme.utils.UserPreferences
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val loginApi: LoginApi,
+    private val userPreferences: UserPreferences
+) : ViewModel() {
 
-    private val loginApi: LoginApi = RetrofitService.getLoginApi()
+    private val _loginStatus = MutableStateFlow<Boolean?>(null)
+    val loginStatus: StateFlow<Boolean?> = _loginStatus
 
-    // LiveData para status de login e mensagens de erro
-    private val _loginStatus = MutableLiveData<Boolean>()
-    val loginStatus: LiveData<Boolean> = _loginStatus
+    private val _loginError = MutableStateFlow<String?>(null)
+    val loginError: StateFlow<String?> = _loginError
 
-    private val _erroLogin = MutableLiveData<String?>()
-    val erroLogin: LiveData<String?> = _erroLogin
+    fun login(email: String, password: String) {
+        if (email.isBlank() || password.isBlank()) {
+            _loginError.value = "Preencha todos os campos"
+            return
+        }
 
-    fun login(email: String, senha: String) {
         viewModelScope.launch {
             try {
-                val loginRequest = LoginRequest(email, senha)
-                val response = loginApi.login(loginRequest)
+                val response = loginApi.login(LoginRequest(email, password))
+
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    val token = responseBody?.get("token")?.toString()
-                    val userName = responseBody?.get("usuario")?.toString()
+                    val userName = responseBody?.get("usuario")?.toString() ?: ""
+                    val token = responseBody?.get("token")?.toString() ?: ""
 
-                    // Log de sucesso
-                    Log.d("LoginSuccess", "Login bem-sucedido para o usuário: $userName")
+                    // Save user info in DataStore
+                    userPreferences.saveUserInfo(isLoggedIn = true, userName = userName, email = email)
+                    userPreferences.saveToken(token)
 
                     _loginStatus.value = true
-                    _erroLogin.value = null
-
-                    // Aqui, você pode salvar o token localmente, se necessário
-
+                    _loginError.value = null
                 } else {
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("LoginError", "Erro no login: $errorBody")
-
                     _loginStatus.value = false
-                    _erroLogin.value = "Erro no login: $errorBody"
+                    _loginError.value = response.errorBody()?.string()
                 }
-            } catch (e: HttpException) {
-                Log.e("LoginError", "Erro HTTP no login: ${e.message()}", e)
-                _loginStatus.value = false
-                _erroLogin.value = "Erro HTTP: ${e.message()}"
             } catch (e: Exception) {
-                Log.e("LoginError", "Erro desconhecido no login: ${e.message}", e)
                 _loginStatus.value = false
-                _erroLogin.value = "Erro desconhecido: ${e.message}"
+                _loginError.value = e.message
             }
         }
     }

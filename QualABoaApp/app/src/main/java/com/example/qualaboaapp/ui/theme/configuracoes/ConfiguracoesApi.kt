@@ -13,6 +13,9 @@ interface ConfiguracoesApi {
         @Body perfilRequest: UsuarioData
     ): Response<UsuarioData>
 
-    @GET("/usuario/dados")
-    suspend fun getDadosUsuario(): Response<UsuarioData>
+    @GET("/users/{id}")
+    suspend fun getDadosUsuario(
+        @Path("id") id: String
+    ): Response<UsuarioData>
+
 }
