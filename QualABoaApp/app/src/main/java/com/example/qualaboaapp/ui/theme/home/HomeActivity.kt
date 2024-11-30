@@ -166,8 +166,6 @@ fun HomeScreen(
                     }
                 }
             }
-
-
         }
 
         BottomMenu(

@@ -6,16 +6,12 @@
     import androidx.compose.foundation.Image
     import androidx.compose.foundation.background
     import androidx.compose.foundation.layout.*
-    import androidx.compose.foundation.lazy.LazyColumn
-    import androidx.compose.foundation.lazy.LazyRow
-    import androidx.compose.foundation.lazy.items
     import androidx.compose.foundation.shape.CircleShape
     import androidx.compose.foundation.shape.RoundedCornerShape
     import androidx.compose.material3.Card
     import androidx.compose.material3.CardDefaults
     import androidx.compose.material3.Icon
     import androidx.compose.material3.IconButton
-    import androidx.compose.material3.MaterialTheme
     import androidx.compose.material3.Text
     import androidx.compose.runtime.Composable
     import androidx.compose.runtime.collectAsState
@@ -27,7 +23,6 @@
     import androidx.compose.ui.layout.ContentScale
     import androidx.compose.ui.platform.LocalContext
     import androidx.compose.ui.res.painterResource
-    import androidx.compose.ui.res.stringResource
     import androidx.compose.ui.text.font.FontWeight
     import androidx.compose.ui.text.style.TextOverflow
     import androidx.compose.ui.unit.dp
@@ -38,7 +33,6 @@
     import com.example.qualaboaapp.ui.theme.home.HomeActivity
     import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.Establishment
     import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
-    import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentsViewModel
     import com.example.qualaboaapp.ui.theme.notificacoes.NotificacaoActivity
     import com.example.qualaboaapp.ui.theme.utils.UserPreferences
     import org.koin.androidx.compose.get
@@ -50,9 +44,12 @@
         val userName by userPreferences.userName.collectAsState(initial = null)
         val context = LocalContext.current
 
+        // Verifique se o nome do usuário foi carregado corretamente
         Text(
             text = if (isLoggedIn && !userName.isNullOrBlank()) {
                 context.getString(R.string.greeting_logged_in, userName)
+            } else if (isLoggedIn) {
+                "Olá, Usuário!" // Fallback se o nome não foi carregado
             } else {
                 context.getString(R.string.greeting_guest)
             },
@@ -61,6 +58,7 @@
             fontWeight = FontWeight.Bold
         )
     }
+
 
     fun getCategoryImage(name: String): Int {
         return when (name) {

@@ -1,6 +1,7 @@
 package com.example.qualaboaapp.ui.theme.utils
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -10,6 +11,8 @@ import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.Establishment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
 // Define o DataStore
@@ -23,6 +26,8 @@ class UserPreferences(private val context: Context) {
         private val USER_NAME_KEY = stringPreferencesKey("user_name")
         private val CATEGORIES_KEY = stringPreferencesKey("categories") // Para salvar categorias
         private val ESTABLISHMENTS_KEY = stringPreferencesKey("establishments") // Para salvar estabelecimentos
+        private val USER_ID_KEY = stringPreferencesKey("user_id") // Chave para o ID do usuário
+        private val TOKEN_KEY = stringPreferencesKey("auth_token") // Chave para o token de autenticação
     }
 
     private val gson = Gson() // Instância do Gson para conversões JSON
@@ -52,6 +57,34 @@ class UserPreferences(private val context: Context) {
         preferences[ESTABLISHMENTS_KEY]?.let { json -> json.fromJsonToList<Establishment>() } ?: emptyList()
     }
 
+    // Salvar o ID do usuário no DataStore
+    suspend fun saveUserId(userId: String) {
+        context.dataStore.edit { preferences ->
+            preferences[USER_ID_KEY] = userId
+        }
+    }
+
+    // Recuperar o ID do usuário do DataStore
+    suspend fun getUserId(): String? {
+        return context.dataStore.data.map { preferences ->
+            preferences[USER_ID_KEY]
+        }.firstOrNull()
+    }
+
+    // Salvar o token de autenticação
+    suspend fun saveToken(token: String) {
+        context.dataStore.edit { preferences ->
+            preferences[TOKEN_KEY] = token
+        }
+    }
+
+    // Recuperar o token de autenticação
+    suspend fun getToken(): String? {
+        return context.dataStore.data.map { preferences ->
+            preferences[TOKEN_KEY]
+        }.firstOrNull()
+    }
+
     /**
      * Salva informações do usuário no DataStore.
      */
@@ -60,8 +93,16 @@ class UserPreferences(private val context: Context) {
             preferences[IS_LOGGED_IN_KEY] = isLoggedIn
             preferences[USER_EMAIL_KEY] = email ?: ""
             preferences[USER_NAME_KEY] = userName ?: ""
-
         }
+    }
+
+    // Recuperar informações do usuário
+    suspend fun getUserInfo(): Pair<String?, String?> {
+        val preferences = context.dataStore.data.first()
+        val email = preferences[USER_EMAIL_KEY]
+        val name = preferences[USER_NAME_KEY]
+        Log.d("UserPreferences", "Dados recuperados: userName=$name, userEmail=$email")
+        return Pair(name, email)
     }
 
     /**

@@ -19,7 +19,7 @@
     <string name="entrar_button">Entrar</string>
     <string name="cadastrar_button">Cadastrar</string>
     <string name="perfil_title">Perfil</string>
-    <string name="salvar_button">Salvar</string>
+    <string name="salvar_button">Atualizar</string>
     <string name="home_icon_description">Home</string>
     <string name="notifications_icon_description">Notificações</string>
     <string name="search_icon_description">Pesquisa</string>
@@ -31,7 +31,7 @@
     <string name="email_invalido_erro">E-mail inválido</string>
     <string name="senha_curta_erro">Senha deve ter no mínimo 8 caracteres</string>
     <string name="corrigir_erros_antes_de_prosseguir">Corrija os erros antes de prosseguir</string>
-    <string name="perfil_titulo">Perfil</string>
+    <string name="perfil_titulo">Atualizar Perfil</string>
     <string name="logout_button">Sair</string>
     <string name="perfil_atualizado_sucesso">Perfil atualizado com sucesso!</string>
     <string name="deslogado_sucesso">Deslogado com sucesso!</string>

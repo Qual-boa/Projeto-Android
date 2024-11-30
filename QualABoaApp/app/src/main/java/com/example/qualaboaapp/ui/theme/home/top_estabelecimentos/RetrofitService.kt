@@ -9,16 +9,14 @@ import javax.net.ssl.HostnameVerifier
 
 object RetrofitService {
 
-    private const val BASE_URL = "https://ec2-34-235-31-164.compute-1.amazonaws.com/api/ms-auth/"
+    private const val BASE_URL = "https://qualaboa.servebeer.com/api/ms-auth/"
     private const val PHOTO_BASE_URL =
-        "https://ec2-34-235-31-164.compute-1.amazonaws.com/api/ms-blob/"
+        "https://qualaboa.servebeer.com/api/ms-blob/"
 
     // Função para criar EstablishmentsApi
     fun provideEstablishmentsApi(context: Context): EstablishmentsApi {
-        val client = createSecureOkHttpClient(context)
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(EstablishmentsApi::class.java)
@@ -26,10 +24,8 @@ object RetrofitService {
 
     // Função para criar EstablishmentPhotoApi
     fun providePhotoApi(context: Context): EstablishmentPhotoApi {
-        val client = createSecureOkHttpClient(context)
         return Retrofit.Builder()
             .baseUrl(PHOTO_BASE_URL)
-            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(EstablishmentPhotoApi::class.java)
@@ -51,6 +47,10 @@ object RetrofitService {
             certificateFactory.generateCertificate(it)
         }
 
+        val certSprint = context.resources.openRawResource(R.raw.qualaboa_servebeer).use {
+            certificateFactory.generateCertificate(it)
+        }
+
 
         // Criar um KeyStore
         val keyStore =
@@ -59,6 +59,7 @@ object RetrofitService {
                 setCertificateEntry("cert_auth", certAuth)
                 setCertificateEntry("cert_blob", certBlob)
                 setCertificateEntry("cert_novo", certNovo)
+                setCertificateEntry("qualaboa_servebeer.cer", certSprint)
             }
 
         // Configurar o TrustManager
@@ -80,7 +81,7 @@ object RetrofitService {
         val hostnameVerifier = HostnameVerifier { hostname, session ->
             // Aceitar o hostname alternativo
             hostname == "ec2-34-235-31-164.compute-1.amazonaws.com" ||
-                    hostname == "qualaboa.com"
+                    hostname == "qualaboa.com"|| hostname == "https://qualaboa.servebeer.com/"
         }
 
         // Retornar OkHttpClient configurado

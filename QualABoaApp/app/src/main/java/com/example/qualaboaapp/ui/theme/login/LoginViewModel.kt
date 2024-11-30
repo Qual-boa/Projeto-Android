@@ -1,6 +1,7 @@
 package com.example.qualaboaapp.ui.theme.login
 
 import LoginApi
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.qualaboaapp.ui.theme.utils.UserPreferences
@@ -31,13 +32,12 @@ class LoginViewModel(
 
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    val userName = responseBody?.get("usuario")?.toString()
-                    val token = responseBody?.get("token")?.toString()
+                    val userName = responseBody?.get("usuario")?.toString() ?: ""
+                    val token = responseBody?.get("token")?.toString() ?: ""
 
                     // Save user info in DataStore
-                    if (userName != null) {
-                        userPreferences.saveUserInfo(isLoggedIn = true, userName = userName, email = email)
-                    }
+                    userPreferences.saveUserInfo(isLoggedIn = true, userName = userName, email = email)
+                    userPreferences.saveToken(token)
 
                     _loginStatus.value = true
                     _loginError.value = null
