@@ -19,13 +19,16 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.android.gms.maps.model.LatLng
+import android.content.Context
+import android.content.Intent
 
 @Composable
 fun LocationSection(
     latitude: Double,
     longitude: Double,
     address: String,
-    onShareLocation: () -> Unit // Callback para ação de compartilhamento
+    onShareLocation: () -> Unit = { /* default no-op callback */ },
+    context: Context // Passar o contexto aqui
 ) {
     val location = LatLng(latitude, longitude)
     val cameraPositionState = rememberCameraPositionState {
@@ -71,7 +74,9 @@ fun LocationSection(
 
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { onShareLocation() },
+            onClick = {
+                shareLocation(context, latitude, longitude, address)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -81,4 +86,20 @@ fun LocationSection(
             Text(text = stringResource(R.string.share_location), color = Color.White)
         }
     }
+}
+
+/**
+ * Função para compartilhar a localização via Intent.
+ */
+fun shareLocation(context: Context, latitude: Double, longitude: Double, address: String) {
+    val locationUrl = "https://www.google.com/maps?q=$latitude,$longitude"
+    val shareText = "Confira este local: $address\nLocalização: $locationUrl"
+
+    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, shareText)
+    }
+
+    // Inicia a Activity de compartilhamento
+    context.startActivity(Intent.createChooser(shareIntent, "Compartilhar Localização"))
 }

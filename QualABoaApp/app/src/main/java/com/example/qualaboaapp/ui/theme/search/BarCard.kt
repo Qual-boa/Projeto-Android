@@ -35,15 +35,16 @@ fun BarCard(
     title: String?,
     description: String,
     additionalInfo: String,
+    distance: String,
     isFavorite: Boolean,
     onFavoriteClick: () -> Unit,
-    onClick: () -> Unit // Adicionar o callback de clique no card
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onClick() }, // Adiciona o evento de clique
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -88,6 +89,13 @@ fun BarCard(
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.DarkGray
                 )
+
+                // Distância
+                Text(
+                    text = "Distância: $distance km",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.DarkGray
+                )
             }
 
             // Ícone de favorito
@@ -101,4 +109,5 @@ fun BarCard(
         }
     }
 }
+
 

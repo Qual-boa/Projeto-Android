@@ -9,7 +9,7 @@ import retrofit2.http.Path
 
 interface ApiService {
     @POST("establishments/listbyfilters")
-    suspend fun searchBars(@Body body: SearchRequest): List<BarResponse>
+    suspend fun searchBars(@Body body: SearchRequest): List<BarResponse>?
 
     @GET("establishments/{id}")
     suspend fun getEstablishmentById(@Path("id") id: String): EstablishmentResponse
@@ -17,17 +17,21 @@ interface ApiService {
     @GET("address/establishment/{establishmentId}")
     suspend fun getAddressByEstablishmentId(@Path("establishmentId") establishmentId: String): List<AddressResponse>
 
+    @GET("users/{userId}")
+    suspend fun getUserById(@Path("userId") userId: String): UserResponse
 }
 
 data class BarResponse(
-    val id: String, // UUID como String
+    val id: String,
     val fantasyName: String,
     val cnpj: String,
     val averageOrderValue: Int,
     val categories: List<CategoryResponse>?,
     val relationships: List<RelationshipResponse>?,
-    val information: InformationResponse
+    val information: InformationResponse,
+    var distance: String? = null // Adicionado para a distância
 )
+
 
 data class CategoryResponse(
     val categoryType: Int,
@@ -59,4 +63,11 @@ data class InformationResponse(
     val description: String
 )
 
+// Classe de resposta do usuário
+data class UserResponse(
+    val id: String,
+    val name: String,
+    val email: String,
+    val roleEnum: String
+)
 

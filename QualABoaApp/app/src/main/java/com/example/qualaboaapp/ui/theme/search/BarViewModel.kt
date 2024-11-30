@@ -1,15 +1,24 @@
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.qualaboaapp.ui.theme.search.BarRepository
 import com.example.qualaboaapp.ui.theme.search.BarResponse
 import com.example.qualaboaapp.ui.theme.search.Category
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class BarViewModel(private val repository : BarRepository) : ViewModel() {
+class BarViewModel(private val repository: BarRepository) : ViewModel() {
 
     val bars = MutableStateFlow<List<BarResponse>>(emptyList())
     val isLoading = MutableStateFlow(false)
+    private val _userLocation = MutableStateFlow<Location?>(null)
+    val _barDistances = MutableStateFlow<Map<String, Float>>(emptyMap())
 
     // Estados para categorias selecionadas
     private val selectedMusics = MutableStateFlow<List<String>>(emptyList())
@@ -29,10 +38,79 @@ class BarViewModel(private val repository : BarRepository) : ViewModel() {
         selectedDrinks.value = drinks
     }
 
-    private fun buildCategories(): List<Category> {
+    fun setUserLocation(location: Location) {
+        location.latitude = -23.558056667527953
+        location.longitude = -46.66162817662198
+        _userLocation.value = location
+    }
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    /**
+     * Inicializa o cliente de localização.
+     */
+    fun initializeLocationClient(context: Context) {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    }
+
+    fun fetchBarsWithDistances(searchTerm: String) {
+        viewModelScope.launch {
+            isLoading.value = true
+            try {
+                val results = repository.searchBars(searchTerm, buildCategories())
+                if (results.isNotEmpty()) {
+                    bars.value = results
+
+                    val userLoc = _userLocation.value
+                    if (userLoc != null) {
+                        val distances = results.associate { bar ->
+                            val barLocation = repository.getBarCoordinates(bar.id)
+                            val distance = if (barLocation != null) {
+                                val resultsArray = FloatArray(1)
+                                Location.distanceBetween(
+                                    userLoc.latitude,
+                                    userLoc.longitude,
+                                    barLocation.latitude,
+                                    barLocation.longitude,
+                                    resultsArray
+                                )
+                                resultsArray[0] / 1000 // Convert to km
+                            } else {
+                                -1f // Indicar distância desconhecida
+                            }
+                            bar.id to distance
+                        }
+                        _barDistances.value = distances
+                    } else {
+                        Log.e("BarViewModel", "Localização do usuário não disponível.")
+                    }
+                } else {
+                    Log.d("BarViewModel", "Nenhum bar encontrado para os critérios fornecidos.")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                bars.value = emptyList()
+            } finally {
+                isLoading.value = false
+            }
+        }
+    }
+
+    // Helper function to get the Google API Key
+    fun getGoogleApiKey(context: Context): String {
+        val appInfo = context.packageManager.getApplicationInfo(
+            context.packageName,
+            PackageManager.GET_META_DATA
+        )
+        return appInfo.metaData.getString("com.google.android.geo.API_KEY")
+            ?: throw IllegalStateException("Google API Key not found in AndroidManifest.xml")
+    }
+
+    fun buildCategories(): List<Category> {
         val musics = listOf("Rock", "Sertanejo", "Indie", "Rap", "Funk", "Metal")
-        val foods = listOf("Brasileira", "Boteco", "Japonesa", "Mexicana", "Churrasco", "Hamburguer")
-        val drinks = listOf("Cerveja", "Vinho", "Chopp", "Whisky", "Gim", "Caipirinha", "Drinks")
+        val foods =
+            listOf("Brasileira", "Boteco", "Japonesa", "Mexicana", "Churrasco", "Hamburguer")
+        val drinks =
+            listOf("Cerveja", "Vinho", "Chopp", "Whisky", "Gim", "Caipirinha", "Drinks")
 
         return selectedDrinks.value.map { item ->
             Category(
@@ -52,24 +130,8 @@ class BarViewModel(private val repository : BarRepository) : ViewModel() {
         }
     }
 
-    fun searchBars(searchTerm: String) {
-        isLoading.value = true
-        val categories = buildCategories()
-
-        viewModelScope.launch {
-            try {
-                val response = repository.searchBars(searchTerm, categories)
-                bars.value = response
-            } catch (e: Exception) {
-                e.printStackTrace()
-                bars.value = emptyList()
-            } finally {
-                isLoading.value = false
-            }
-        }
-    }
-
     fun clearBars() {
         bars.value = emptyList()
     }
 }
+

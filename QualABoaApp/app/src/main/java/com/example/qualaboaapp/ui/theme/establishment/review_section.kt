@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.example.qualaboaapp.R
 
 @Composable
-fun ReviewSection(reviews: List<Relationship>) {
+fun ReviewSection(reviews: List<ReviewWithUser>) {
     if (reviews.isEmpty()) {
         Text(
             text = "Nenhuma avaliação disponível",
@@ -42,10 +42,10 @@ fun ReviewSection(reviews: List<Relationship>) {
         ) {
             items(reviews) { review ->
                 ReviewCard(
-                    nome = review.userId, // Substitua com o nome do usuário, se disponível
+                    nome = review.userName,
                     comentario = review.message,
                     estrelas = review.rate.toInt(),
-                    avatarId = R.drawable.profile_image // Substitua por lógica de avatar dinâmico
+                    avatarId = R.drawable.profile_image
                 )
             }
         }

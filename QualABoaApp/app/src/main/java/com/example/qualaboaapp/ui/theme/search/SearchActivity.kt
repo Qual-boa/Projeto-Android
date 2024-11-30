@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,28 +27,76 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.google.accompanist.flowlayout.FlowRow
-
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 
 class SearchActivity : ComponentActivity() {
-    private val barViewModel : BarViewModel by viewModel()
+    private val barViewModel: BarViewModel by viewModel()
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                initializeLocationClientAndFetch()
+            } else {
+                android.util.Log.e("Permission", "Permissão de localização negada.")
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            SearchScreen(navController = rememberNavController(), viewModel = barViewModel)
+
+        // Verificar e solicitar permissão
+        if (hasLocationPermission()) {
+            initializeLocationClientAndFetch()
+        } else {
+            requestLocationPermission()
         }
+
+        setContent {
+            SearchScreen(navController = rememberNavController(), viewModel = barViewModel, null)
+        }
+    }
+
+    private fun hasLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestLocationPermission() {
+        requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+
+    private fun initializeLocationClientAndFetch() {
+        barViewModel.initializeLocationClient(this)
     }
 }
 
 @Composable
 fun SearchScreen(
     navController: NavController,
-    viewModel: BarViewModel
+    viewModel: BarViewModel,
+    currentLocation: Location? // Localização passada diretamente
 ) {
+    val context = LocalContext.current
+
+    // Inicializa o cliente de localização apenas uma vez
+    LaunchedEffect(Unit) {
+        viewModel.initializeLocationClient(context)
+        currentLocation?.let {
+            viewModel.setUserLocation(it) // Atualiza o ViewModel com a localização atual
+        }
+    }
+
     val bars = viewModel.bars.collectAsState()
     val isLoading = viewModel.isLoading.collectAsState()
+    val barDistances = viewModel._barDistances.collectAsState() // Distâncias calculadas
 
-    // Estados locais para armazenar as seleções do usuário
+    // Categorias e Seleções
     val musics = listOf("Rock", "Sertanejo", "Indie", "Rap", "Funk", "Metal")
     val foods = listOf("Brasileira", "Boteco", "Japonesa", "Mexicana", "Churrasco", "Hamburguer")
     val drinks = listOf("Cerveja", "Vinho", "Chopp", "Whisky", "Gim", "Caipirinha", "Drinks")
@@ -56,13 +105,13 @@ fun SearchScreen(
     var selectedFoods by remember { mutableStateOf(emptyList<String>()) }
     var selectedDrinks by remember { mutableStateOf(emptyList<String>()) }
 
-    Box(modifier = Modifier.fillMaxSize().background(Color.White)) {
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             PesquisaBar { searchText ->
                 viewModel.updateSelectedMusics(selectedMusics)
                 viewModel.updateSelectedFoods(selectedFoods)
                 viewModel.updateSelectedDrinks(selectedDrinks)
-                viewModel.searchBars(searchText) // Chama API com as seleções
+                viewModel.fetchBarsWithDistances(searchText) // Busca bares com cálculo de distâncias
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -73,11 +122,11 @@ fun SearchScreen(
                 BarList(
                     bars = bars.value,
                     navController = navController,
-                    onFavoriteClick = { bar ->
-                        // Lógica para favoritos
-                    }
+                    onFavoriteClick = { bar -> /* Lógica para favoritos */ },
+                    distances = barDistances.value // Passa as distâncias calculadas
                 )
             } else {
+                // Seletores de categoria
                 CategorySelector(
                     categories = musics,
                     title = "Músicas",
@@ -132,7 +181,6 @@ fun CategorySelector(
     }
 }
 
-
 @Composable
 fun Chip(text: String, isSelected: Boolean, onClick: () -> Unit) {
     Text(
@@ -151,5 +199,5 @@ fun Chip(text: String, isSelected: Boolean, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun SearchPreview() {
-    SearchScreen(navController = rememberNavController(), viewModel())
+    SearchScreen(navController = rememberNavController(), viewModel(), null)
 }

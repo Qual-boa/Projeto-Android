@@ -7,6 +7,7 @@ import com.example.qualaboaapp.ui.theme.establishment.AddressResponse
 import com.example.qualaboaapp.ui.theme.establishment.EstablishmentResponse
 import com.example.qualaboaapp.ui.theme.establishment.GeocodingApi
 import com.example.qualaboaapp.ui.theme.establishment.Location
+import com.example.qualaboaapp.ui.theme.establishment.getGoogleApiKey
 import com.example.qualaboaapp.ui.theme.home.categorias.RetrofitService
 import com.example.qualaboaapp.ui.theme.home.categorias.RetrofitService.retrofit
 import com.google.android.gms.maps.model.LatLng
@@ -15,9 +16,6 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.net.ssl.HostnameVerifier
-import com.google.gson.Gson
-import okhttp3.Request
-import org.json.JSONObject
 
 open class BarRepository(val context: Context) {
     private val api = RetrofitService.retrofit
@@ -33,7 +31,7 @@ open class BarRepository(val context: Context) {
         )
 
         return withContext(Dispatchers.IO) {
-            api.searchBars(requestBody) // Envia o objeto diretamente
+            api.searchBars(requestBody) ?: emptyList() // Retorna uma lista vazia se a resposta for nula
         }
     }
 
@@ -61,6 +59,30 @@ open class BarRepository(val context: Context) {
         }
     }
 
+    suspend fun getBarCoordinates(establishmentId: String): LatLng? {
+        return try {
+            val address = getAddressByEstablishmentId(establishmentId)
+            if (address != null) {
+                val fullAddress = listOfNotNull(
+                    address.street,
+                    address.number,
+                    address.neighborhood,
+                    address.city,
+                    address.state,
+                    address.postalCode
+                ).joinToString(", ")
+
+                val apiKey = getGoogleApiKey(context)
+                val location = getCoordinatesFromAddress(fullAddress, apiKey)
+                location?.let { LatLng(it.lat, it.lng) }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 
     suspend fun getCoordinatesFromAddress(address: String, apiKey: String): Location? {
         val geocodingUrl = "https://maps.googleapis.com/maps/api/geocode/json"
@@ -133,5 +155,11 @@ open class BarRepository(val context: Context) {
             .hostnameVerifier(hostnameVerifier)
             .addInterceptor(loggingInterceptor) // Adiciona o interceptor de logging
             .build()
+    }
+
+    suspend fun getUserById(userId: String): UserResponse {
+        return withContext(Dispatchers.IO) {
+            api.getUserById(userId)
+        }
     }
 }

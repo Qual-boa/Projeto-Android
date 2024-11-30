@@ -17,7 +17,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="190c67a4-a569-420f-8e1d-bbaf11f4cc07" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchRequest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" afterDir="false" />
@@ -30,17 +29,18 @@
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/categorias/RetrofitService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/categorias/RetrofitService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/top_estabelecimentos/RetrofitService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/top_estabelecimentos/RetrofitService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/EstablishmentActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/EstablishmentActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/EstablishmentViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/EstablishmentViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/location_section.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/location_section.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/review_section.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/review_section.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarCard.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarCard.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarList.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarRepository.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,29 +99,29 @@
       <list>
         <option value="resourceFile" />
         <option value="valueResourceFile" />
-        <option value="Kotlin Interface" />
         <option value="Kotlin Object" />
         <option value="Kotlin Class" />
         <option value="Kotlin File" />
         <option value="Kotlin Data Class" />
+        <option value="Kotlin Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "nicolas-prates"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;nicolas-prates&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Qual-boa/Projeto-Android.git",
-    "accountId": "a4439c53-1bfb-429e-a2be-aa9ecc795e59"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Qual-boa/Projeto-Android.git&quot;,
+    &quot;accountId&quot;: &quot;a4439c53-1bfb-429e-a2be-aa9ecc795e59&quot;
   }
-}]]></component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -137,42 +137,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Android App.CadastroActivity.executor": "Run",
-    "Android App.HomeActivity.executor": "Run",
-    "Android App.LoginCadastroInicialActivity.executor": "Run",
-    "Android App.SearchActivity.executor": "Run",
-    "Android App.SplashActivity.executor": "Run",
-    "Android App.app.executor": "Run",
-    "Compose Preview.BarListPreview.executor": "Run",
-    "Compose Preview.MainScreenPreview.executor": "Run",
-    "Compose Preview.PreviewEstablishmentScreen.executor": "Run",
-    "Compose Preview.SearchPreview.executor": "Run",
-    "RESOURCE_BUNDLE_EXPRESSION_USED": "",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "tela-pesquisa",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "C:/Users/danie/OneDrive/Documentos/Projeto-Android/QualABoaApp/app/src/main/res/mipmap-hdpi",
-    "last_opened_file_path": "C:/Users/danie/OneDrive/Documentos/Projeto-Android/QualABoaApp/app/src/main/res/raw",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.17",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.general"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Android App.CadastroActivity.executor&quot;: &quot;Run&quot;,
+    &quot;Android App.HomeActivity.executor&quot;: &quot;Run&quot;,
+    &quot;Android App.LoginCadastroInicialActivity.executor&quot;: &quot;Run&quot;,
+    &quot;Android App.SearchActivity.executor&quot;: &quot;Run&quot;,
+    &quot;Android App.SplashActivity.executor&quot;: &quot;Run&quot;,
+    &quot;Android App.app.executor&quot;: &quot;Run&quot;,
+    &quot;Compose Preview.BarListPreview.executor&quot;: &quot;Run&quot;,
+    &quot;Compose Preview.MainScreenPreview.executor&quot;: &quot;Run&quot;,
+    &quot;Compose Preview.PreviewEstablishmentScreen.executor&quot;: &quot;Run&quot;,
+    &quot;Compose Preview.SearchPreview.executor&quot;: &quot;Run&quot;,
+    &quot;RESOURCE_BUNDLE_EXPRESSION_USED&quot;: &quot;&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;tela-pesquisa&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;C:/Users/danie/OneDrive/Documentos/Projeto-Android/QualABoaApp/app/src/main/res/mipmap-hdpi&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/danie/OneDrive/Documentos/Projeto-Android/QualABoaApp/app/src/main/res/raw&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;
   },
-  "keyToStringList": {
-    "kotlin-gradle-user-dirs": [
-      "C:\\Users\\woodd\\.gradle"
+  &quot;keyToStringList&quot;: {
+    &quot;kotlin-gradle-user-dirs&quot;: [
+      &quot;C:\\Users\\woodd\\.gradle&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\danie\OneDrive\Documentos\Projeto-Android\QualABoaApp\app\src\main\res\raw" />

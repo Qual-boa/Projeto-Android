@@ -72,8 +72,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
-    implementation ("com.google.android.gms:play-services-maps:18.0.2")
-    implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("com.google.android.libraries.places:places:2.5.0")
     implementation(libs.litert.support.api)
     testImplementation(libs.junit)
@@ -99,5 +97,7 @@ dependencies {
     implementation ("io.insert-koin:koin-androidx-compose:3.4.0")
     implementation ("com.google.accompanist:accompanist-flowlayout:0.30.1")
     implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1")
+
 
 }

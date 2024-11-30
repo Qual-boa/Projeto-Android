@@ -81,20 +81,25 @@ fun EstablishmentScreen(
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
             ) {
-                // Avaliações
-                ReviewSection(reviews = est.relationships ?: emptyList())
+                LaunchedEffect(establishment.value?.relationships) {
+                    establishment.value?.relationships?.let { relationships ->
+                        viewModel.loadReviewsWithUsers(relationships)
+                    }
+                }
+
+                val reviewsWithUsers = viewModel.reviewsWithUsers.collectAsState()
+
+                ReviewSection(reviews = reviewsWithUsers.value)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Verifica se coordenadas válidas estão disponíveis
                 if (coordinates.value != null) {
                     LocationSection(
-                        latitude = coordinates.value!!.latitude,
-                        longitude = coordinates.value!!.longitude,
+                        latitude = coordinates.value?.latitude ?: 0.0,
+                        longitude = coordinates.value?.longitude ?: 0.0,
                         address = "${address.value?.street}, ${address.value?.number}, ${address.value?.city}, ${address.value?.state}, ${address.value?.postalCode}",
-                        onShareLocation = {
-                            // Lógica para compartilhar a localização
-                        }
+                        context = context // Passar o contexto aqui
                     )
                 } else {
                     Text(

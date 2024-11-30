@@ -1,10 +1,13 @@
 package com.example.qualaboaapp.ui.theme.establishment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.qualaboaapp.ui.theme.search.BarRepository
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -49,7 +52,7 @@ class EstablishmentViewModel(private val repository: BarRepository) : ViewModel(
     /**
      * Recupera a chave da API do Google a partir do Manifest.
      */
-    fun getGoogleApiKey(context: Context): String {
+    private fun getGoogleApiKey(context: Context): String {
         return try {
             val appInfo = context.packageManager.getApplicationInfo(
                 context.packageName,
@@ -97,6 +100,41 @@ class EstablishmentViewModel(private val repository: BarRepository) : ViewModel(
         }
     }
 
+    // Estado para os dados de avaliações enriquecidas com nomes de usuários
+    private val _reviewsWithUsers = MutableStateFlow<List<ReviewWithUser>>(emptyList())
+    val reviewsWithUsers: StateFlow<List<ReviewWithUser>> = _reviewsWithUsers
+
+    // Função para carregar os dados de avaliações com nomes de usuários
+    fun loadReviewsWithUsers(relationships: List<Relationship>) {
+        viewModelScope.launch {
+            val enrichedReviews = relationships
+                .filter { it.interactionType == "COMMENT" }
+                .map { relationship ->
+                    try {
+                        val user = repository.getUserById(relationship.userId)
+                        ReviewWithUser(
+                            userName = user.name,
+                            rate = relationship.rate,
+                            message = relationship.message
+                        )
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        ReviewWithUser(
+                            userName = "Usuário Desconhecido",
+                            rate = relationship.rate,
+                            message = relationship.message
+                        )
+                    }
+                }
+            _reviewsWithUsers.value = enrichedReviews
+        }
+    }
+
+    private val _userLocation = MutableStateFlow<Location?>(null)
+    val userLocation: StateFlow<Location?> = _userLocation
+
+    private val _barDistances = MutableStateFlow<Map<String, Float>>(emptyMap())
+    val barDistances: StateFlow<Map<String, Float>> = _barDistances
 
     /**
      * Constrói o endereço completo a partir do [AddressResponse].
@@ -114,3 +152,10 @@ class EstablishmentViewModel(private val repository: BarRepository) : ViewModel(
         }
     }
 }
+
+// Classe para representar os comentários enriquecidos
+data class ReviewWithUser(
+    val userName: String,
+    val rate: Double,
+    val message: String
+)
