@@ -122,7 +122,11 @@ fun HomeScreen(
                 ) {
                     items(topEstablishments) { establishment ->
                         val photos = establishmentPhotos[establishment.id] ?: emptyList()
-                        EstablishmentCarouselItem(establishment = establishment, photos = photos)
+                        EstablishmentCarouselItem(
+                            establishment = establishment,
+                            photos = photos,
+                            navController
+                        )
                     }
                 }
             }

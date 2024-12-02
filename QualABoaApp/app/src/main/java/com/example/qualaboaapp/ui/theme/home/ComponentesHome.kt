@@ -3,6 +3,7 @@
     import android.annotation.SuppressLint
     import androidx.compose.foundation.Image
     import androidx.compose.foundation.background
+    import androidx.compose.foundation.clickable
     import androidx.compose.foundation.layout.*
     import androidx.compose.ui.Alignment
     import androidx.compose.foundation.shape.CircleShape
@@ -35,6 +36,7 @@
     import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.Establishment
     import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
     import com.example.qualaboaapp.ui.theme.utils.UserPreferences
+    import com.google.gson.Gson
     import org.koin.androidx.compose.get
 
     @Composable
@@ -142,7 +144,11 @@
     }
 
     @Composable
-    fun EstablishmentCarouselItem(establishment: Establishment, photos: List<EstablishmentPhoto>) {
+    fun EstablishmentCarouselItem(
+        establishment: Establishment,
+        photos: List<EstablishmentPhoto>,
+        navController: NavController
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -156,7 +162,12 @@
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(120.dp)
-                        .clip(RoundedCornerShape(10.dp)),
+                        .clip(RoundedCornerShape(10.dp))
+                        .clickable {
+                            val gson = Gson()
+                            val json = gson.toJson(photos)
+                            navController.navigate("estabelecimento/${establishment.id}?photos=$json")
+                        },
                     contentScale = ContentScale.Crop
                 )
             } else {
@@ -184,7 +195,6 @@
             )
         }
     }
-
 
     @Composable
     fun PopularCategoryItem(name: String) {
