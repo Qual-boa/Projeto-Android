@@ -1,11 +1,10 @@
-    package com.example.qualaboaapp.ui.theme
+    package com.example.qualaboaapp.ui.theme.home
 
     import android.annotation.SuppressLint
-    import com.example.qualaboaapp.ui.theme.search.SearchActivity
-    import android.content.Intent
     import androidx.compose.foundation.Image
     import androidx.compose.foundation.background
     import androidx.compose.foundation.layout.*
+    import androidx.compose.ui.Alignment
     import androidx.compose.foundation.shape.CircleShape
     import androidx.compose.foundation.shape.RoundedCornerShape
     import androidx.compose.material3.Card
@@ -16,24 +15,25 @@
     import androidx.compose.runtime.Composable
     import androidx.compose.runtime.collectAsState
     import androidx.compose.runtime.getValue
-    import androidx.compose.ui.Alignment
+    import androidx.compose.runtime.mutableStateOf
+    import androidx.compose.runtime.remember
+    import androidx.compose.runtime.setValue
     import androidx.compose.ui.Modifier
     import androidx.compose.ui.draw.clip
     import androidx.compose.ui.graphics.Color
     import androidx.compose.ui.layout.ContentScale
     import androidx.compose.ui.platform.LocalContext
+    import androidx.compose.ui.res.colorResource
     import androidx.compose.ui.res.painterResource
     import androidx.compose.ui.text.font.FontWeight
     import androidx.compose.ui.text.style.TextOverflow
     import androidx.compose.ui.unit.dp
     import androidx.compose.ui.unit.sp
+    import androidx.navigation.NavController
     import coil.compose.rememberAsyncImagePainter
     import com.example.qualaboaapp.R
-    import com.example.qualaboaapp.ui.theme.favoritos.FavoritosActivity
-    import com.example.qualaboaapp.ui.theme.home.HomeActivity
     import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.Establishment
     import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
-    import com.example.qualaboaapp.ui.theme.notificacoes.NotificacaoActivity
     import com.example.qualaboaapp.ui.theme.utils.UserPreferences
     import org.koin.androidx.compose.get
 
@@ -58,7 +58,6 @@
             fontWeight = FontWeight.Bold
         )
     }
-
 
     fun getCategoryImage(name: String): Int {
         return when (name) {
@@ -107,7 +106,6 @@
             else -> Color(0xFFF5F5F5) // Default pastel gray
         }
     }
-
 
     @Composable
     fun CategoryItem(name: String) {
@@ -284,88 +282,3 @@
             }
         }
     }
-
-    @SuppressLint("SuspiciousIndentation")
-    @Composable
-    fun BottomMenu(modifier: Modifier = Modifier) {
-        val context = LocalContext.current
-        Row(
-            modifier = modifier
-                .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-                .background(Color(0xFFFFF1D5))
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            IconButton(
-                onClick = {
-                    context.startActivity(Intent(context, HomeActivity::class.java))
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.mipmap.home),
-                    contentDescription = "Home",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-
-            IconButton(
-                onClick = {
-                    context.startActivity(Intent(context, NotificacaoActivity::class.java))
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.mipmap.not),
-                    contentDescription = "Notificações",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .size(70.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFA1530A)),
-                contentAlignment = Alignment.Center
-            ) {
-                IconButton(
-                    onClick = {
-                        context.startActivity(Intent(context, SearchActivity::class.java))
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.mipmap.search),
-                        contentDescription = "Pesquisa",
-                        modifier = Modifier.size(35.dp),
-                        tint = Color.White
-                    )
-                }
-            }
-
-            IconButton(
-                onClick = {
-                    context.startActivity(Intent(context, FavoritosActivity::class.java))
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.mipmap.fav),
-                    contentDescription = "Favoritos",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-
-            IconButton(
-                onClick = {
-                    context.startActivity(Intent(context, ConfiguracoesActivity::class.java))
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.mipmap.user),
-                    contentDescription = "Perfil",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-        }
-    }
-
-

@@ -1,5 +1,6 @@
 package com.example.qualaboaapp.ui.theme.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,20 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.qualaboaapp.R
-import com.example.qualaboaapp.ui.theme.BottomMenu
-import com.example.qualaboaapp.ui.theme.CategoryItem
-import com.example.qualaboaapp.ui.theme.EstablishmentCard
-import com.example.qualaboaapp.ui.theme.EstablishmentCarouselItem
-import com.example.qualaboaapp.ui.theme.Greeting
-import com.example.qualaboaapp.ui.theme.PopularCategoryItem
 import com.example.qualaboaapp.ui.theme.home.categorias.CategoriesViewModel
 import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -45,18 +41,21 @@ class HomeActivity : ComponentActivity() {
                 HomeScreen(
                     username = "Usuário",
                     categoriesViewModel = categoriesViewModel,
-                    establishmentsViewModel = establishmentsViewModel
+                    establishmentsViewModel = establishmentsViewModel,
+                    navController = rememberNavController()
                 )
             }
         }
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     username: String?,
     categoriesViewModel: CategoriesViewModel,
-    establishmentsViewModel: EstablishmentsViewModel
+    establishmentsViewModel: EstablishmentsViewModel,
+    navController: NavController
 ) {
     val categories by categoriesViewModel.categories.collectAsState(initial = emptyList())
     val popularCategories by categoriesViewModel.popularCategories.collectAsState(initial = emptyList())
@@ -167,12 +166,5 @@ fun HomeScreen(
                 }
             }
         }
-
-        BottomMenu(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .height(80.dp)
-        )
     }
 }

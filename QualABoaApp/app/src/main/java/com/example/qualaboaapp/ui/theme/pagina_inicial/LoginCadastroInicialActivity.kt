@@ -3,6 +3,7 @@ package com.example.qualaboaapp.ui.theme.pagina_inicial
 import com.example.qualaboaapp.ui.theme.login.LoginActivity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.MainActivity
 import com.example.qualaboaapp.ui.theme.cadastro.CadastroActivity
 import com.example.qualaboaapp.ui.theme.home.HomeActivity
 import com.example.qualaboaapp.ui.theme.utils.UserPreferences
@@ -59,7 +61,7 @@ class LoginCadastroInicialActivity : ComponentActivity() {
 
             if (isLoggedIn) {
                 // Redirecionar para HomeActivity se logado
-                startActivity(Intent(this@LoginCadastroInicialActivity, HomeActivity::class.java))
+                startActivity(Intent(this@LoginCadastroInicialActivity, MainActivity::class.java))
                 finish()
             } else {
                 // Exibe a tela de login/cadastro
@@ -74,7 +76,7 @@ class LoginCadastroInicialActivity : ComponentActivity() {
                             startActivity(intent)
                         },
                         onEntrarSemLogarClick = {
-                            val intent = Intent(this@LoginCadastroInicialActivity, HomeActivity::class.java)
+                            val intent = Intent(this@LoginCadastroInicialActivity, MainActivity::class.java)
                             startActivity(intent)
                         }
                     )
@@ -83,7 +85,6 @@ class LoginCadastroInicialActivity : ComponentActivity() {
         }
     }
 }
-
 
 @Composable
 fun QualABoaScreen(
@@ -150,7 +151,6 @@ fun QualABoaScreen(
         )
     }
 }
-
 
 @Composable
 fun ButtonWithIcon(text: String, iconRes: Int, onClick: () -> Unit) {

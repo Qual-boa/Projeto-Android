@@ -1,7 +1,9 @@
 package com.example.qualaboaapp.ui.theme.home.top_estabelecimentos
 
 import android.content.Context
+import android.util.Log
 import com.example.qualaboaapp.R
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.net.ssl.HostnameVerifier
@@ -10,8 +12,7 @@ import javax.net.ssl.HostnameVerifier
 object RetrofitService {
 
     private const val BASE_URL = "https://qualaboa.servebeer.com/api/ms-auth/"
-    private const val PHOTO_BASE_URL =
-        "https://qualaboa.servebeer.com/api/ms-blob/"
+    private const val PHOTO_BASE_URL = "https://qualaboa.servebeer.com/api/ms-blob/"
 
     // Função para criar EstablishmentsApi
     fun provideEstablishmentsApi(context: Context): EstablishmentsApi {

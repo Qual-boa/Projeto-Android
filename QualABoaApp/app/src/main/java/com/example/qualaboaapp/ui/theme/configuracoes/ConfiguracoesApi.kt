@@ -7,13 +7,13 @@ import retrofit2.http.Path
 
 interface ConfiguracoesApi {
 
-    @PUT("/users/{id}")
+    @PUT("users/{id}")
     suspend fun atualizarPerfil(
         @Path("id") id: String,
         @Body perfilRequest: UsuarioData
     ): Response<UsuarioData>
 
-    @GET("/users/{id}")
+    @GET("users/{id}")
     suspend fun getDadosUsuario(
         @Path("id") id: String
     ): Response<UsuarioData>

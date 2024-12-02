@@ -38,14 +38,15 @@ class ConfiguracoesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            ConfiguracoesScreen()
+            ConfiguracoesScreen(koinViewModel(), "")
         }
     }
 }
 
 @Composable
 fun ConfiguracoesScreen(
-    configuracoesViewModel: ConfiguracoesViewModel = koinViewModel()
+    configuracoesViewModel: ConfiguracoesViewModel = koinViewModel(),
+    userId: String?
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -56,7 +57,16 @@ fun ConfiguracoesScreen(
     val senha by configuracoesViewModel.senhaUsuario.collectAsState(initial = "")
     val isLoggedOut by configuracoesViewModel.isLoggedOut.collectAsState()
 
-    // Verifica o estado de logout e redireciona
+    // LaunchedEffect para carregar dados do usuário
+    LaunchedEffect(userId) {
+        Log.d("ConfiguracoesScreen", "UserId recebido: $userId")
+        // Configure o ViewModel ou carregue dados específicos do usuário
+        if (userId != null) {
+            configuracoesViewModel.carregarDadosDoUsuario(userId)
+        }
+    }
+
+// LaunchedEffect para redirecionar após logout
     LaunchedEffect(isLoggedOut) {
         if (isLoggedOut) {
             Log.d("ConfiguracoesScreen", "Redirecionando após logout.")
@@ -66,6 +76,7 @@ fun ConfiguracoesScreen(
             context.startActivity(intent)
         }
     }
+
 
     Box(
         modifier = Modifier

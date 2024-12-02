@@ -88,11 +88,12 @@ class UserPreferences(private val context: Context) {
     /**
      * Salva informações do usuário no DataStore.
      */
-    suspend fun saveUserInfo(isLoggedIn: Boolean, email: String?, userName: String?) {
+    suspend fun saveUserInfo(isLoggedIn: Boolean, email: String?, userName: String?, userId: String?) {
         context.dataStore.edit { preferences ->
             preferences[IS_LOGGED_IN_KEY] = isLoggedIn
             preferences[USER_EMAIL_KEY] = email ?: ""
             preferences[USER_NAME_KEY] = userName ?: ""
+            preferences[USER_ID_KEY] = userId ?: ""
         }
     }
 
@@ -101,6 +102,7 @@ class UserPreferences(private val context: Context) {
         val preferences = context.dataStore.data.first()
         val email = preferences[USER_EMAIL_KEY]
         val name = preferences[USER_NAME_KEY]
+        val id = preferences[USER_ID_KEY]
         Log.d("UserPreferences", "Dados recuperados: userName=$name, userEmail=$email")
         return Pair(name, email)
     }

@@ -26,35 +26,28 @@ class ConfiguracoesViewModel(
     private val _isLoggedOut = MutableStateFlow(false)
     val isLoggedOut: StateFlow<Boolean> = _isLoggedOut
 
-    init {
-        carregarDadosUsuario()
-    }
-
-    /**
-     * Carrega os dados do usuário do servidor e os salva localmente.
-     */
-    private fun carregarDadosUsuario() {
+    fun carregarDadosDoUsuario(userId: String?) {
         viewModelScope.launch {
             try {
-                val userId = userPreferences.getUserId() // Obtém o ID do usuário do UserPreferences
-                if (userId != null) {
-                    val response = configuracoesApi.getDadosUsuario(userId)
-                    if (response.isSuccessful) {
-                        response.body()?.let { dados ->
-                            _idUsuario = dados.id
-                            _nomeUsuario.value = dados.name ?: ""
-                            _emailUsuario.value = dados.email ?: ""
+                // Determina o ID do usuário
+                val resolvedUserId = if (!userId.isNullOrBlank()) {
+                    userId
+                } else {
+                    userPreferences.getUserId() ?: throw IllegalStateException("Nenhum ID de usuário encontrado.")
+                }
 
-                            // Salve os dados no UserPreferences
-                            userPreferences.saveUserInfo(
-                                isLoggedIn = true,
-                                email = dados.email,
-                                userName = dados.name
-                            )
-                        }
-                    } else {
-                        Log.e("ViewModel", "Erro ao carregar dados do usuário: ${response.code()}")
+                Log.d("ViewModel", "Carregando dados para o usuário com ID: $resolvedUserId")
+
+                // Chamada à API para buscar os dados do usuário
+                val response = configuracoesApi.getDadosUsuario(resolvedUserId)
+                if (response.isSuccessful) {
+                    response.body()?.let { dados ->
+                        _nomeUsuario.value = dados.name ?: ""
+                        _emailUsuario.value = dados.email ?: ""
+                        Log.d("ViewModel", "Dados do usuário carregados: $dados")
                     }
+                } else {
+                    Log.e("ViewModel", "Erro ao carregar dados do usuário: ${response.code()}")
                 }
             } catch (e: Exception) {
                 Log.e("ViewModel", "Erro ao carregar dados do usuário", e)
@@ -62,52 +55,50 @@ class ConfiguracoesViewModel(
         }
     }
 
-    /**
-     * Atualiza os dados do perfil do usuário no servidor.
-     */
     fun atualizarPerfil(name: String?, email: String?, password: String?) {
-        val id = _idUsuario ?: run {
-            Log.e("atualizarPerfil", "ID do usuário é nulo. Abortando operação de atualização.")
-            return
-        }
-        Log.d("atualizarPerfil", "Iniciando atualização de perfil com ID: $id")
         viewModelScope.launch {
             try {
+                // Resolve o ID do usuário
+                val userId = _idUsuario ?: userPreferences.getUserId() ?: run {
+                    Log.e("atualizarPerfil", "ID do usuário não encontrado. Abortando operação.")
+                    return@launch
+                }
+
+                Log.d("atualizarPerfil", "Iniciando atualização de perfil com ID: $userId")
+
+                // Criação do objeto de requisição
                 val request = UsuarioData(
-                    id = id,
+                    id = userId,
                     name = name.takeIf { !it.isNullOrBlank() },
                     email = email.takeIf { !it.isNullOrBlank() },
                     password = password.takeIf { !it.isNullOrBlank() }
                 )
+
                 Log.d("atualizarPerfil", "Request enviado: $request")
 
-                val response = configuracoesApi.atualizarPerfil(id, request)
-                Log.d("atualizarPerfil", "Resposta recebida: $response")
+                // Chamada à API para atualizar o perfil
+                val response = configuracoesApi.atualizarPerfil(userId, request)
 
                 if (response.isSuccessful) {
                     response.body()?.let { dados ->
-                        Log.d("atualizarPerfil", "Dados recebidos: $dados")
+                        Log.d("atualizarPerfil", "Dados atualizados recebidos: $dados")
 
+                        // Atualiza o estado interno e salva no UserPreferences
                         _nomeUsuario.value = dados.name ?: ""
                         _emailUsuario.value = dados.email ?: ""
-                        userPreferences.saveUserInfo(true, dados.email, dados.name)
+                        userPreferences.saveUserInfo(true, dados.email, dados.name, dados.id)
+
                         Log.d("atualizarPerfil", "Dados salvos no UserPreferences com sucesso.")
                     }
                 } else {
-                    Log.e(
-                        "atualizarPerfil",
-                        "Erro ao atualizar perfil. Código HTTP: ${response.code()}, Erro: ${
-                            response.errorBody()?.string() ?: "Resposta vazia"
-                        }"
-                    )
+                    val errorBody = response.errorBody()?.string() ?: "Resposta vazia"
+                    Log.e("atualizarPerfil", "Erro ao atualizar perfil. Código HTTP: ${response.code()}, Erro: $errorBody")
                 }
             } catch (e: Exception) {
                 Log.e("atualizarPerfil", "Exceção ao atualizar perfil", e)
             }
         }
     }
-
-
 
     /**
      * Atualiza o nome localmente.

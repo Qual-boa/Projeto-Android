@@ -30,12 +30,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.establishment.EstablishmentActivity
+import com.example.qualaboaapp.ui.theme.establishment.EstablishmentScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CategoriasGrid() {
+fun CategoriasGrid(navController: NavController) {
     val context = LocalContext.current // Obtenha o contexto aqui
 
     // Definindo as categorias e suas imagens no drawable
@@ -73,9 +75,7 @@ fun CategoriasGrid() {
                 drawableId = categoria.second,
                 backgroundColor = backgroundColor,
                 onClick = {
-                    // Intent para abrir a EstablishmentActivity
-                    val intent = Intent(context, EstablishmentActivity::class.java)
-                    context.startActivity(intent)
+                    navController.navigate("estabelecimento")
                 }
             )
         }

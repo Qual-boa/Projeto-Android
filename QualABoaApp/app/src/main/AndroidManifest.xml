@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
-
     <application
         android:name=".ui.theme.ApplicationInitializer"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -20,10 +19,17 @@
         android:theme="@style/Theme.TelaCadastro"
         tools:targetApi="31">
 
+        <!-- MainActivity -->
+        <activity
+            android:name=".ui.theme.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TelaCadastro">
+        </activity>
+
         <activity
             android:name=".ui.theme.splash_screen.SplashActivity"
             android:exported="true"
-            android:label="@string/QualABoaApp"
+            android:label="@string/title_activity_splash_screen"
             android:theme="@style/Theme.TelaCadastro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,20 +39,20 @@
 
         <activity
             android:name=".ui.theme.ConfiguracoesActivity"
-            android:exported="false"
-            android:label="@string/QualABoaApp"
+            android:exported="true"
+            android:label="@string/title_activity_tela_configuracoes"
             android:theme="@style/Theme.TelaCadastro" />
 
         <activity
             android:name=".ui.theme.login.LoginActivity"
-            android:exported="false"
-            android:label="@string/QualABoaApp"
+            android:exported="true"
+            android:label="@string/title_activity_tela_login"
             android:theme="@style/Theme.TelaCadastro" />
 
         <activity
             android:name=".ui.theme.pagina_inicial.LoginCadastroInicialActivity"
-            android:exported="false"
-            android:label="@string/QualABoaApp"
+            android:exported="true"
+            android:label="@string/title_activity_login_cadastro_inicial"
             android:theme="@style/Theme.TelaCadastro" />
 
 
@@ -89,7 +95,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCQfgO1dFZMoY3WCPUSnkcVnGSiPGbWa44" />
+            android:value="AIzaSyBrOIGFki8v9qzD7M2NUySfraP8g6Y6Jlk" />
 
 
     </application>

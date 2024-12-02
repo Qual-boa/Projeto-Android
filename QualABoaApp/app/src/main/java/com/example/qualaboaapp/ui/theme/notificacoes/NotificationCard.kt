@@ -1,4 +1,4 @@
-package com.example.qualaboaapp.ui.theme.utils
+package com.example.qualaboaapp.ui.theme.notificacoes
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
