@@ -17,6 +17,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="190c67a4-a569-420f-8e1d-bbaf11f4cc07" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/BottomMenu.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/checksums/sha1-checksums.bin" afterDir="false" />
@@ -26,27 +27,35 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.7/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/app/QualABoaApp.app.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/CadastroViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/cadastro/CadastroViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/configuracoes/ConfiguracoesViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/EstablishmentActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/EstablishmentActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/gallery_section.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/gallery_section.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/review_section.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/review_section.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/gallery_section.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/GallerySection.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/location_section.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/LocationSection.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/review_section.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/establishment/ReviewSection.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/favoritos/FavoritosActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/favoritos/FavoritosScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/ComponentesHome.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/ComponentesHome.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/HomeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/HomeActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/categorias/RetrofitService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/categorias/RetrofitService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/top_estabelecimentos/EstablishmentsRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/top_estabelecimentos/EstablishmentsRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/top_estabelecimentos/RetrofitService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/top_estabelecimentos/RetrofitService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarCard.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarCard.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/HomeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/home/HomeScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/login/LoginActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/login/LoginActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/login/LoginApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/login/LoginApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/login/LoginViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/login/LoginViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/notificacoes/NotificacaoActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/notificacoes/NotificacaoActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarCard.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/CardBar.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarList.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/BarViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/SearchModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/search_bar_section.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/search_bar_section.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/raw/certificado_auth.cer" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/raw/certificado_auth.cer" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/xml/network_security_config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/search_bar_section.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/search/PesquisaBar.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/utils/NotificationCard.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/notificacoes/NotificationCard.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/utils/UserPreferences.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/qualaboaapp/ui/theme/utils/UserPreferences.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +65,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=PhysicalDevice, isTemplate=false, identifier=serial=Z9MZLJ5PGQAYEQQO)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\woodd\.android\avd\Medium_Phone_API_35.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -107,9 +116,9 @@
         <option value="valueResourceFile" />
         <option value="Kotlin Object" />
         <option value="Kotlin Class" />
-        <option value="Kotlin File" />
         <option value="Kotlin Data Class" />
         <option value="Kotlin Interface" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -129,7 +138,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -186,6 +195,7 @@
       <recent name="C:\Users\danie\OneDrive\Documentos\Projeto-Android\QualABoaApp\app\src\main\res\xml" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\woodd\Documents\Facul\QAB\Projeto-Android\QualABoaApp\app\src\main\java\com\example\qualaboaapp\ui\theme\notificacoes" />
       <recent name="C:\Users\danie\OneDrive\Documentos\Projeto-Android\QualABoaApp\app\src\main\java\com\example\qualaboaapp\ui\theme\utils" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">

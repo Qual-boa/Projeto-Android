@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.qualaboaapp.R
-import com.example.qualaboaapp.ui.theme.utils.NotificationCard
 
 class NotificacaoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,6 +1,7 @@
 package com.example.qualaboaapp.ui.theme
 
 import BarViewModel
+import ConfiguracoesViewModel
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -22,23 +23,20 @@ import androidx.navigation.compose.rememberNavController
 import com.example.qualaboaapp.ui.theme.establishment.EstablishmentScreen
 import com.example.qualaboaapp.ui.theme.establishment.EstablishmentViewModel
 import com.example.qualaboaapp.ui.theme.favoritos.FavoriteScreen
-import com.example.qualaboaapp.ui.theme.home.BottomMenu
 import com.example.qualaboaapp.ui.theme.home.HomeScreen
 import com.example.qualaboaapp.ui.theme.home.categorias.CategoriesViewModel
 import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentsViewModel
-import com.example.qualaboaapp.ui.theme.notificacoes.NotificationScreen
 import com.example.qualaboaapp.ui.theme.search.SearchScreen
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.Task
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.example.qualaboaapp.ui.theme.home.BottomMenu
 import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.Task
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -47,6 +45,8 @@ class MainActivity : ComponentActivity() {
     private val establishmentsViewModel: EstablishmentsViewModel by viewModel()
     private val establishmentViewModel: EstablishmentViewModel by viewModel()
     private val barViewModel: BarViewModel by viewModel()
+    private val configuracoesViewModel: ConfiguracoesViewModel by viewModel()
+    private val _userId :String = ""
 
     var currentLocation by mutableStateOf<Location?>(null) // Alterado para MutableState
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -88,6 +88,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val userId = intent.getStringExtra("USER_ID") ?: ""
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         checkLocationPermissions()
         setContent {
@@ -96,7 +97,9 @@ class MainActivity : ComponentActivity() {
                 establishmentsViewModel,
                 establishmentViewModel,
                 barViewModel,
-                currentLocation
+                configuracoesViewModel,
+                currentLocation,
+                userId
             )
         }
     }
@@ -135,7 +138,9 @@ fun MainScreen(
     establishmentsViewModel: EstablishmentsViewModel,
     establishmentViewModel: EstablishmentViewModel,
     barViewModel: BarViewModel,
-    currentLocation: Location?
+    configuracoesViewModel: ConfiguracoesViewModel,
+    currentLocation: Location?,
+    userId: String
 ) {
     val navController = rememberNavController()
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -164,7 +169,12 @@ fun MainScreen(
                 }
             }
             composable("favoritos") { FavoriteScreen() }
-            composable("perfil") { ConfiguracoesScreen() }
+            composable("perfil") {
+                ConfiguracoesScreen(
+                    configuracoesViewModel = configuracoesViewModel,
+                    userId = userId // Passa o userId
+                )
+            }
             composable(
                 route = "estabelecimento/{id}?photos={photos}",
                 arguments = listOf(

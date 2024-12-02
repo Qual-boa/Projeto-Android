@@ -1,6 +1,5 @@
 package com.example.qualaboaapp.ui.theme.search
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,11 +8,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
 import com.google.gson.Gson
 
@@ -50,7 +47,7 @@ fun BarList(
                     bar.information.hasWifi,
                     bar.information.hasParking
                 )
-                BarCard(
+                CardBar(
                     image = photos.first().imgUrl,
                     title = bar.fantasyName,
                     description = bar.information.description,

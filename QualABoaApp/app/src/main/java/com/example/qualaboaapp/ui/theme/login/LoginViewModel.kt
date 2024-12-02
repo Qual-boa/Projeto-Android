@@ -1,7 +1,7 @@
 package com.example.qualaboaapp.ui.theme.login
 
 import LoginApi
-import android.util.Log
+import UserDetailsResponse
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.qualaboaapp.ui.theme.utils.UserPreferences
@@ -20,6 +20,9 @@ class LoginViewModel(
     private val _loginError = MutableStateFlow<String?>(null)
     val loginError: StateFlow<String?> = _loginError
 
+    private val _userDetails = MutableStateFlow<UserDetailsResponse?>(null)
+    val userDetails: StateFlow<UserDetailsResponse?> = _userDetails
+
     fun login(email: String, password: String) {
         if (email.isBlank() || password.isBlank()) {
             _loginError.value = "Preencha todos os campos"
@@ -32,12 +35,36 @@ class LoginViewModel(
 
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    val userName = responseBody?.get("usuario")?.toString() ?: ""
                     val token = responseBody?.get("token")?.toString() ?: ""
 
                     // Save user info in DataStore
-                    userPreferences.saveUserInfo(isLoggedIn = true, userName = userName, email = email)
                     userPreferences.saveToken(token)
+
+                    // Chamar o endpoint users/byEmail
+                    val userResponse = loginApi.getUserByEmail(email)
+
+                    if (userResponse.isSuccessful) {
+                        val userInfo = userResponse.body()
+
+                        // Chamar o endpoint users/{id}
+                        userInfo?.userId?.let { userId ->
+                            val userDetailsResponse = loginApi.getUserDetails(userId)
+
+                            if (userDetailsResponse.isSuccessful) {
+                                _userDetails.value = userDetailsResponse.body()
+                                userPreferences.saveUserInfo(
+                                    isLoggedIn = true,
+                                    userName = userDetailsResponse.body()?.name,
+                                    email = userDetailsResponse.body()?.email,
+                                    userId = userId
+                                )
+                            } else {
+                                _loginError.value = userDetailsResponse.errorBody()?.string()
+                            }
+                        }
+                    } else {
+                        _loginError.value = userResponse.errorBody()?.string()
+                    }
 
                     _loginStatus.value = true
                     _loginError.value = null

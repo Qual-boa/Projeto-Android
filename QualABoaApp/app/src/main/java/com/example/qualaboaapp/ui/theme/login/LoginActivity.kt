@@ -1,6 +1,5 @@
 package com.example.qualaboaapp.ui.theme.login
 
-import PoppinsFont
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -32,11 +31,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.MainActivity
-import com.example.qualaboaapp.ui.theme.home.HomeActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : ComponentActivity() {
-
     private val loginViewModel: LoginViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,14 +45,19 @@ class LoginActivity : ComponentActivity() {
 
             val loginStatus by loginViewModel.loginStatus.collectAsState(initial = null)
             val loginError by loginViewModel.loginError.collectAsState(initial = null)
+            val userDetails by loginViewModel.userDetails.collectAsState(initial = null)
 
             // Handle login state
             LaunchedEffect(loginStatus) {
                 loginStatus?.let { isLoggedIn ->
                     if (isLoggedIn) {
                         Toast.makeText(this@LoginActivity, "Login bem-sucedido", Toast.LENGTH_LONG).show()
-                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-                        finish()
+                        val userId = userDetails?.id ?: ""
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
+                            putExtra("USER_ID", userId)
+                        }
+                        startActivity(intent)
+                        finish() // Opcional: encerra a LoginActivity
                     } else if (loginError != null) {
                         Toast.makeText(this@LoginActivity, loginError, Toast.LENGTH_LONG).show()
                     }
@@ -81,6 +83,10 @@ fun LoginScreen(
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit
 ) {
+    val PoppinsFont = FontFamily(
+        Font(R.font.poppins_regular, FontWeight.Normal),
+        Font(R.font.poppins_bold, FontWeight.Bold)
+    )
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -113,7 +119,7 @@ fun LoginScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = stringResource(id = R.string.login_heading), // Adicione no `strings.xml`
+                        text = stringResource(id = R.string.login_heading),
                         fontFamily = PoppinsFont,
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp,
@@ -150,7 +156,7 @@ fun LoginScreen(
                         )
                     ) {
                         Text(
-                            text = stringResource(id = R.string.login_heading), // Adicione no `strings.xml`
+                            text = stringResource(id = R.string.login_heading),
                             fontFamily = PoppinsFont,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
@@ -162,8 +168,6 @@ fun LoginScreen(
         }
     }
 }
-
-
 
 @Composable
 fun InputFieldWithShadow(label: String, text: String, isPassword: Boolean = false, onTextChange: (String) -> Unit) {

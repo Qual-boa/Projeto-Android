@@ -36,7 +36,7 @@ class CadastroViewModel(
                 if (response.isSuccessful) {
                     _cadastroStatus.value = true
                     _erroCadastro.value = null
-                    userPreferences.saveUserInfo(true, email, nome)
+                    userPreferences.saveUserInfo(true, email, nome, response.body()?.id)
                 } else {
                     _cadastroStatus.value = false
                     _erroCadastro.value = response.errorBody()?.string()
