@@ -1,6 +1,8 @@
 package com.example.qualaboaapp.ui.theme.favoritos
 
+import BarViewModel
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -8,90 +10,103 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.qualaboaapp.R
 import com.example.qualaboaapp.ui.theme.notificacoes.NotificationCard
+import com.example.qualaboaapp.ui.theme.search.BarList
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritosActivity : ComponentActivity() {
+    private val barViewModel: BarViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
-            FavoriteScreen()
+            FavoriteScreen(
+                navController = rememberNavController(),
+                viewModel = barViewModel,
+                ""
+            )
         }
     }
 }
 
 @Composable
-fun FavoriteScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFFFF5E1))
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .align(Alignment.TopCenter)
-                .background(Color.White)
-                .zIndex(1f)
-                .padding(16.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.Start, // Alinha à esquerda
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Spacer(modifier = Modifier.height(10.dp))
+fun FavoriteScreen(
+    navController: NavController,
+    viewModel: BarViewModel,
+    userId: String?
+) {
+    val context = LocalContext.current
 
-                Text(
-                    text = stringResource(R.string.favoritos),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    color = Color.Black,
-                    modifier = Modifier.padding(bottom = 10.dp)
-                )
-
-                // Adicionando o NotificationCard
-                repeat(3) {
-                    NotificationCard(
-                        imageRes = R.mipmap.perfil,
-                        title = "Bar do Vini",
-                        description = "Comida, bebida e muita diversão",
-                        services = listOf("Estacionamento", "Acessibilidade", "TV", "Wi-Fi"),
-                        isFavorite = true,
-                        onFavoriteClick = {
-                            println("Favorito clicado!")
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(16.dp)) // Espaçamento entre os cards
-                }
-
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = stringResource(R.string.favorites_loaded_message))
-                }
-            }
+    // Chama o método para buscar os favoritos ao abrir a tela
+    LaunchedEffect(userId) {
+        viewModel.fetchFavoriteBars(userId) { error ->
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .height(80.dp)
-                .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-                .background(Color(0xFFFFF1D5))
-                .zIndex(2f)
-        ) {
+    }
+
+    val bars = viewModel.bars.collectAsState()
+    val isLoading = viewModel.isLoading.collectAsState()
+    val establishmentPhotos by viewModel.establishmentPhotos.collectAsState(initial = emptyMap())
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            Text(
+                text = "Meus Favoritos",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            if (isLoading.value) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    color = colorResource(R.color.brown_qab)
+                )
+            } else if (bars.value.isNotEmpty()) {
+                BarList(
+                    establishmentPhotos = establishmentPhotos,
+                    bars = bars.value,
+                    navController = navController,
+                    favorites = bars.value.map { it.id },
+                    onFavoriteClick = { bar ->
+                        viewModel.toggleFavorite(
+                            establishmentId = bar.id,
+                            userId = userId,
+                            onSuccess = { message ->
+                                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                            },
+                            onError = { error ->
+                                Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    },
+                    distances = emptyMap()
+                )
+            } else {
+                Text(
+                    text = "Nenhum favorito encontrado.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
         }
     }
 }
@@ -99,5 +114,9 @@ fun FavoriteScreen() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    FavoriteScreen()
+    FavoriteScreen(
+        navController = rememberNavController(),
+        viewModel = viewModel(),
+        ""
+    )
 }

@@ -140,6 +140,12 @@ open class BarRepository(val context: Context) {
         }
     }
 
+    suspend fun getUserFavoritesList(userId: String): List<BarResponse> {
+        return withContext(Dispatchers.IO) {
+            api.getUserFavoritesList(userId)
+        }
+    }
+
 
     // Função para criar OkHttpClient seguro com HttpLoggingInterceptor
     private fun createSecureOkHttpClient(context: Context): OkHttpClient {

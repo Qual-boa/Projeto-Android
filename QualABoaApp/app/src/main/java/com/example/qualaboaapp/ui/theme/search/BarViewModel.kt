@@ -234,6 +234,43 @@ class BarViewModel(
         }
     }
 
+    fun fetchFavoriteBars(userId: String?, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                // Resolver o ID do usuário
+                val resolvedUserId = userId?.takeIf { it.isNotBlank() }
+                    ?: userPreferences.getUserId()?.takeIf { it.isNotBlank() }
+                    ?: run {
+                        onError("Usuário não está logado. Por favor, faça login para continuar.")
+                        return@launch
+                    }
+
+                isLoading.value = true
+
+                // Buscar os bares favoritos
+                val favoriteEstablishments = repository.getUserFavoritesList(resolvedUserId)
+                bars.value = favoriteEstablishments
+
+                // Buscar as fotos associadas aos favoritos
+                val photosMap = mutableMapOf<String, List<EstablishmentPhoto>>()
+                favoriteEstablishments.forEach { favorite ->
+                    val photos = try {
+                        photoRepository.fetchEstablishmentPhotos(favorite.id)
+                    } catch (e: Exception) {
+                        emptyList()
+                    }
+                    photosMap[favorite.id] = photos
+                }
+
+                _establishmentPhotos.emit(photosMap) // Atualiza o StateFlow com as fotos
+            } catch (e: Exception) {
+                e.printStackTrace()
+                onError("Erro ao buscar favoritos: ${e.localizedMessage}")
+            } finally {
+                isLoading.value = false
+            }
+        }
+    }
 
     fun clearBars() {
         bars.value = emptyList()

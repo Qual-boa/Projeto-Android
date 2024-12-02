@@ -173,7 +173,14 @@ fun MainScreen(
                     Toast.makeText(context, "Localização ainda não obtida", Toast.LENGTH_SHORT).show()
                 }
             }
-            composable("favoritos") { FavoriteScreen() }
+            composable("favoritos") {
+                FavoriteScreen(
+                    navController = navController,
+                    viewModel = barViewModel,
+                    userId = userId // Passe o ID do usuário
+                )
+            }
+
             composable("perfil") {
                 ConfiguracoesScreen(
                     configuracoesViewModel = configuracoesViewModel,

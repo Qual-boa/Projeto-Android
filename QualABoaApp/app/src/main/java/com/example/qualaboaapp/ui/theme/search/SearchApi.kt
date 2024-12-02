@@ -28,6 +28,10 @@ interface ApiService {
     @GET("establishments/favorites/{userId}")
     suspend fun getUserFavorites(@Path("userId") userId: String): List<BarResponse>
 
+    @GET("establishments/favorites/{userId}")
+    suspend fun getUserFavoritesList(@Path("userId") userId: String): List<BarResponse>
+
+
 }
 
 data class BarResponse(
