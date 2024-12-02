@@ -2,6 +2,7 @@ package com.example.qualaboaapp.ui.theme.establishment
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qualaboaapp.R
@@ -45,7 +47,7 @@ fun ReviewSection(reviews: List<ReviewWithUser>) {
                     nome = review.userName,
                     comentario = review.message,
                     estrelas = review.rate.toInt(),
-                    avatarId = R.drawable.profile_image
+                    avatarId = R.drawable.profile
                 )
             }
         }
@@ -54,38 +56,65 @@ fun ReviewSection(reviews: List<ReviewWithUser>) {
 
 @Composable
 fun ReviewCard(nome: String, comentario: String, estrelas: Int, avatarId: Int) {
-    Column(
+    Box(
         modifier = Modifier
+            .width(250.dp) // Largura fixa para todos os cards
+            .height(150.dp) // Altura fixa para manter consistência
             .clip(RoundedCornerShape(16.dp))
-            .background(Color(0xFFF5F5F5))
-            .padding(8.dp)
-            .width(200.dp) // Largura fixa para cada card
+            .background(Color.White) // Fundo branco do card
+            .border(
+                width = 2.dp,
+                color = Color(0xFFFFA500), // Cor da borda laranja
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(12.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(
+            verticalArrangement = Arrangement.Center, // Centralizar elementos verticalmente
+            horizontalAlignment = Alignment.CenterHorizontally, // Centralizar elementos horizontalmente
+            modifier = Modifier.fillMaxSize() // Preencher todo o espaço disponível
+        ) {
             // Avatar
             Image(
                 painter = painterResource(id = avatarId),
                 contentDescription = "Avatar $nome",
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(50.dp) // Tamanho fixo do avatar
                     .clip(CircleShape)
+                    .border(2.dp, Color.Gray, CircleShape)
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(text = nome, fontWeight = FontWeight.Bold)
-                Row {
-                    repeat(estrelas) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.stars_icon),
-                            contentDescription = "Star",
-                            tint = Color.Black,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
+            Spacer(modifier = Modifier.height(8.dp))
+            // Nome
+            Text(
+                text = nome,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis, // Garantir que o nome não extrapole
+                textAlign = TextAlign.Center // Centralizar o texto
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            // Estrelas
+            Row(horizontalArrangement = Arrangement.Center) {
+                repeat(estrelas) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.stars_icon),
+                        contentDescription = "Star",
+                        tint = Color(0xFFFFD700), // Cor das estrelas douradas
+                        modifier = Modifier.size(16.dp)
+                    )
                 }
             }
+            Spacer(modifier = Modifier.height(8.dp))
+            // Comentário
+            Text(
+                text = comentario,
+                fontSize = 12.sp,
+                color = Color.Gray,
+                maxLines = 2, // Limitar a 2 linhas
+                overflow = TextOverflow.Ellipsis, // Exibir reticências caso o texto seja longo
+                textAlign = TextAlign.Center // Centralizar o texto
+            )
         }
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(text = comentario, fontSize = 12.sp)
     }
 }

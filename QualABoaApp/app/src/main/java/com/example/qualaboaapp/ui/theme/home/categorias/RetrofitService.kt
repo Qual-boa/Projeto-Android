@@ -2,12 +2,12 @@ package com.example.qualaboaapp.ui.theme.home.categorias
 
 import android.content.Context
 import com.example.qualaboaapp.R
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.OkHttpClient
 
 object RetrofitService {
-    private const val BASE_URL = "http://44.206.188.183:8080/api/ms-auth/"
+    private const val BASE_URL = "https://qualaboa.servebeer.com/api/ms-auth/"
 
     fun provideRetrofit(context: Context): Retrofit {
         return Retrofit.Builder()

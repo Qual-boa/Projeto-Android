@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.MainActivity
 import com.example.qualaboaapp.ui.theme.home.HomeActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

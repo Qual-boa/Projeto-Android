@@ -12,20 +12,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun GallerySection() {
-    // Lista de imagens da galeria
-    val galleryImages = listOf(
-        R.drawable.gallery_image_placeholder,
-        R.drawable.gallery_image_placeholder,
-        R.drawable.gallery_image_placeholder
-    )
-
+fun GallerySection(galleryImages: List<EstablishmentPhoto>?) {
     // Definindo o estado do pager com o número de páginas
-    val pagerState = rememberPagerState(pageCount = { galleryImages.size })
+    val pagerState = rememberPagerState(pageCount = { galleryImages?.size ?: 0})
 
     HorizontalPager(
         state = pagerState,
@@ -35,7 +30,7 @@ fun GallerySection() {
             .padding(horizontal = 16.dp)
     ) { page ->
         Image(
-            painter = painterResource(id = galleryImages[page]),
+            painter = rememberAsyncImagePainter(galleryImages?.get(page)?.imgUrl),
             contentDescription = "Galeria Imagem $page",
             modifier = Modifier
                 .fillMaxWidth()

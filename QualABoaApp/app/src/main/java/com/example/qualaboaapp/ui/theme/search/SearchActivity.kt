@@ -31,8 +31,20 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.core.content.ContextCompat
+import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.home.getCategoryBackgroundColor
+import com.example.qualaboaapp.ui.theme.home.getCategoryImage
 
 class SearchActivity : ComponentActivity() {
     private val barViewModel: BarViewModel by viewModel()
@@ -95,6 +107,7 @@ fun SearchScreen(
     val bars = viewModel.bars.collectAsState()
     val isLoading = viewModel.isLoading.collectAsState()
     val barDistances = viewModel._barDistances.collectAsState() // Distâncias calculadas
+    val establishmentPhotos by viewModel.establishmentPhotos.collectAsState(initial = emptyMap())
 
     // Categorias e Seleções
     val musics = listOf("Rock", "Sertanejo", "Indie", "Rap", "Funk", "Metal")
@@ -117,14 +130,25 @@ fun SearchScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             if (isLoading.value) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    color = colorResource(R.color.brown_qab)
+                )
             } else if (bars.value.isNotEmpty()) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    ClearButton { viewModel.clearBars() }
+
                 BarList(
+                    establishmentPhotos,
                     bars = bars.value,
                     navController = navController,
                     onFavoriteClick = { bar -> /* Lógica para favoritos */ },
                     distances = barDistances.value // Passa as distâncias calculadas
                 )
+                }
             } else {
                 // Seletores de categoria
                 CategorySelector(
@@ -146,6 +170,8 @@ fun SearchScreen(
                     onSelectionChange = { selectedDrinks = it }
                 )
             }
+
+            Spacer(modifier = Modifier.height(40.dp))
         }
     }
 }
@@ -159,14 +185,14 @@ fun CategorySelector(
 ) {
     Column {
         Text(text = title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-        FlowRow(
-            mainAxisSpacing = 8.dp, // Espaçamento horizontal entre os chips
-            crossAxisSpacing = 8.dp // Espaçamento vertical entre as linhas
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(8.dp),
         ) {
-            categories.forEach { category ->
+            items(categories) { category -> // Use o "items" para cada item na lista
                 val isSelected = selectedItems.contains(category)
-                Chip(
-                    text = category,
+                CategoryItem(
+                    name = category,
                     isSelected = isSelected,
                     onClick = {
                         if (isSelected) {
@@ -181,20 +207,70 @@ fun CategorySelector(
     }
 }
 
+
 @Composable
-fun Chip(text: String, isSelected: Boolean, onClick: () -> Unit) {
-    Text(
-        text = text,
+fun CategoryItem(name: String, isSelected: Boolean, onClick: () -> Unit) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .padding(8.dp)
-            .background(if (isSelected) Color.Blue else Color.Gray)
-            .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        color = Color.White
-    )
+    ) {
+        // Colored box with the image
+        Box(
+            modifier = Modifier
+                .size(60.dp)
+                .then(
+                    if (isSelected) {
+                        Modifier.border(2.dp, colorResource(id = R.color.brown_qab))
+                    } else {
+                        Modifier // Sem borda se showBorder for false
+                    }
+                )
+                .clip(RoundedCornerShape(10.dp))
+                .background(getCategoryBackgroundColor(name))
+                .clickable(onClick = onClick)
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(id = getCategoryImage(name)),
+                contentDescription = name,
+                modifier = Modifier.size(40.dp)
+            )
+        }
+
+        // Name outside the box
+        androidx.compose.material3.Text(
+            text = name,
+            fontSize = 12.sp,
+            color = Color.Black,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(top = 4.dp)
+        )
+    }
 }
 
-
+@Composable
+fun ClearButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .height(48.dp)
+            .width(240.dp), // Tamanho fixo para manter o design consistente
+        shape = RoundedCornerShape(24.dp), // Bordas arredondadas
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = colorResource(R.color.brown_qab), // Cor de fundo (laranja)
+            contentColor = Color.White // Cor do texto (preto)
+        )
+    ) {
+        Text(
+            text = "Limpar Pesquisa",
+            fontSize = 16.sp, // Tamanho do texto
+            fontWeight = FontWeight.Medium // Texto em negrito
+        )
+    }
+}
 
 @Preview(showBackground = true)
 @Composable

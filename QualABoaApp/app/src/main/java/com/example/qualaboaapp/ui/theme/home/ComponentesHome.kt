@@ -15,11 +15,15 @@
     import androidx.compose.runtime.Composable
     import androidx.compose.runtime.collectAsState
     import androidx.compose.runtime.getValue
+    import androidx.compose.runtime.mutableStateOf
+    import androidx.compose.runtime.remember
+    import androidx.compose.runtime.setValue
     import androidx.compose.ui.Modifier
     import androidx.compose.ui.draw.clip
     import androidx.compose.ui.graphics.Color
     import androidx.compose.ui.layout.ContentScale
     import androidx.compose.ui.platform.LocalContext
+    import androidx.compose.ui.res.colorResource
     import androidx.compose.ui.res.painterResource
     import androidx.compose.ui.text.font.FontWeight
     import androidx.compose.ui.text.style.TextOverflow
@@ -102,7 +106,6 @@
             else -> Color(0xFFF5F5F5) // Default pastel gray
         }
     }
-
 
     @Composable
     fun CategoryItem(name: String) {
@@ -283,87 +286,72 @@
     @SuppressLint("SuspiciousIndentation")
     @Composable
     fun BottomMenu(navController: NavController) {
-        val context = LocalContext.current
+        // Estado para rastrear o índice selecionado
+        var selectedIndex by remember { mutableStateOf(0) }
+
         val modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
+
         Row(
             modifier = modifier
                 .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-                .background(Color(0xFFFFF1D5))
-                .padding(horizontal = 16.dp),
+                .background(Color(0xFFFFF1D5)) // Cor de fundo bege
+                .padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceAround // Espaçamento uniforme
         ) {
-            IconButton(
-                onClick = {
-                    navController.navigate("home")
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.mipmap.home),
-                    contentDescription = "Home",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
+            // Ícones do menu
+            val items = listOf(
+                R.mipmap.home to "home",
+                R.mipmap.search to "pesquisa",
+                R.mipmap.fav to "favoritos",
+                R.mipmap.user to "perfil"
+            )
 
-            IconButton(
-                onClick = {
-                    navController.navigate("notificacoes")
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.mipmap.not),
-                    contentDescription = "Notificações",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .size(70.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFA1530A)),
-                contentAlignment = Alignment.Center
-            ) {
-                IconButton(
-                    onClick = {
-                        navController.navigate("pesquisa")
+            items.forEachIndexed { index, item ->
+                // Se o item estiver selecionado, adiciona o fundo laranja
+                if (selectedIndex == index) {
+                    Box(
+                        modifier = Modifier
+                            .size(60.dp)
+                            .clip(CircleShape)
+                            .background(colorResource(R.color.orange_qab)), // Fundo laranja
+                        contentAlignment = Alignment.Center
+                    ) {
+                        IconButton(
+                            onClick = {
+                                selectedIndex = index // Atualiza o índice selecionado
+                                navController.navigate(item.second) // Navega para a rota
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = item.first),
+                                contentDescription = null,
+                                modifier = Modifier.size(30.dp),
+                                tint = Color.Black // Ícone preto
+                            )
+                        }
                     }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.mipmap.search),
-                        contentDescription = "Pesquisa",
-                        modifier = Modifier.size(35.dp),
-                        tint = Color.White
-                    )
+                } else {
+                    // Ícones normais (sem fundo laranja)
+                    IconButton(
+                        onClick = {
+                            selectedIndex = index // Atualiza o índice selecionado
+                            navController.navigate(item.second) // Navega para a rota
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = item.first),
+                            contentDescription = null,
+                            modifier = Modifier.size(30.dp),
+                            tint = Color.Black // Ícone preto
+                        )
+                    }
                 }
-            }
-
-            IconButton(
-                onClick = {
-                    navController.navigate("favoritos")
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.mipmap.fav),
-                    contentDescription = "Favoritos",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-
-            IconButton(
-                onClick = {
-                    navController.navigate("perfil")
-                }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.mipmap.user),
-                    contentDescription = "Perfil",
-                    modifier = Modifier.size(30.dp)
-                )
             }
         }
     }
+
 
 

@@ -14,9 +14,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.qualaboaapp.R
+import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
+import com.google.gson.Gson
 
 @Composable
 fun BarList(
+    establishmentPhotos: Map<String, List<EstablishmentPhoto>>?,
     bars: List<BarResponse>,
     navController: NavController,
     onFavoriteClick: (BarResponse) -> Unit,
@@ -35,19 +38,49 @@ fun BarList(
                 )
             }
         } else {
-            items(bars) { bar ->
-                Log.d("DistanciaAqui", "${bar.distance.toString()} ")
+            val sortedBars = bars.sortedByDescending { bar ->
+                distances[bar.id] // Ordena usando o valor de distância associado ao ID do bar
+            }
+            items(sortedBars) { bar ->
+                val photos = establishmentPhotos?.get(bar.id) ?: emptyList()
+
+                var additionalInfo = createAmenitiesString(
+                    bar.information.hasTv,
+                    bar.information.hasAccessibility,
+                    bar.information.hasWifi,
+                    bar.information.hasParking
+                )
                 BarCard(
-                    image = painterResource(id = R.drawable.profile_image),
+                    image = photos.first().imgUrl,
                     title = bar.fantasyName,
                     description = bar.information.description,
-                    additionalInfo = "CNPJ: ${bar.cnpj}, Média: R$${bar.averageOrderValue}",
+                    additionalInfo = additionalInfo,
                     distance = distances[bar.id]?.let { String.format("%.2f", it) } ?: "Desconhecido", // Distância em km
                     isFavorite = false,
                     onFavoriteClick = { onFavoriteClick(bar) },
-                    onClick = { navController.navigate("estabelecimento/${bar.id}") }
+                    onClick = {
+                        val gson = Gson()
+                        val json = gson.toJson(photos)
+                        navController.navigate("estabelecimento/${bar.id}?photos=$json")
+                    }
                 )
             }
         }
     }
+}
+
+fun createAmenitiesString(
+    hasTV: Boolean,
+    hasAccessibility: Boolean,
+    hasWifi: Boolean,
+    hasParking: Boolean
+): String {
+    val amenities = mutableListOf<String>()
+
+    if (hasTV) amenities.add("TV")
+    if (hasAccessibility) amenities.add("Acessibilidade")
+    if (hasWifi) amenities.add("Wi-fi")
+    if (hasParking) amenities.add("Estacionamento")
+
+    return amenities.joinToString(" - ") // Concatena as palavras com " - "
 }

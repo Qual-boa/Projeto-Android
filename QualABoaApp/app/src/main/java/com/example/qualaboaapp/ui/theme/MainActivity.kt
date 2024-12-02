@@ -35,8 +35,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class MainActivity : ComponentActivity() {
     private val categoriesViewModel: CategoriesViewModel by viewModel()
@@ -151,7 +155,6 @@ fun MainScreen(
                     navController
                 )
             }
-            composable("notificacoes") { NotificationScreen() }
             composable("pesquisa") {
                 barViewModel.clearBars()
                 if (currentLocation != null) {
@@ -161,11 +164,30 @@ fun MainScreen(
                 }
             }
             composable("favoritos") { FavoriteScreen() }
-            composable("estabelecimento/{id}") {  backStackEntry ->
+            composable("perfil") { ConfiguracoesScreen() }
+            composable(
+                route = "estabelecimento/{id}?photos={photos}",
+                arguments = listOf(
+                    navArgument("id") {
+                        type = NavType.StringType
+                    },
+                    navArgument("photos") {
+                        type = NavType.StringType
+                        nullable = true // Argumento opcional
+                    }
+                )
+            ) { backStackEntry ->
                 val id = backStackEntry.arguments?.getString("id") ?: ""
+                val photosJson = backStackEntry.arguments?.getString("photos")
+
+                // Desserializar a lista de objetos (se disponível)
+                val photosList: List<EstablishmentPhoto>? = photosJson?.let {
+                    Gson().fromJson(it, object : TypeToken<List<EstablishmentPhoto>>() {}.type)
+                }
 
                 EstablishmentScreen(
                     id = id,
+                    photo = photosList,
                     viewModel = establishmentViewModel,
                     navController = navController,
                     context = context

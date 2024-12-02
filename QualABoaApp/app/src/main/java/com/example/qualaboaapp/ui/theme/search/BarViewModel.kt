@@ -5,20 +5,30 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.Establishment
+import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
+import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentsRepository
 import com.example.qualaboaapp.ui.theme.search.BarRepository
 import com.example.qualaboaapp.ui.theme.search.BarResponse
 import com.example.qualaboaapp.ui.theme.search.Category
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class BarViewModel(private val repository: BarRepository) : ViewModel() {
+class BarViewModel(
+    private val repository: BarRepository,
+    private val photoRepository: EstablishmentsRepository
+) : ViewModel() {
 
     val bars = MutableStateFlow<List<BarResponse>>(emptyList())
     val isLoading = MutableStateFlow(false)
     private val _userLocation = MutableStateFlow<Location?>(null)
     val _barDistances = MutableStateFlow<Map<String, Float>>(emptyMap())
+    private val _establishmentPhotos =
+        MutableStateFlow<Map<String, List<EstablishmentPhoto>>>(emptyMap())
+    val establishmentPhotos: StateFlow<Map<String, List<EstablishmentPhoto>>> get() = _establishmentPhotos
 
     // Estados para categorias selecionadas
     private val selectedMusics = MutableStateFlow<List<String>>(emptyList())
@@ -56,10 +66,14 @@ class BarViewModel(private val repository: BarRepository) : ViewModel() {
         viewModelScope.launch {
             isLoading.value = true
             try {
+
                 val results = repository.searchBars(searchTerm, buildCategories())
                 if (results.isNotEmpty()) {
                     bars.value = results
 
+                    Log.d("SearchResponseBody", results.toString())
+
+                    loadPhotosForEstablishments(results)
                     val userLoc = _userLocation.value
                     if (userLoc != null) {
                         val distances = results.associate { bar ->
@@ -93,6 +107,20 @@ class BarViewModel(private val repository: BarRepository) : ViewModel() {
                 isLoading.value = false
             }
         }
+    }
+
+    private suspend fun loadPhotosForEstablishments(establishments: List<BarResponse>) {
+        val photosMap = mutableMapOf<String, List<EstablishmentPhoto>>()
+        establishments.forEach { establishment ->
+            try {
+                val photos = photoRepository.fetchEstablishmentPhotos(establishment.id)
+                photosMap[establishment.id] = photos
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        _establishmentPhotos.emit(photosMap)
+        Log.d("EstablishmentPhotosFound", photosMap.toString())
     }
 
     // Helper function to get the Google API Key

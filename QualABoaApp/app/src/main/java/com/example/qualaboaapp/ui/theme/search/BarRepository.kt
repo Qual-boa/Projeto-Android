@@ -9,26 +9,26 @@ import com.example.qualaboaapp.ui.theme.establishment.GeocodingApi
 import com.example.qualaboaapp.ui.theme.establishment.Location
 import com.example.qualaboaapp.ui.theme.establishment.getGoogleApiKey
 import com.example.qualaboaapp.ui.theme.home.categorias.RetrofitService
-import com.example.qualaboaapp.ui.theme.home.categorias.RetrofitService.retrofit
+import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhoto
+import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.EstablishmentPhotoApi
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.HttpException
 import javax.net.ssl.HostnameVerifier
 
 open class BarRepository(val context: Context) {
-    private val api = RetrofitService.retrofit
-        .newBuilder()
-        .client(createSecureOkHttpClient(context))
-        .build()
-        .create(ApiService::class.java)
+    private val api = RetrofitService.provideRetrofit(context).create(ApiService::class.java)
+    private val photoApi = RetrofitService.provideRetrofit(context).create(EstablishmentPhotoApi::class.java)
 
     suspend fun searchBars(searchTerm: String, categories: List<Category>): List<BarResponse> {
         val requestBody = SearchRequest(
             name = searchTerm,
             categories = categories
         )
+        Log.d("SearchRequestBody", requestBody.toString())
 
         return withContext(Dispatchers.IO) {
             api.searchBars(requestBody) ?: emptyList() // Retorna uma lista vazia se a resposta for nula
@@ -56,6 +56,32 @@ open class BarRepository(val context: Context) {
                 e.printStackTrace()
                 null
             }
+        }
+    }
+
+    suspend fun fetchEstablishmentPhotos(establishmentId: String): List<EstablishmentPhoto> {
+        Log.d("RequestPhotoFromSearch", establishmentId)
+        try {
+            val photos = photoApi.getEstablishmentPhotos(establishmentId).map { photo ->
+                Log.d("PhotoResponseFromSearch", photo.toString())
+                EstablishmentPhoto(
+                    id = photo.id,
+                    establishmentId = photo.establishmentId,
+                    establishmentCategory = photo.establishmentCategory,
+                    imgUrl = photo.imgUrl,
+                    originalFilename = photo.originalFilename
+                )
+            }
+            Log.d("Photos", photos.toString())
+            return photos
+        } catch (e: HttpException) {
+            if (e.code() == 500) {
+                Log.e("API_ERROR", "Erro 500 no servidor: ${e.response()?.errorBody()?.string()}")
+            }
+            throw e
+        } catch (e: Exception) {
+            Log.e("GENERAL_ERROR", "Erro geral: ${e.message}")
+            throw e
         }
     }
 
@@ -89,7 +115,7 @@ open class BarRepository(val context: Context) {
         val fullUrl = "$geocodingUrl?address=${address.replace(" ", "+")}&key=$apiKey"
 
         return try {
-            val response = retrofit.create(GeocodingApi::class.java).getCoordinates(fullUrl)
+            val response = RetrofitService.provideRetrofit(context).create(GeocodingApi::class.java).getCoordinates(fullUrl)
             if (response.status == "OK" && response.results.isNotEmpty()) {
                 response.results.first().geometry.location
             } else {

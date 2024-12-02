@@ -8,35 +8,25 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.net.ssl.HostnameVerifier
 
+
 object RetrofitService {
 
-    private const val BASE_URL = "http://44.206.188.183:8080/api/ms-auth/"
-    private const val PHOTO_BASE_URL =
-        "https://qualaboa.servebeer.com/api/ms-blob/"
+    private const val BASE_URL = "https://qualaboa.servebeer.com/api/ms-auth/"
+    private const val PHOTO_BASE_URL = "https://qualaboa.servebeer.com/api/ms-blob/"
 
     // Função para criar EstablishmentsApi
     fun provideEstablishmentsApi(context: Context): EstablishmentsApi {
-        val client = createSecureOkHttpClient(context)
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(EstablishmentsApi::class.java)
     }
 
-    val loggingInterceptor = HttpLoggingInterceptor { message ->
-        Log.d("HTTP_RESPONSE", message)
-    }.apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
-
     // Função para criar EstablishmentPhotoApi
     fun providePhotoApi(context: Context): EstablishmentPhotoApi {
-        val client = createSecureOkHttpClient(context)
         return Retrofit.Builder()
             .baseUrl(PHOTO_BASE_URL)
-            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(EstablishmentPhotoApi::class.java)
@@ -61,6 +51,7 @@ object RetrofitService {
         val certSprint = context.resources.openRawResource(R.raw.qualaboa_servebeer).use {
             certificateFactory.generateCertificate(it)
         }
+
 
         // Criar um KeyStore
         val keyStore =
@@ -90,7 +81,7 @@ object RetrofitService {
         // HostnameVerifier personalizado
         val hostnameVerifier = HostnameVerifier { hostname, session ->
             // Aceitar o hostname alternativo
-            hostname == "http://44.206.188.183:8080/api/ms-auth/" ||
+            hostname == "ec2-34-235-31-164.compute-1.amazonaws.com" ||
                     hostname == "qualaboa.com"|| hostname == "https://qualaboa.servebeer.com/"
         }
 
