@@ -77,7 +77,6 @@ fun ConfiguracoesScreen(
         }
     }
 
-
     Box(
         modifier = Modifier
             .fillMaxSize()

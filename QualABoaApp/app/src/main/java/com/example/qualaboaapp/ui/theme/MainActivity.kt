@@ -163,7 +163,12 @@ fun MainScreen(
             composable("pesquisa") {
                 barViewModel.clearBars()
                 if (currentLocation != null) {
-                    SearchScreen(navController = navController, barViewModel, currentLocation)
+                    SearchScreen(
+                        navController = navController,
+                        barViewModel,
+                        currentLocation,
+                        userId = userId
+                    )
                 } else {
                     Toast.makeText(context, "Localização ainda não obtida", Toast.LENGTH_SHORT).show()
                 }

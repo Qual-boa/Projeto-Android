@@ -11,6 +11,8 @@ import com.example.qualaboaapp.ui.theme.home.top_estabelecimentos.Establishments
 import com.example.qualaboaapp.ui.theme.search.BarRepository
 import com.example.qualaboaapp.ui.theme.search.BarResponse
 import com.example.qualaboaapp.ui.theme.search.Category
+import com.example.qualaboaapp.ui.theme.search.FavoriteRequestBody
+import com.example.qualaboaapp.ui.theme.utils.UserPreferences
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +21,7 @@ import kotlinx.coroutines.launch
 
 class BarViewModel(
     private val repository: BarRepository,
+    private val userPreferences: UserPreferences,
     private val photoRepository: EstablishmentsRepository
 ) : ViewModel() {
 
@@ -34,6 +37,9 @@ class BarViewModel(
     private val selectedMusics = MutableStateFlow<List<String>>(emptyList())
     private val selectedFoods = MutableStateFlow<List<String>>(emptyList())
     private val selectedDrinks = MutableStateFlow<List<String>>(emptyList())
+
+    private val _favorites = MutableStateFlow<List<String>>(emptyList())
+    val favorites: StateFlow<List<String>> get() = _favorites
 
     // Atualizar seleção de categorias
     fun updateSelectedMusics(musics: List<String>) {
@@ -62,42 +68,21 @@ class BarViewModel(
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     }
 
-    fun fetchBarsWithDistances(searchTerm: String) {
+    fun fetchBarsWithDistances(searchTerm: String, userId: String?) {
         viewModelScope.launch {
             isLoading.value = true
             try {
-
                 val results = repository.searchBars(searchTerm, buildCategories())
                 if (results.isNotEmpty()) {
-                    bars.value = results
-
-                    Log.d("SearchResponseBody", results.toString())
+                    val favoriteIds = favorites.value
+                    bars.value = results.map { bar ->
+                        bar.copy(isFavorite = favoriteIds.contains(bar.id))
+                    }
 
                     loadPhotosForEstablishments(results)
-                    val userLoc = _userLocation.value
-                    if (userLoc != null) {
-                        val distances = results.associate { bar ->
-                            val barLocation = repository.getBarCoordinates(bar.id)
-                            val distance = if (barLocation != null) {
-                                val resultsArray = FloatArray(1)
-                                Location.distanceBetween(
-                                    userLoc.latitude,
-                                    userLoc.longitude,
-                                    barLocation.latitude,
-                                    barLocation.longitude,
-                                    resultsArray
-                                )
-                                resultsArray[0] / 1000 // Convert to km
-                            } else {
-                                -1f // Indicar distância desconhecida
-                            }
-                            bar.id to distance
-                        }
-                        _barDistances.value = distances
-                    } else {
-                        Log.e("BarViewModel", "Localização do usuário não disponível.")
-                    }
+                    calculateDistances(results)
                 } else {
+                    bars.value = emptyList()
                     Log.d("BarViewModel", "Nenhum bar encontrado para os critérios fornecidos.")
                 }
             } catch (e: Exception) {
@@ -121,6 +106,32 @@ class BarViewModel(
         }
         _establishmentPhotos.emit(photosMap)
         Log.d("EstablishmentPhotosFound", photosMap.toString())
+    }
+
+    private suspend fun calculateDistances(bars: List<BarResponse>) {
+        val userLoc = _userLocation.value
+        if (userLoc != null) {
+            val distances = bars.associate { bar ->
+                val barLocation = repository.getBarCoordinates(bar.id)
+                val distance = if (barLocation != null) {
+                    val resultsArray = FloatArray(1)
+                    Location.distanceBetween(
+                        userLoc.latitude,
+                        userLoc.longitude,
+                        barLocation.latitude,
+                        barLocation.longitude,
+                        resultsArray
+                    )
+                    resultsArray[0] / 1000 // Convert to km
+                } else {
+                    -1f // Indicar distância desconhecida
+                }
+                bar.id to distance
+            }
+            _barDistances.value = distances
+        } else {
+            Log.e("BarViewModel", "Localização do usuário não disponível.")
+        }
     }
 
     // Helper function to get the Google API Key
@@ -157,6 +168,72 @@ class BarViewModel(
             )
         }
     }
+
+    fun toggleFavorite(
+        establishmentId: String,
+        userId: String?,
+        onSuccess: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val resolvedUserId = userId?.takeIf { it.isNotBlank() }
+                    ?: userPreferences.getUserId()?.takeIf { it.isNotBlank() }
+                    ?: run {
+                        onError("Usuário não está logado. Por favor, faça login para continuar.")
+                        return@launch
+                    }
+
+                val response = repository.updateEstablishmentRelationship(
+                    FavoriteRequestBody(
+                        establishmentId = establishmentId,
+                        userId = resolvedUserId,
+                        interactionType = "FAVORITE",
+                        message = "",
+                        rate = 0
+                    )
+                )
+
+                if (response.isSuccessful) {
+                    // Atualize a lista de favoritos localmente
+                    _favorites.value = if (_favorites.value.contains(establishmentId)) {
+                        _favorites.value - establishmentId // Remove dos favoritos
+                    } else {
+                        _favorites.value + establishmentId // Adiciona aos favoritos
+                    }
+                    onSuccess("Operação realizada com sucesso!")
+                } else {
+                    onError("Falha ao realizar a operação.")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                onError("Erro ao tentar favoritar: ${e.localizedMessage}")
+            }
+        }
+    }
+
+    fun fetchUserFavorites(userId: String?, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                // Resolver o ID do usuário (validação de login)
+                val resolvedUserId = userId?.takeIf { it.isNotBlank() }
+                    ?: userPreferences.getUserId()?.takeIf { it.isNotBlank() }
+                    ?: run {
+                        onError("Usuário não está logado. Por favor, faça login para continuar.")
+                        return@launch
+                    }
+
+                // Buscar favoritos do usuário
+                val favoriteEstablishments = repository.getUserFavorites(resolvedUserId)
+                _favorites.value = favoriteEstablishments.map { it.id }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("BarViewModel", "Erro ao buscar favoritos: ${e.localizedMessage}")
+                onError("Erro ao buscar favoritos: ${e.localizedMessage}")
+            }
+        }
+    }
+
 
     fun clearBars() {
         bars.value = emptyList()

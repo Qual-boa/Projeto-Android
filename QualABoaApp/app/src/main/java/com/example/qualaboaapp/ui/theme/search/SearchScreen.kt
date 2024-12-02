@@ -29,6 +29,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -68,7 +69,7 @@ class SearchActivity : ComponentActivity() {
         }
 
         setContent {
-            SearchScreen(navController = rememberNavController(), viewModel = barViewModel, null)
+            SearchScreen(navController = rememberNavController(), viewModel = barViewModel, null, "")
         }
     }
 
@@ -91,21 +92,30 @@ class SearchActivity : ComponentActivity() {
 fun SearchScreen(
     navController: NavController,
     viewModel: BarViewModel,
-    currentLocation: Location? // Localização passada diretamente
+    currentLocation: Location?,
+    userId: String
 ) {
     val context = LocalContext.current
 
-    // Inicializa o cliente de localização apenas uma vez
+    // Inicializa o cliente de localização e configura a localização do usuário
     LaunchedEffect(Unit) {
         viewModel.initializeLocationClient(context)
         currentLocation?.let {
-            viewModel.setUserLocation(it) // Atualiza o ViewModel com a localização atual
+            viewModel.setUserLocation(it)
+        }
+    }
+
+    // Busca os favoritos do usuário ao carregar a tela
+    LaunchedEffect(userId) {
+        viewModel.fetchUserFavorites(userId) { error ->
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         }
     }
 
     val bars = viewModel.bars.collectAsState()
+    val favorites = viewModel.favorites.collectAsState(initial = emptyList()) // Lista de favoritos
     val isLoading = viewModel.isLoading.collectAsState()
-    val barDistances = viewModel._barDistances.collectAsState() // Distâncias calculadas
+    val barDistances = viewModel._barDistances.collectAsState()
     val establishmentPhotos by viewModel.establishmentPhotos.collectAsState(initial = emptyMap())
 
     // Categorias e Seleções
@@ -119,15 +129,17 @@ fun SearchScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            // Barra de pesquisa
             PesquisaBar { searchText ->
                 viewModel.updateSelectedMusics(selectedMusics)
                 viewModel.updateSelectedFoods(selectedFoods)
                 viewModel.updateSelectedDrinks(selectedDrinks)
-                viewModel.fetchBarsWithDistances(searchText) // Busca bares com cálculo de distâncias
+                viewModel.fetchBarsWithDistances(searchText, userId)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Exibe loading enquanto a busca está em andamento
             if (isLoading.value) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -138,18 +150,32 @@ fun SearchScreen(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                ClearButton { viewModel.clearBars() }
+                    // Botão para limpar resultados da pesquisa
+                    ClearButton { viewModel.clearBars() }
 
-                BarList(
-                    establishmentPhotos,
-                    bars = bars.value,
-                    navController = navController,
-                    onFavoriteClick = {  /* Lógica para favoritos */ },
-                    distances = barDistances.value // Passa as distâncias calculadas
-                )
+                    // Lista de bares encontrada
+                    BarList(
+                        establishmentPhotos = establishmentPhotos,
+                        bars = bars.value,
+                        navController = navController,
+                        favorites = favorites.value, // Passa os favoritos
+                        onFavoriteClick = { bar ->
+                            viewModel.toggleFavorite(
+                                establishmentId = bar.id,
+                                userId = userId,
+                                onSuccess = { message ->
+                                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                                },
+                                onError = { error ->
+                                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+                                }
+                            )
+                        },
+                        distances = barDistances.value
+                    )
                 }
             } else {
-                // Seletores de categoria
+                // Exibe os seletores de categorias quando não há resultados de busca
                 CategorySelector(
                     categories = musics,
                     title = "Músicas",
@@ -169,8 +195,6 @@ fun SearchScreen(
                     onSelectionChange = { selectedDrinks = it }
                 )
             }
-
-            Spacer(modifier = Modifier.height(40.dp))
         }
     }
 }
@@ -205,7 +229,6 @@ fun CategorySelector(
         }
     }
 }
-
 
 @Composable
 fun CategoryItem(name: String, isSelected: Boolean, onClick: () -> Unit) {
@@ -274,5 +297,5 @@ fun ClearButton(onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun SearchPreview() {
-    SearchScreen(navController = rememberNavController(), viewModel(), null)
+    SearchScreen(navController = rememberNavController(), viewModel(), null, "")
 }

@@ -17,6 +17,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.HttpException
+import retrofit2.Response
 import javax.net.ssl.HostnameVerifier
 
 open class BarRepository(val context: Context) {
@@ -126,6 +127,19 @@ open class BarRepository(val context: Context) {
             null
         }
     }
+
+    suspend fun updateEstablishmentRelationship(requestBody: FavoriteRequestBody): Response<Unit> {
+        return withContext(Dispatchers.IO) {
+            api.updateEstablishmentRelationship(requestBody)
+        }
+    }
+
+    suspend fun getUserFavorites(userId: String): List<BarResponse> {
+        return withContext(Dispatchers.IO) {
+            api.getUserFavorites(userId)
+        }
+    }
+
 
     // Função para criar OkHttpClient seguro com HttpLoggingInterceptor
     private fun createSecureOkHttpClient(context: Context): OkHttpClient {

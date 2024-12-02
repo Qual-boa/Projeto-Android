@@ -7,5 +7,5 @@ import org.koin.dsl.module
 
 val searchModule = module {
     single { BarRepository(androidContext()) } // Registro do repository
-    viewModel { BarViewModel(get(), get()) } // Passa o repository para o ViewModel
+    viewModel { BarViewModel(get(), get(), get()) } // Passa o repository para o ViewModel
 }

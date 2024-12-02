@@ -2,9 +2,11 @@ package com.example.qualaboaapp.ui.theme.search
 
 import com.example.qualaboaapp.ui.theme.establishment.AddressResponse
 import com.example.qualaboaapp.ui.theme.establishment.EstablishmentResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
@@ -19,6 +21,13 @@ interface ApiService {
 
     @GET("users/{userId}")
     suspend fun getUserById(@Path("userId") userId: String): UserResponse
+
+    @PUT("establishments/relationship")
+    suspend fun updateEstablishmentRelationship(@Body requestBody: FavoriteRequestBody): Response<Unit>
+
+    @GET("establishments/favorites/{userId}")
+    suspend fun getUserFavorites(@Path("userId") userId: String): List<BarResponse>
+
 }
 
 data class BarResponse(
@@ -29,9 +38,9 @@ data class BarResponse(
     val categories: List<CategoryResponse>?,
     val relationships: List<RelationshipResponse>?,
     val information: InformationResponse,
-    var distance: String? = null // Adicionado para a distância
+    var distance: String? = null, // Distância (opcional)
+    var isFavorite: Boolean = false // Novo campo indicando se é favorito
 )
-
 
 data class CategoryResponse(
     val categoryType: Int,
@@ -71,3 +80,10 @@ data class UserResponse(
     val roleEnum: String
 )
 
+data class FavoriteRequestBody(
+    val establishmentId: String,
+    val userId: String,
+    val interactionType: String,
+    val message: String,
+    val rate: Int
+)

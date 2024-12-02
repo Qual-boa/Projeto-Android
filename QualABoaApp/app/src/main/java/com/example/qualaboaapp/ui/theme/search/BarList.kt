@@ -1,8 +1,10 @@
 package com.example.qualaboaapp.ui.theme.search
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
@@ -19,8 +21,9 @@ fun BarList(
     establishmentPhotos: Map<String, List<EstablishmentPhoto>>?,
     bars: List<BarResponse>,
     navController: NavController,
+    favorites: List<String>,
     onFavoriteClick: (BarResponse) -> Unit,
-    distances: Map<String, Float> // Adiciona as distâncias calculadas
+    distances: Map<String, Float>
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -35,25 +38,23 @@ fun BarList(
                 )
             }
         } else {
-            val sortedBars = bars.sortedByDescending { bar ->
-                distances[bar.id] // Ordena usando o valor de distância associado ao ID do bar
-            }
+            val sortedBars = bars.sortedBy { distances[it.id] ?: Float.MAX_VALUE }
             items(sortedBars) { bar ->
                 val photos = establishmentPhotos?.get(bar.id) ?: emptyList()
+                val isFavorite = favorites.contains(bar.id)
 
-                var additionalInfo = createAmenitiesString(
-                    bar.information.hasTv,
-                    bar.information.hasAccessibility,
-                    bar.information.hasWifi,
-                    bar.information.hasParking
-                )
                 CardBar(
-                    image = photos.first().imgUrl,
+                    image = photos.firstOrNull()?.imgUrl,
                     title = bar.fantasyName,
                     description = bar.information.description,
-                    additionalInfo = additionalInfo,
-                    distance = distances[bar.id]?.let { String.format("%.2f", it) } ?: "Desconhecido", // Distância em km
-                    isFavorite = false,
+                    additionalInfo = createAmenitiesString(
+                        bar.information.hasTv,
+                        bar.information.hasAccessibility,
+                        bar.information.hasWifi,
+                        bar.information.hasParking
+                    ),
+                    distance = distances[bar.id]?.let { String.format("%.2f", it) } ?: "Desconhecido",
+                    isFavorite = isFavorite, // Atualiza dinamicamente
                     onFavoriteClick = { onFavoriteClick(bar) },
                     onClick = {
                         val gson = Gson()
@@ -61,6 +62,11 @@ fun BarList(
                         navController.navigate("estabelecimento/${bar.id}?photos=$json")
                     }
                 )
+            }
+
+            // Spacer para evitar que o último item seja coberto
+            item {
+                Spacer(modifier = Modifier.height(56.dp))
             }
         }
     }

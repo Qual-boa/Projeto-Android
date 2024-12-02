@@ -43,22 +43,22 @@ fun CardBar(
     description: String,
     additionalInfo: String,
     distance: String,
-    isFavorite: Boolean,
+    isFavorite: Boolean, // Recebe o estado atualizado
     onFavoriteClick: () -> Unit,
     onClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(6.dp) // Reduzi o padding externo
+            .padding(6.dp)
             .shadow(6.dp, shape = RoundedCornerShape(12.dp))
-            .background(Color(0xFFA1530A), shape = RoundedCornerShape(12.dp)) // Menor borda laranja
-            .padding(bottom = 3.dp) // Ajuste no espaço inferior
+            .background(Color(0xFFA1530A), shape = RoundedCornerShape(12.dp))
+            .padding(bottom = 3.dp)
     ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(160.dp) // Altura fixa para garantir alinhamento
+                .height(160.dp)
                 .padding(6.dp)
                 .clickable { onClick() },
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -69,55 +69,48 @@ fun CardBar(
                 modifier = Modifier.padding(12.dp),
                 verticalAlignment = Alignment.Top
             ) {
-                // Imagem do Card
                 Image(
                     painter = rememberAsyncImagePainter(image ?: R.drawable.profile_image),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(70.dp) // Imagem menor
-                        .clip(CircleShape), // Imagem redonda
+                        .size(70.dp)
+                        .clip(CircleShape),
                     contentScale = ContentScale.Crop
                 )
 
                 Spacer(modifier = Modifier.width(12.dp))
 
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    // Título
-                    if (title != null) {
+                Column(modifier = Modifier.weight(1f)) {
+                    title?.let {
                         Text(
-                            text = title,
-                            style = MaterialTheme.typography.titleMedium, // Fonte menor
+                            text = it,
+                            style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
                     }
 
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    // Descrição
                     Text(
                         text = description,
-                        style = MaterialTheme.typography.bodySmall, // Fonte ajustada para menor
+                        style = MaterialTheme.typography.bodySmall,
                         color = Color.Gray,
-                        maxLines = 2, // Limitar a 2 linhas
+                        maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))
 
-                    // Informações adicionais
                     Text(
                         text = additionalInfo,
                         style = MaterialTheme.typography.labelSmall,
                         color = Color.DarkGray,
-                        maxLines = 1, // Limitar a 1 linha
+                        maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))
 
-                    // Distância
                     Text(
                         text = "Distância: $distance km",
                         style = MaterialTheme.typography.labelSmall,
@@ -127,12 +120,11 @@ fun CardBar(
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                // Ícone de favorito
                 IconButton(onClick = onFavoriteClick) {
                     Icon(
                         imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                         contentDescription = "Favorite Icon",
-                        tint = if (isFavorite) Color.Red else Color.Gray
+                        tint = if (isFavorite) Color.Red else Color.Gray // Atualiza a cor dinamicamente
                     )
                 }
             }
