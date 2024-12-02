@@ -169,48 +169,6 @@ class BarViewModel(
         }
     }
 
-    fun toggleFavorite(
-        establishmentId: String,
-        userId: String?,
-        onSuccess: (String) -> Unit,
-        onError: (String) -> Unit
-    ) {
-        viewModelScope.launch {
-            try {
-                val resolvedUserId = userId?.takeIf { it.isNotBlank() }
-                    ?: userPreferences.getUserId()?.takeIf { it.isNotBlank() }
-                    ?: run {
-                        onError("Usuário não está logado. Por favor, faça login para continuar.")
-                        return@launch
-                    }
-
-                val response = repository.updateEstablishmentRelationship(
-                    FavoriteRequestBody(
-                        establishmentId = establishmentId,
-                        userId = resolvedUserId,
-                        interactionType = "FAVORITE",
-                        message = "",
-                        rate = 0
-                    )
-                )
-
-                if (response.isSuccessful) {
-                    // Atualize a lista de favoritos localmente
-                    _favorites.value = if (_favorites.value.contains(establishmentId)) {
-                        _favorites.value - establishmentId // Remove dos favoritos
-                    } else {
-                        _favorites.value + establishmentId // Adiciona aos favoritos
-                    }
-                    onSuccess("Operação realizada com sucesso!")
-                } else {
-                    onError("Falha ao realizar a operação.")
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                onError("Erro ao tentar favoritar: ${e.localizedMessage}")
-            }
-        }
-    }
 
     fun fetchUserFavorites(userId: String?, onError: (String) -> Unit) {
         viewModelScope.launch {
@@ -268,6 +226,54 @@ class BarViewModel(
                 onError("Erro ao buscar favoritos: ${e.localizedMessage}")
             } finally {
                 isLoading.value = false
+            }
+        }
+    }
+
+    fun toggleFavorite(
+        establishmentId: String,
+        userId: String?,
+        onSuccess: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val resolvedUserId = userId?.takeIf { it.isNotBlank() }
+                    ?: userPreferences.getUserId()?.takeIf { it.isNotBlank() }
+                    ?: run {
+                        onError("Usuário não está logado. Por favor, faça login para continuar.")
+                        return@launch
+                    }
+
+                val isCurrentlyFavorite = favorites.value.contains(establishmentId)
+
+                if (isCurrentlyFavorite) {
+                    // Lógica para desfavoritar
+                    val response = repository.unfavoriteEstablishment(resolvedUserId, establishmentId)
+                    if (response.isSuccessful) {
+                        _favorites.value = _favorites.value - establishmentId
+                        onSuccess("Desfavoritado com sucesso!")
+                    } else {
+                        onError("Erro ao desfavoritar. Tente novamente.")
+                    }
+                } else {
+                    // Lógica para favoritar
+                    val response = repository.favoriteEstablishment(
+                        FavoriteRequestBody(
+                            establishmentId = establishmentId,
+                            userId = resolvedUserId
+                        )
+                    )
+                    if (response.isSuccessful) {
+                        _favorites.value = _favorites.value + establishmentId
+                        onSuccess("Favoritado com sucesso!")
+                    } else {
+                        onError("Erro ao favoritar. Tente novamente.")
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                onError("Erro ao realizar a operação: ${e.localizedMessage}")
             }
         }
     }

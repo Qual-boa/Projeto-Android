@@ -54,7 +54,7 @@ fun BarList(
                         bar.information.hasParking
                     ),
                     distance = distances[bar.id]?.let { String.format("%.2f", it) } ?: "Desconhecido",
-                    isFavorite = isFavorite, // Atualiza dinamicamente
+                    isFavorite = isFavorite,
                     onFavoriteClick = { onFavoriteClick(bar) },
                     onClick = {
                         val gson = Gson()

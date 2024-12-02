@@ -146,6 +146,17 @@ open class BarRepository(val context: Context) {
         }
     }
 
+    suspend fun favoriteEstablishment(requestBody: FavoriteRequestBody): Response<Unit> {
+        return withContext(Dispatchers.IO) {
+            api.favoriteEstablishment(requestBody)
+        }
+    }
+
+    suspend fun unfavoriteEstablishment(userId: String, establishmentId: String): Response<Unit> {
+        return withContext(Dispatchers.IO) {
+            api.unfavoriteEstablishment(UnfavoriteRequestBody(userId, establishmentId))
+        }
+    }
 
     // Função para criar OkHttpClient seguro com HttpLoggingInterceptor
     private fun createSecureOkHttpClient(context: Context): OkHttpClient {

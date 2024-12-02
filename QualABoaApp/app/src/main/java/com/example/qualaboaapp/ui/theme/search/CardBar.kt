@@ -124,7 +124,7 @@ fun CardBar(
                     Icon(
                         imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                         contentDescription = "Favorite Icon",
-                        tint = if (isFavorite) Color.Red else Color.Gray // Atualiza a cor dinamicamente
+                        tint = if (isFavorite) Color.Red else Color.Gray
                     )
                 }
             }

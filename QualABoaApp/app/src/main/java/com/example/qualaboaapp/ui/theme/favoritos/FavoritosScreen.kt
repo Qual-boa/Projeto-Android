@@ -63,6 +63,7 @@ fun FavoriteScreen(
         }
     }
 
+    // Observa os estados
     val bars = viewModel.bars.collectAsState()
     val isLoading = viewModel.isLoading.collectAsState()
     val establishmentPhotos by viewModel.establishmentPhotos.collectAsState(initial = emptyMap())

@@ -4,7 +4,9 @@ import com.example.qualaboaapp.ui.theme.establishment.AddressResponse
 import com.example.qualaboaapp.ui.theme.establishment.EstablishmentResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -31,6 +33,11 @@ interface ApiService {
     @GET("establishments/favorites/{userId}")
     suspend fun getUserFavoritesList(@Path("userId") userId: String): List<BarResponse>
 
+    @HTTP(method = "DELETE", path = "users/unfavorite", hasBody = true)
+    suspend fun unfavoriteEstablishment(@Body data: UnfavoriteRequestBody): Response<Unit>
+
+    @PUT("establishments/relationship")
+    suspend fun favoriteEstablishment(@Body requestBody: FavoriteRequestBody): Response<Unit>
 
 }
 
@@ -87,7 +94,12 @@ data class UserResponse(
 data class FavoriteRequestBody(
     val establishmentId: String,
     val userId: String,
-    val interactionType: String,
-    val message: String,
-    val rate: Int
+    val interactionType: String = "FAVORITE",
+    val message: String = "",
+    val rate: Int = 0
+)
+
+data class UnfavoriteRequestBody(
+    val userId: String,
+    val establishmentId: String
 )
