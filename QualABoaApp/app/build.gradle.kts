@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.telacadastro"
+    namespace = "com.example.qualaboaapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.telacadastro"
+        applicationId = "com.example.qualaboaapp"
         minSdk = 27
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -63,6 +63,23 @@ dependencies {
     implementation(libs.play.services.location)
     implementation("androidx.compose.material:material:1.0.0")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation ("com.google.accompanist:accompanist-pager:0.20.2")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.20.2")
+    implementation ("com.google.android.libraries.places:places:2.5.0")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.google.code.gson:gson:2.8.9")
+    implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation("io.insert-koin:koin-core:4.0.0")
+    implementation("io.insert-koin:koin-android:4.0.0")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("io.coil-kt:coil-compose:2.0.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
+    implementation ("com.google.android.libraries.places:places:2.5.0")
+    implementation(libs.litert.support.api)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,5 +89,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation ("com.google.accompanist:accompanist-pager:0.25.1")
+    implementation ("com.google.maps.android:maps-compose:2.11.1")
+    implementation ("com.google.android.gms:play-services-maps:18.1.0")
+    implementation ("androidx.datastore:datastore-core:1.0.0")
+    implementation ("com.google.accompanist:accompanist-flowlayout:0.30.1")
+    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1")
+
 
 }

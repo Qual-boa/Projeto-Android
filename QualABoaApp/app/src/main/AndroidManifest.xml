@@ -4,8 +4,11 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name=".ui.theme.ApplicationInitializer"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,38 +18,85 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TelaCadastro"
         tools:targetApi="31">
+
+        <!-- MainActivity -->
         <activity
-            android:name=".configuracoes"
-            android:exported="false"
-            android:label="@string/title_activity_configuracoes"
-            android:theme="@style/Theme.TelaCadastro" />
-        <!-- SplashActivity configurada como tela inicial -->
+            android:name=".ui.theme.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.TelaCadastro">
+        </activity>
+
         <activity
-            android:name=".ui.theme.SplashActivity"
+            android:name=".ui.theme.splash_screen.SplashActivity"
             android:exported="true"
             android:label="@string/title_activity_splash_screen"
             android:theme="@style/Theme.TelaCadastro">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".ui.theme.LoginActivity"
-            android:exported="false"
+            android:name=".ui.theme.ConfiguracoesActivity"
+            android:exported="true"
+            android:label="@string/title_activity_tela_configuracoes"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <activity
+            android:name=".ui.theme.login.LoginActivity"
+            android:exported="true"
             android:label="@string/title_activity_tela_login"
             android:theme="@style/Theme.TelaCadastro" />
+
         <activity
-            android:name=".ui.theme.CadastroActivity"
-            android:exported="false"
+            android:name=".ui.theme.pagina_inicial.LoginCadastroInicialActivity"
+            android:exported="true"
             android:label="@string/title_activity_login_cadastro_inicial"
             android:theme="@style/Theme.TelaCadastro" />
+
+
         <activity
-            android:name=".ui.theme.MainActivity"
+            android:name=".ui.theme.cadastro.CadastroActivity"
             android:exported="true"
             android:label="@string/QualABoaApp"
             android:theme="@style/Theme.TelaCadastro" />
-    </application>
 
+        <!-- Declaração do HomeActivity -->
+        <activity
+            android:name=".ui.theme.home.HomeActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <activity
+            android:name=".ui.theme.favoritos.FavoritosActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <activity
+            android:name=".ui.theme.search.SearchActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <activity
+            android:name=".ui.theme.establishment.EstablishmentActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <activity
+            android:name=".ui.theme.notificacoes.NotificacaoActivity"
+            android:exported="true"
+            android:label="@string/QualABoaApp"
+            android:theme="@style/Theme.TelaCadastro" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBrOIGFki8v9qzD7M2NUySfraP8g6Y6Jlk" />
+
+
+    </application>
 </manifest>
